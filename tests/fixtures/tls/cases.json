@@ -1,0 +1,124 @@
+{
+  "version": "1.0.0",
+  "fixtures": [
+    {
+      "id": "valid",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "expired",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "future",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "expiring",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "wrong-host",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "chain-complete",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "chain-missing",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "ec",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "hsts-missing",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "hsts-invalid",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "hsts-disabled",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "sni",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "modern-protocol",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "legacy-protocol",
+      "kind": "live_https",
+      "evidence": "Local TLS handshake or authenticated HTTPS response"
+    },
+    {
+      "id": "private-approved",
+      "kind": "live_https",
+      "endpoint": "private",
+      "trust": "private-root.pem",
+      "evidence": "Same private certificate accepted with the explicitly approved CA"
+    },
+    {
+      "id": "private-untrusted",
+      "kind": "live_https",
+      "endpoint": "private",
+      "trust": "root.pem",
+      "evidence": "Same private certificate rejected by the other CA profile"
+    },
+    {
+      "id": "weak-key",
+      "kind": "offline_certificate",
+      "evidence": "RSA 1024 key; never loaded into a production TLS server"
+    },
+    {
+      "id": "sha1",
+      "kind": "offline_certificate",
+      "evidence": "OpenSSL-generated SHA-1 signature, parsed and verified offline"
+    },
+    {
+      "id": "redirect",
+      "kind": "live_http",
+      "evidence": "HTTP redirect to the local HTTPS listener"
+    },
+    {
+      "id": "no-redirect",
+      "kind": "live_http",
+      "evidence": "HTTP 200 without redirect"
+    },
+    {
+      "id": "timeout",
+      "kind": "live_tcp",
+      "evidence": "Local socket accepts a connection but never completes TLS"
+    },
+    {
+      "id": "dns-error",
+      "kind": "simulated_collection_error",
+      "evidence": "Explicitly synthetic DNS error; no external DNS request"
+    },
+    {
+      "id": "provider-unavailable",
+      "kind": "simulated_collection_error",
+      "evidence": "Explicitly synthetic provider error; no API request"
+    }
+  ]
+}

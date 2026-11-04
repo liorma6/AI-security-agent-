@@ -1,0 +1,426 @@
+[
+  {
+    "name": "Invalid calendar dates are rejected",
+    "schema": "Asset",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000001",
+      "hostname": "example.com",
+      "createdAt": "2026-02-30T12:00:00Z",
+      "authorization": {
+        "scope": "public",
+        "approvedBy": "example-operator",
+        "approvedAt": "2026-11-04T12:00:00Z",
+        "policyVersion": "1.0.0"
+      }
+    }
+  },
+  {
+    "name": "Malformed UUID references are rejected",
+    "schema": "CreateScanRequest",
+    "value": {
+      "assetId": "invalid-id"
+    }
+  },
+  {
+    "name": "Invalid IP address formats are rejected",
+    "schema": "Endpoint",
+    "value": {
+      "hostname": "example.com",
+      "ip": "999.1.2.3",
+      "port": 443,
+      "sni": "example.com",
+      "certificateSha256": null
+    }
+  },
+  {
+    "name": "A URL is not a normalized hostname",
+    "schema": "CreateAssetRequest",
+    "value": {
+      "hostname": "https://example.com/"
+    }
+  },
+  {
+    "name": "Clients cannot self-authorize",
+    "schema": "CreateAssetRequest",
+    "value": {
+      "hostname": "example.com",
+      "authorization": {
+        "scope": "public"
+      }
+    }
+  },
+  {
+    "name": "Unknown fields are rejected",
+    "schema": "CreateScanRequest",
+    "value": {
+      "assetId": "00000000-0000-4000-8000-000000000001",
+      "url": "https://example.com"
+    }
+  },
+  {
+    "name": "Queued scans cannot already be completed",
+    "schema": "Scan",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000002",
+      "assetId": "00000000-0000-4000-8000-000000000001",
+      "status": "queued",
+      "createdAt": "2026-11-04T12:00:00Z",
+      "startedAt": null,
+      "completedAt": "2026-11-04T12:00:00Z",
+      "attempt": 1,
+      "policyVersion": "1.0.0",
+      "sources": [
+        {
+          "source": "tls",
+          "status": "pending",
+          "reason": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "Completed scans require timestamps",
+    "schema": "Scan",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000002",
+      "assetId": "00000000-0000-4000-8000-000000000001",
+      "status": "completed",
+      "createdAt": "2026-11-04T12:00:00Z",
+      "startedAt": null,
+      "completedAt": null,
+      "attempt": 1,
+      "policyVersion": "1.0.0",
+      "sources": [
+        {
+          "source": "tls",
+          "status": "pending",
+          "reason": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "Unknown is not a vulnerability finding",
+    "schema": "Finding",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000004",
+      "assetId": "00000000-0000-4000-8000-000000000001",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "ruleId": "TLS-EXPIRED",
+      "result": "unknown",
+      "severity": "high",
+      "title": "Expired certificate",
+      "description": "Contract example only; no real target was scanned.",
+      "remediation": "Renew and deploy the certificate.",
+      "observationIds": [
+        "00000000-0000-4000-8000-000000000003"
+      ],
+      "state": "open",
+      "verified": true,
+      "createdAt": "2026-11-04T12:00:00Z",
+      "ml": null
+    }
+  },
+  {
+    "name": "Findings require observation evidence",
+    "schema": "Finding",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000004",
+      "assetId": "00000000-0000-4000-8000-000000000001",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "ruleId": "TLS-EXPIRED",
+      "result": "fail",
+      "severity": "high",
+      "title": "Expired certificate",
+      "description": "Contract example only; no real target was scanned.",
+      "remediation": "Renew and deploy the certificate.",
+      "observationIds": [],
+      "state": "open",
+      "verified": true,
+      "createdAt": "2026-11-04T12:00:00Z",
+      "ml": null
+    }
+  },
+  {
+    "name": "Accepted risk is not a training label",
+    "schema": "Feedback",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "findingId": "00000000-0000-4000-8000-000000000004",
+      "label": "accepted_risk",
+      "reason": "Confirmed against the laboratory certificate and observation time.",
+      "reviewer": "example-reviewer",
+      "reviewedAt": "2026-11-04T12:00:00Z",
+      "observationIds": [
+        "00000000-0000-4000-8000-000000000003"
+      ]
+    }
+  },
+  {
+    "name": "Definitive feedback requires evidence",
+    "schema": "Feedback",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "findingId": "00000000-0000-4000-8000-000000000004",
+      "label": "true_positive",
+      "reason": "Confirmed against the laboratory certificate and observation time.",
+      "reviewer": "example-reviewer",
+      "reviewedAt": "2026-11-04T12:00:00Z",
+      "observationIds": []
+    }
+  },
+  {
+    "name": "Collection errors cannot have successful evidence",
+    "schema": "Observation",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "source": "tls",
+      "endpoint": {
+        "hostname": "example.com",
+        "ip": "192.0.2.1",
+        "port": 443,
+        "sni": "example.com",
+        "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "observedAt": "2026-11-04T12:00:00Z",
+      "fetchedAt": "2026-11-04T12:00:00Z",
+      "status": "error",
+      "evidence": {
+        "certificate": {
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "subject": "CN=example.com",
+          "issuer": "CN=Example laboratory CA",
+          "sans": [
+            "example.com"
+          ],
+          "notBefore": "2026-01-01T00:00:00Z",
+          "notAfter": "2026-10-01T00:00:00Z",
+          "keyType": "RSA",
+          "keyBits": 2048,
+          "signatureAlgorithm": "sha256WithRSAEncryption"
+        },
+        "chainSha256": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "trustProfile": "lab-root",
+        "authorized": false,
+        "authorizationErrors": [
+          "CERT_HAS_EXPIRED"
+        ],
+        "negotiatedProtocol": "TLSv1.3",
+        "supportedProtocols": null,
+        "enumerationComplete": false
+      },
+      "error": {
+        "code": "timeout",
+        "message": "No response"
+      }
+    }
+  },
+  {
+    "name": "Successful observations require evidence",
+    "schema": "Observation",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "source": "tls",
+      "endpoint": {
+        "hostname": "example.com",
+        "ip": "192.0.2.1",
+        "port": 443,
+        "sni": "example.com",
+        "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "observedAt": "2026-11-04T12:00:00Z",
+      "fetchedAt": "2026-11-04T12:00:00Z",
+      "status": "ok",
+      "evidence": null,
+      "error": null
+    }
+  },
+  {
+    "name": "HTTP payload cannot masquerade as TLS evidence",
+    "schema": "Observation",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "source": "tls",
+      "endpoint": {
+        "hostname": "example.com",
+        "ip": "192.0.2.1",
+        "port": 443,
+        "sni": "example.com",
+        "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "observedAt": "2026-11-04T12:00:00Z",
+      "fetchedAt": "2026-11-04T12:00:00Z",
+      "status": "ok",
+      "evidence": {
+        "statusCode": 200,
+        "location": null,
+        "hsts": null
+      },
+      "error": null
+    }
+  },
+  {
+    "name": "A negotiated protocol is not complete enumeration",
+    "schema": "Observation",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "source": "tls",
+      "endpoint": {
+        "hostname": "example.com",
+        "ip": "192.0.2.1",
+        "port": 443,
+        "sni": "example.com",
+        "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "observedAt": "2026-11-04T12:00:00Z",
+      "fetchedAt": "2026-11-04T12:00:00Z",
+      "status": "ok",
+      "evidence": {
+        "certificate": {
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "subject": "CN=example.com",
+          "issuer": "CN=Example laboratory CA",
+          "sans": [
+            "example.com"
+          ],
+          "notBefore": "2026-01-01T00:00:00Z",
+          "notAfter": "2026-10-01T00:00:00Z",
+          "keyType": "RSA",
+          "keyBits": 2048,
+          "signatureAlgorithm": "sha256WithRSAEncryption"
+        },
+        "chainSha256": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "trustProfile": "lab-root",
+        "authorized": false,
+        "authorizationErrors": [
+          "CERT_HAS_EXPIRED"
+        ],
+        "negotiatedProtocol": "TLSv1.3",
+        "supportedProtocols": null,
+        "enumerationComplete": true
+      },
+      "error": null
+    }
+  },
+  {
+    "name": "Unknown results do not carry vulnerability severity",
+    "schema": "RuleResult",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "ruleId": "TLS-EXPIRED",
+      "result": "unknown",
+      "severity": "high",
+      "reason": "Fixture certificate expired before observation time.",
+      "observationIds": [
+        "00000000-0000-4000-8000-000000000003"
+      ],
+      "remediation": "Renew and deploy the certificate."
+    }
+  },
+  {
+    "name": "Predictions must stay inside score bounds",
+    "schema": "PredictResponse",
+    "value": {
+      "featureSchemaVersion": "1.0.0",
+      "findingId": "00000000-0000-4000-8000-000000000004",
+      "modelVersion": "example-model",
+      "score": 1.1,
+      "decision": "review",
+      "reason": "No model is loaded. This is a contract example."
+    }
+  },
+  {
+    "name": "Abstention must not invent a score",
+    "schema": "PredictResponse",
+    "value": {
+      "featureSchemaVersion": "1.0.0",
+      "findingId": "00000000-0000-4000-8000-000000000004",
+      "modelVersion": null,
+      "score": 0.2,
+      "decision": "abstain",
+      "reason": "No model is loaded. This is a contract example."
+    }
+  },
+  {
+    "name": "Future schema versions must be explicit",
+    "schema": "Asset",
+    "value": {
+      "schemaVersion": "2.0.0",
+      "id": "00000000-0000-4000-8000-000000000001",
+      "hostname": "example.com",
+      "createdAt": "2026-11-04T12:00:00Z",
+      "authorization": {
+        "scope": "public",
+        "approvedBy": "example-operator",
+        "approvedAt": "2026-11-04T12:00:00Z",
+        "policyVersion": "1.0.0"
+      }
+    }
+  },
+  {
+    "name": "Invalid port numbers are rejected",
+    "schema": "Observation",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "source": "tls",
+      "endpoint": {
+        "hostname": "example.com",
+        "ip": "192.0.2.1",
+        "port": 65536,
+        "sni": "example.com",
+        "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "observedAt": "2026-11-04T12:00:00Z",
+      "fetchedAt": "2026-11-04T12:00:00Z",
+      "status": "ok",
+      "evidence": {
+        "certificate": {
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "subject": "CN=example.com",
+          "issuer": "CN=Example laboratory CA",
+          "sans": [
+            "example.com"
+          ],
+          "notBefore": "2026-01-01T00:00:00Z",
+          "notAfter": "2026-10-01T00:00:00Z",
+          "keyType": "RSA",
+          "keyBits": 2048,
+          "signatureAlgorithm": "sha256WithRSAEncryption"
+        },
+        "chainSha256": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "trustProfile": "lab-root",
+        "authorized": false,
+        "authorizationErrors": [
+          "CERT_HAS_EXPIRED"
+        ],
+        "negotiatedProtocol": "TLSv1.3",
+        "supportedProtocols": null,
+        "enumerationComplete": false
+      },
+      "error": null
+    }
+  }
+]

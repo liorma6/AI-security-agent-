@@ -1,0 +1,227 @@
+{
+  "Asset": {
+    "schemaVersion": "1.0.0",
+    "id": "00000000-0000-4000-8000-000000000001",
+    "hostname": "example.com",
+    "createdAt": "2026-11-04T12:00:00Z",
+    "authorization": {
+      "scope": "public",
+      "approvedBy": "example-operator",
+      "approvedAt": "2026-11-04T12:00:00Z",
+      "policyVersion": "1.0.0"
+    }
+  },
+  "CreateAssetRequest": {
+    "hostname": "example.com"
+  },
+  "CreateScanRequest": {
+    "assetId": "00000000-0000-4000-8000-000000000001"
+  },
+  "Scan": {
+    "schemaVersion": "1.0.0",
+    "id": "00000000-0000-4000-8000-000000000002",
+    "assetId": "00000000-0000-4000-8000-000000000001",
+    "status": "queued",
+    "createdAt": "2026-11-04T12:00:00Z",
+    "startedAt": null,
+    "completedAt": null,
+    "attempt": 1,
+    "policyVersion": "1.0.0",
+    "sources": [
+      {
+        "source": "tls",
+        "status": "pending",
+        "reason": null
+      }
+    ]
+  },
+  "Observation": {
+    "schemaVersion": "1.0.0",
+    "id": "00000000-0000-4000-8000-000000000003",
+    "scanId": "00000000-0000-4000-8000-000000000002",
+    "source": "tls",
+    "endpoint": {
+      "hostname": "example.com",
+      "ip": "192.0.2.1",
+      "port": 443,
+      "sni": "example.com",
+      "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "observedAt": "2026-11-04T12:00:00Z",
+    "fetchedAt": "2026-11-04T12:00:00Z",
+    "status": "ok",
+    "evidence": {
+      "certificate": {
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject": "CN=example.com",
+        "issuer": "CN=Example laboratory CA",
+        "sans": [
+          "example.com"
+        ],
+        "notBefore": "2026-01-01T00:00:00Z",
+        "notAfter": "2026-10-01T00:00:00Z",
+        "keyType": "RSA",
+        "keyBits": 2048,
+        "signatureAlgorithm": "sha256WithRSAEncryption"
+      },
+      "chainSha256": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "trustProfile": "lab-root",
+      "authorized": false,
+      "authorizationErrors": [
+        "CERT_HAS_EXPIRED"
+      ],
+      "negotiatedProtocol": "TLSv1.3",
+      "supportedProtocols": null,
+      "enumerationComplete": false
+    },
+    "error": null
+  },
+  "RuleResult": {
+    "schemaVersion": "1.0.0",
+    "ruleId": "TLS-EXPIRED",
+    "result": "fail",
+    "severity": "high",
+    "reason": "Fixture certificate expired before observation time.",
+    "observationIds": [
+      "00000000-0000-4000-8000-000000000003"
+    ],
+    "remediation": "Renew and deploy the certificate."
+  },
+  "Finding": {
+    "schemaVersion": "1.0.0",
+    "id": "00000000-0000-4000-8000-000000000004",
+    "assetId": "00000000-0000-4000-8000-000000000001",
+    "scanId": "00000000-0000-4000-8000-000000000002",
+    "ruleId": "TLS-EXPIRED",
+    "result": "fail",
+    "severity": "high",
+    "title": "Expired certificate",
+    "description": "Contract example only; no real target was scanned.",
+    "remediation": "Renew and deploy the certificate.",
+    "observationIds": [
+      "00000000-0000-4000-8000-000000000003"
+    ],
+    "state": "open",
+    "verified": true,
+    "createdAt": "2026-11-04T12:00:00Z",
+    "ml": null
+  },
+  "Feedback": {
+    "schemaVersion": "1.0.0",
+    "id": "00000000-0000-4000-8000-000000000003",
+    "findingId": "00000000-0000-4000-8000-000000000004",
+    "label": "true_positive",
+    "reason": "Confirmed against the laboratory certificate and observation time.",
+    "reviewer": "example-reviewer",
+    "reviewedAt": "2026-11-04T12:00:00Z",
+    "observationIds": [
+      "00000000-0000-4000-8000-000000000003"
+    ]
+  },
+  "CreateFeedbackRequest": {
+    "label": "uncertain",
+    "reason": "A new measurement is required.",
+    "observationIds": []
+  },
+  "UpdateFindingStateRequest": {
+    "state": "accepted_risk",
+    "reason": "Example policy decision; this is not a false positive label."
+  },
+  "ModelVersion": {
+    "schemaVersion": "1.0.0",
+    "id": "example-model-v1",
+    "featureSchemaVersion": "1.0.0",
+    "datasetVersion": "example-data-v1",
+    "artifactSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "createdAt": "2026-11-04T12:00:00Z",
+    "mode": "recommendation",
+    "threshold": null,
+    "evaluation": {
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "falsePositiveReduction": null,
+      "sampleCount": 1,
+      "sourceScope": "lab"
+    }
+  },
+  "PredictRequest": {
+    "featureSchemaVersion": "1.0.0",
+    "findingId": "00000000-0000-4000-8000-000000000004",
+    "features": {
+      "ruleId": "TLS-EXPIRED",
+      "evidenceAgeSeconds": 30,
+      "sourceAgreement": null,
+      "repeatConsistency": 1,
+      "chainComplete": true
+    }
+  },
+  "PredictResponse": {
+    "featureSchemaVersion": "1.0.0",
+    "findingId": "00000000-0000-4000-8000-000000000004",
+    "modelVersion": null,
+    "score": null,
+    "decision": "abstain",
+    "reason": "No model is loaded. This is a contract example."
+  },
+  "ApiError": {
+    "error": {
+      "code": "forbidden_target",
+      "message": "Target is not authorized by server policy."
+    }
+  },
+  "Health": {
+    "status": "ok",
+    "service": "api",
+    "version": "0.1.0",
+    "stage": 1,
+    "mode": "bootstrap",
+    "capabilities": {
+      "scanning": false,
+      "persistence": false
+    }
+  },
+  "AssetPage": {
+    "items": [
+      {
+        "schemaVersion": "1.0.0",
+        "id": "00000000-0000-4000-8000-000000000001",
+        "hostname": "example.com",
+        "createdAt": "2026-11-04T12:00:00Z",
+        "authorization": {
+          "scope": "public",
+          "approvedBy": "example-operator",
+          "approvedAt": "2026-11-04T12:00:00Z",
+          "policyVersion": "1.0.0"
+        }
+      }
+    ],
+    "nextCursor": null
+  },
+  "FindingPage": {
+    "items": [
+      {
+        "schemaVersion": "1.0.0",
+        "id": "00000000-0000-4000-8000-000000000004",
+        "assetId": "00000000-0000-4000-8000-000000000001",
+        "scanId": "00000000-0000-4000-8000-000000000002",
+        "ruleId": "TLS-EXPIRED",
+        "result": "fail",
+        "severity": "high",
+        "title": "Expired certificate",
+        "description": "Contract example only; no real target was scanned.",
+        "remediation": "Renew and deploy the certificate.",
+        "observationIds": [
+          "00000000-0000-4000-8000-000000000003"
+        ],
+        "state": "open",
+        "verified": true,
+        "createdAt": "2026-11-04T12:00:00Z",
+        "ml": null
+      }
+    ],
+    "nextCursor": null
+  }
+}

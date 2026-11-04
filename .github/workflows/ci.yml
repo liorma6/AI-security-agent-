@@ -30,9 +30,11 @@ jobs:
       - run: npm ci
       - run: uv sync --project services/ml --frozen
       - run: npm run lint
-      - run: uv run --frozen ruff check .
-        working-directory: services/ml
+      - run: uv run --project services/ml --frozen ruff check --config services/ml/pyproject.toml services/ml tests/fixtures/tls
+      - run: npm run check:openapi
       - run: npm test
+      - run: openssl version
+      - run: npm run test:lab
       - run: uv run --frozen pytest
         working-directory: services/ml
       - run: npm run build

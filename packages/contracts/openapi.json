@@ -1,0 +1,999 @@
+{
+  "openapi": "3.1.2",
+  "info": {
+    "title": "AI Security Agent API",
+    "version": "1.0.0",
+    "description": "Versioned design contract. Only GET /api/health is implemented at stage 2. This local single-operator API is not a public deployment."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:3001",
+      "description": "Local API"
+    }
+  ],
+  "security": [],
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Implemented bootstrap liveness"
+    },
+    {
+      "name": "Scans",
+      "description": "Planned asset and scan operations"
+    },
+    {
+      "name": "ML",
+      "description": "Planned internal inference"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "operationId": "getApiHealth",
+        "summary": "Read process liveness",
+        "tags": [
+          "Health"
+        ],
+        "x-implementation-stage": 1,
+        "x-implementation-status": "implemented",
+        "responses": {
+          "200": {
+            "description": "Process is alive; no scanning readiness is implied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/assets": {
+      "post": {
+        "operationId": "createAsset",
+        "summary": "Create an authorized target",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Planned contract, available only from implementation stage 3. Stage 2 does not expose this route.",
+        "x-implementation-stage": 3,
+        "x-implementation-status": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create an authorized target",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Asset"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listAssets",
+        "summary": "List targets",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Planned contract, available only from implementation stage 3. Stage 2 does not expose this route.",
+        "x-implementation-stage": 3,
+        "x-implementation-status": "planned",
+        "responses": {
+          "200": {
+            "description": "List targets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 512
+            }
+          }
+        ]
+      }
+    },
+    "/api/scans": {
+      "post": {
+        "operationId": "createScan",
+        "summary": "Queue a scan without waiting for completion",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Planned contract, available only from implementation stage 3. Stage 2 does not expose this route.",
+        "x-implementation-stage": 3,
+        "x-implementation-status": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateScanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Queue a scan without waiting for completion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Scan"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "description": "Relative URL of the accepted scan",
+                "schema": {
+                  "type": "string",
+                  "pattern": "^/api/scans/"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scans/{scanId}": {
+      "parameters": [
+        {
+          "name": "scanId",
+          "in": "path",
+          "required": true,
+          "description": "Public UUID of the resource",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getScan",
+        "summary": "Read scan progress",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Planned contract, available only from implementation stage 3. Stage 2 does not expose this route.",
+        "x-implementation-stage": 3,
+        "x-implementation-status": "planned",
+        "responses": {
+          "200": {
+            "description": "Read scan progress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Scan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scans/{scanId}/findings": {
+      "parameters": [
+        {
+          "name": "scanId",
+          "in": "path",
+          "required": true,
+          "description": "Public UUID of the resource",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "listFindings",
+        "summary": "Read findings with evidence references",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Planned contract, available only from implementation stage 5. Stage 2 does not expose this route.",
+        "x-implementation-stage": 5,
+        "x-implementation-status": "planned",
+        "responses": {
+          "200": {
+            "description": "Read findings with evidence references",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindingPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 512
+            }
+          }
+        ]
+      }
+    },
+    "/api/findings/{findingId}/feedback": {
+      "parameters": [
+        {
+          "name": "findingId",
+          "in": "path",
+          "required": true,
+          "description": "Public UUID of the resource",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "createFeedback",
+        "summary": "Record a reviewed label with evidence",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Planned contract, available only from implementation stage 7. Stage 2 does not expose this route.",
+        "x-implementation-stage": 7,
+        "x-implementation-status": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeedbackRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Record a reviewed label with evidence",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Feedback"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/findings/{findingId}/state": {
+      "parameters": [
+        {
+          "name": "findingId",
+          "in": "path",
+          "required": true,
+          "description": "Public UUID of the resource",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "patch": {
+        "operationId": "updateFindingState",
+        "summary": "Record a treatment decision separately from labels",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Planned contract, available only from implementation stage 7. Stage 2 does not expose this route.",
+        "x-implementation-stage": 7,
+        "x-implementation-status": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFindingStateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Record a treatment decision separately from labels",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Finding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scans/{scanId}/export": {
+      "parameters": [
+        {
+          "name": "scanId",
+          "in": "path",
+          "required": true,
+          "description": "Public UUID of the resource",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "exportFindings",
+        "summary": "Export findings",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Planned contract, available only from implementation stage 7. Stage 2 does not expose this route.",
+        "x-implementation-stage": 7,
+        "x-implementation-status": "planned",
+        "responses": {
+          "200": {
+            "description": "All findings for the scan; no hidden pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Finding"
+                  }
+                }
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "csv"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/predict": {
+      "post": {
+        "operationId": "predictFinding",
+        "summary": "Estimate review priority or abstain",
+        "tags": [
+          "ML"
+        ],
+        "description": "Planned contract, available only from implementation stage 10. Stage 2 does not expose this route.",
+        "x-implementation-stage": 10,
+        "x-implementation-status": "planned",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estimate review priority or abstain",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://127.0.0.1:8000",
+            "description": "Internal ML service"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SchemaVersion": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/SchemaVersion"
+      },
+      "Hostname": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Hostname"
+      },
+      "RuleId": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/RuleId"
+      },
+      "Severity": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Severity"
+      },
+      "ErrorDetails": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/ErrorDetails"
+      },
+      "Endpoint": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Endpoint"
+      },
+      "Asset": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Asset"
+      },
+      "CreateAssetRequest": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/CreateAssetRequest"
+      },
+      "CreateScanRequest": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/CreateScanRequest"
+      },
+      "SourceState": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/SourceState"
+      },
+      "Scan": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Scan"
+      },
+      "Certificate": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Certificate"
+      },
+      "TlsEvidence": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/TlsEvidence"
+      },
+      "HttpEvidence": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/HttpEvidence"
+      },
+      "DnsEvidence": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/DnsEvidence"
+      },
+      "ProviderEvidence": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/ProviderEvidence"
+      },
+      "Observation": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Observation"
+      },
+      "RuleResult": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/RuleResult"
+      },
+      "MlAssessment": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/MlAssessment"
+      },
+      "Finding": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Finding"
+      },
+      "Feedback": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Feedback"
+      },
+      "CreateFeedbackRequest": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/CreateFeedbackRequest"
+      },
+      "UpdateFindingStateRequest": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/UpdateFindingStateRequest"
+      },
+      "ModelVersion": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/ModelVersion"
+      },
+      "PredictRequest": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/PredictRequest"
+      },
+      "PredictResponse": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/PredictResponse"
+      },
+      "ApiError": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/ApiError"
+      },
+      "AssetPage": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/AssetPage"
+      },
+      "FindingPage": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/FindingPage"
+      },
+      "Health": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Health"
+      }
+    }
+  }
+}

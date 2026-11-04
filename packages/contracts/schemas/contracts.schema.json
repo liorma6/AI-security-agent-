@@ -1,0 +1,1834 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-security-agent.invalid/schemas/1.0.0/contracts.json",
+  "title": "AI Security Agent contracts v1",
+  "description": "Stage 2 contracts; schemas do not implement API routes or authorize targets.",
+  "$defs": {
+    "SchemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "Hostname": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 253,
+      "pattern": "^(?=.{3,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?$"
+    },
+    "RuleId": {
+      "type": "string",
+      "enum": [
+        "TLS-EXPIRED",
+        "TLS-NOT-YET-VALID",
+        "TLS-EXPIRING",
+        "TLS-HOSTNAME",
+        "TLS-TRUST",
+        "TLS-KEY-STRENGTH",
+        "TLS-SIGNATURE",
+        "TLS-LEGACY-PROTOCOL",
+        "HTTPS-REDIRECT",
+        "HTTPS-HSTS"
+      ]
+    },
+    "Severity": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "info"
+      ]
+    },
+    "ErrorDetails": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "dns_error",
+            "timeout",
+            "connection_refused",
+            "tls_handshake_error",
+            "provider_unavailable",
+            "invalid_response",
+            "not_checked"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ]
+    },
+    "Endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hostname": {
+          "$ref": "#/$defs/Hostname"
+        },
+        "ip": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "ipv4"
+                },
+                {
+                  "type": "string",
+                  "format": "ipv6"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "sni": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Hostname"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "certificateSha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "hostname",
+        "ip",
+        "port",
+        "sni",
+        "certificateSha256"
+      ]
+    },
+    "Asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "hostname": {
+          "$ref": "#/$defs/Hostname"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scope": {
+              "type": "string",
+              "enum": [
+                "public",
+                "lab"
+              ]
+            },
+            "approvedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "approvedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "policyVersion": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          },
+          "required": [
+            "scope",
+            "approvedBy",
+            "approvedAt",
+            "policyVersion"
+          ]
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "hostname",
+        "createdAt",
+        "authorization"
+      ]
+    },
+    "CreateAssetRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hostname": {
+          "$ref": "#/$defs/Hostname"
+        }
+      },
+      "required": [
+        "hostname"
+      ]
+    },
+    "CreateScanRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "assetId"
+      ]
+    },
+    "SourceState": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "tls",
+            "http",
+            "dns",
+            "ssllabs"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "running",
+            "ok",
+            "error",
+            "unavailable",
+            "not_applicable"
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "source",
+        "status",
+        "reason"
+      ]
+    },
+    "Scan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "queued",
+            "running",
+            "completed",
+            "partial",
+            "failed"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "startedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "policyVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceState"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "assetId",
+        "status",
+        "createdAt",
+        "startedAt",
+        "completedAt",
+        "attempt",
+        "policyVersion",
+        "sources"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "queued"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "startedAt": {
+                "type": "null"
+              },
+              "completedAt": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "running"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "startedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "completedAt": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "completed",
+                  "partial"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "startedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "completedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "failed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "completedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Certificate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "issuer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "sans": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 253
+          },
+          "minItems": 1
+        },
+        "notBefore": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notAfter": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "keyType": {
+          "type": "string",
+          "enum": [
+            "RSA",
+            "EC",
+            "Ed25519",
+            "other"
+          ]
+        },
+        "keyBits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "signatureAlgorithm": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      },
+      "required": [
+        "sha256",
+        "subject",
+        "issuer",
+        "sans",
+        "notBefore",
+        "notAfter",
+        "keyType",
+        "keyBits",
+        "signatureAlgorithm"
+      ]
+    },
+    "TlsEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "certificate": {
+          "$ref": "#/$defs/Certificate"
+        },
+        "chainSha256": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "minItems": 1
+        },
+        "trustProfile": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "authorized": {
+          "type": "boolean"
+        },
+        "authorizationErrors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 0
+        },
+        "negotiatedProtocol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "supportedProtocols": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              },
+              "minItems": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "enumerationComplete": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "certificate",
+        "chainSha256",
+        "trustProfile",
+        "authorized",
+        "authorizationErrors",
+        "negotiatedProtocol",
+        "supportedProtocols",
+        "enumerationComplete"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "enumerationComplete": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "supportedProtocols": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 50
+                },
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "HttpEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "statusCode": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "location": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hsts": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "statusCode",
+        "location",
+        "hsts"
+      ]
+    },
+    "DnsEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "A",
+                  "AAAA",
+                  "CNAME"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 253
+              },
+              "ttl": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "type",
+              "value",
+              "ttl"
+            ]
+          },
+          "minItems": 0
+        },
+        "resolver": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "records",
+        "resolver"
+      ]
+    },
+    "ProviderEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reportAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "engineVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "supportedProtocols": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              },
+              "minItems": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supportedCiphers": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "minItems": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessmentComplete": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "reportAt",
+        "engineVersion",
+        "supportedProtocols",
+        "supportedCiphers",
+        "assessmentComplete"
+      ]
+    },
+    "Observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scanId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "tls",
+            "http",
+            "dns",
+            "ssllabs"
+          ]
+        },
+        "endpoint": {
+          "$ref": "#/$defs/Endpoint"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fetchedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "error",
+            "unavailable"
+          ]
+        },
+        "evidence": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetails"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "scanId",
+        "source",
+        "endpoint",
+        "observedAt",
+        "fetchedAt",
+        "status",
+        "evidence",
+        "error"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "tls"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/TlsEvidence"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "http"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/HttpEvidence"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "dns"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DnsEvidence"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "ssllabs"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/ProviderEvidence"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ok"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "type": "object"
+              },
+              "error": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "evidence": {
+                "type": "null"
+              },
+              "error": {
+                "$ref": "#/$defs/ErrorDetails"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "RuleResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "ruleId": {
+          "$ref": "#/$defs/RuleId"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "severity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Severity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "observationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0
+        },
+        "remediation": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "ruleId",
+        "result",
+        "severity",
+        "reason",
+        "observationIds",
+        "remediation"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": "fail"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "severity": {
+                "$ref": "#/$defs/Severity"
+              },
+              "observationIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "minItems": 1
+              },
+              "remediation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "severity": {
+                "type": "null"
+              },
+              "remediation": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": "pass"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observationIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MlAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "modelVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "keep",
+            "review",
+            "abstain"
+          ]
+        },
+        "scoredAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "modelVersion",
+        "score",
+        "decision",
+        "scoredAt"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "abstain"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "scanId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "ruleId": {
+          "$ref": "#/$defs/RuleId"
+        },
+        "result": {
+          "type": "string",
+          "const": "fail"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "remediation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "observationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 1
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "resolved",
+            "accepted_risk",
+            "false_positive"
+          ]
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ml": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MlAssessment"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "assetId",
+        "scanId",
+        "ruleId",
+        "result",
+        "severity",
+        "title",
+        "description",
+        "remediation",
+        "observationIds",
+        "state",
+        "verified",
+        "createdAt",
+        "ml"
+      ]
+    },
+    "Feedback": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "findingId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "label": {
+          "type": "string",
+          "enum": [
+            "true_positive",
+            "false_positive",
+            "uncertain"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 4000
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "reviewedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "observationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "findingId",
+        "label",
+        "reason",
+        "reviewer",
+        "reviewedAt",
+        "observationIds"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "label": {
+                "enum": [
+                  "true_positive",
+                  "false_positive"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observationIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CreateFeedbackRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "enum": [
+            "true_positive",
+            "false_positive",
+            "uncertain"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 4000
+        },
+        "observationIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "label",
+        "reason",
+        "observationIds"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "label": {
+                "enum": [
+                  "true_positive",
+                  "false_positive"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observationIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "UpdateFindingStateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "resolved",
+            "accepted_risk"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "state",
+        "reason"
+      ]
+    },
+    "ModelVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "featureSchemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "datasetVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "artifactSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "recommendation",
+            "filtering"
+          ]
+        },
+        "threshold": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evaluation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "precision": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "recall": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "f1": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "falsePositiveReduction": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sampleCount": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sourceScope": {
+              "type": "string",
+              "enum": [
+                "lab",
+                "real",
+                "mixed"
+              ]
+            }
+          },
+          "required": [
+            "precision",
+            "recall",
+            "f1",
+            "falsePositiveReduction",
+            "sampleCount",
+            "sourceScope"
+          ]
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "featureSchemaVersion",
+        "datasetVersion",
+        "artifactSha256",
+        "createdAt",
+        "mode",
+        "threshold",
+        "evaluation"
+      ]
+    },
+    "PredictRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "featureSchemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "findingId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "features": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ruleId": {
+              "$ref": "#/$defs/RuleId"
+            },
+            "evidenceAgeSeconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "sourceAgreement": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "repeatConsistency": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "chainComplete": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "ruleId",
+            "evidenceAgeSeconds",
+            "sourceAgreement",
+            "repeatConsistency",
+            "chainComplete"
+          ]
+        }
+      },
+      "required": [
+        "featureSchemaVersion",
+        "findingId",
+        "features"
+      ]
+    },
+    "PredictResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "featureSchemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "findingId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "modelVersion": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "keep",
+            "review",
+            "abstain"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "featureSchemaVersion",
+        "findingId",
+        "modelVersion",
+        "score",
+        "decision",
+        "reason"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "abstain"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modelVersion": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ApiError": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": [
+                "invalid_request",
+                "forbidden_target",
+                "not_found",
+                "conflict",
+                "rate_limited",
+                "internal_error",
+                "not_implemented"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ]
+        }
+      },
+      "required": [
+        "error"
+      ]
+    },
+    "AssetPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Asset"
+          },
+          "minItems": 0
+        },
+        "nextCursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor"
+      ]
+    },
+    "FindingPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "minItems": 0
+        },
+        "nextCursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor"
+      ]
+    },
+    "Health": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "const": "ok"
+        },
+        "service": {
+          "type": "string",
+          "enum": [
+            "api",
+            "scanner",
+            "ml"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "stage": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mode": {
+          "type": "string",
+          "const": "bootstrap"
+        },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scanning": {
+              "type": "boolean"
+            },
+            "persistence": {
+              "type": "boolean"
+            },
+            "queueConsumer": {
+              "type": "boolean"
+            },
+            "inference": {
+              "type": "boolean"
+            }
+          },
+          "required": []
+        },
+        "modelLoaded": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "service",
+        "version",
+        "stage",
+        "mode",
+        "capabilities"
+      ]
+    }
+  }
+}

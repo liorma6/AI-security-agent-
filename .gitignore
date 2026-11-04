@@ -14,3 +14,4 @@ playwright-report/
 data/raw/
 data/private/
 models/
+tests/fixtures/tls/generated/

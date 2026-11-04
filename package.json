@@ -12,12 +12,17 @@
     "apps/*",
     "services/api",
     "services/scanner",
-    "packages/runtime"
+    "packages/runtime",
+    "packages/contracts"
   ],
   "scripts": {
     "dev": "node --env-file-if-exists=.env scripts/dev.mjs",
     "lint": "eslint .",
     "test": "node --test tests/unit/*.test.mjs",
+    "test:lab": "node --test tests/lab/*.test.mjs",
+    "check:openapi": "redocly lint packages/contracts/openapi.json --config redocly.yaml",
+    "lab": "node scripts/lab.mjs",
+    "lab:generate": "node scripts/lab.mjs --generate-only",
     "build": "npm run build --workspace @ai-security/web",
     "smoke": "node --env-file-if-exists=.env scripts/smoke.mjs",
     "smoke:stack": "node --env-file-if-exists=.env scripts/smoke.mjs --stack",
@@ -25,6 +30,7 @@
     "check:providers": "node scripts/check-providers.mjs"
   },
   "devDependencies": {
+    "@redocly/cli": "2.75.0",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.64.1",
     "eslint": "10.14.0",

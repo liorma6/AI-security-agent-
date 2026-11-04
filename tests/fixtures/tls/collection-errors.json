@@ -1,0 +1,84 @@
+[
+  {
+    "name": "dns-error",
+    "synthetic": true,
+    "schema": "Observation",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "source": "tls",
+      "endpoint": {
+        "hostname": "example.com",
+        "ip": null,
+        "port": 443,
+        "sni": "example.com",
+        "certificateSha256": null
+      },
+      "observedAt": "2026-11-04T12:00:00Z",
+      "fetchedAt": "2026-11-04T12:00:00Z",
+      "status": "error",
+      "evidence": null,
+      "error": {
+        "code": "dns_error",
+        "message": "Synthetic DNS resolution failure"
+      }
+    }
+  },
+  {
+    "name": "provider-unavailable",
+    "synthetic": true,
+    "schema": "Observation",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "source": "ssllabs",
+      "endpoint": {
+        "hostname": "example.com",
+        "ip": null,
+        "port": 443,
+        "sni": "example.com",
+        "certificateSha256": null
+      },
+      "observedAt": "2026-11-04T12:00:00Z",
+      "fetchedAt": "2026-11-04T12:00:00Z",
+      "status": "unavailable",
+      "evidence": null,
+      "error": {
+        "code": "provider_unavailable",
+        "message": "Synthetic provider outage"
+      }
+    }
+  },
+  {
+    "name": "unknown-rule-result",
+    "synthetic": true,
+    "schema": "RuleResult",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "ruleId": "TLS-EXPIRED",
+      "result": "unknown",
+      "severity": null,
+      "reason": "Collection did not return a certificate.",
+      "observationIds": [],
+      "remediation": null
+    }
+  },
+  {
+    "name": "expiry-reminder-not-applicable",
+    "synthetic": true,
+    "schema": "RuleResult",
+    "value": {
+      "schemaVersion": "1.0.0",
+      "ruleId": "TLS-EXPIRING",
+      "result": "not_applicable",
+      "severity": null,
+      "reason": "The expired-certificate finding already covers this certificate.",
+      "observationIds": [
+        "00000000-0000-4000-8000-000000000003"
+      ],
+      "remediation": null
+    }
+  }
+]

@@ -1,0 +1,167 @@
+{
+  "policyVersion": "1.0.0",
+  "description": "Initial project policy, not a CVSS score. Rules are specifications; execution is stage 5.",
+  "defaults": {
+    "expiryWarningDays": 30,
+    "minimumRsaBits": 2048,
+    "minimumEcBits": 256,
+    "allowedPublicPorts": [
+      80,
+      443
+    ],
+    "allowedPublicSchemes": [
+      "http",
+      "https"
+    ],
+    "trustProfile": "system-default"
+  },
+  "rules": [
+    {
+      "id": "TLS-EXPIRED",
+      "severity": "high",
+      "failWhen": "Certificate notAfter <= observation time.",
+      "passWhen": "Certificate notAfter > observation time.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "valid"
+      ],
+      "failFixtures": [
+        "expired"
+      ]
+    },
+    {
+      "id": "TLS-NOT-YET-VALID",
+      "severity": "high",
+      "failWhen": "Certificate notBefore > observation time.",
+      "passWhen": "Certificate notBefore <= observation time.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "valid"
+      ],
+      "failFixtures": [
+        "future"
+      ]
+    },
+    {
+      "id": "TLS-EXPIRING",
+      "severity": "low",
+      "failWhen": "Currently valid certificate has <= 30 days remaining.",
+      "passWhen": "Currently valid certificate has > 30 days remaining.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "Certificate is already expired or not yet valid; validity rules cover it.",
+      "passFixtures": [
+        "valid"
+      ],
+      "failFixtures": [
+        "expiring"
+      ]
+    },
+    {
+      "id": "TLS-HOSTNAME",
+      "severity": "high",
+      "failWhen": "SAN does not match the requested hostname with correct SNI.",
+      "passWhen": "SAN matches the requested hostname with correct SNI.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "valid",
+        "sni"
+      ],
+      "failFixtures": [
+        "wrong-host"
+      ]
+    },
+    {
+      "id": "TLS-TRUST",
+      "severity": "high",
+      "failWhen": "Verification fails against the explicitly selected trust profile.",
+      "passWhen": "The presented chain verifies against the explicitly selected trust profile.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "valid",
+        "chain-complete",
+        "private-approved"
+      ],
+      "failFixtures": [
+        "chain-missing",
+        "private-untrusted"
+      ]
+    },
+    {
+      "id": "TLS-KEY-STRENGTH",
+      "severity": "high",
+      "failWhen": "RSA key is smaller than 2048 bits, or EC key is smaller than 256 bits.",
+      "passWhen": "RSA >= 2048, EC >= 256, or recognized Ed25519.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "valid",
+        "ec"
+      ],
+      "failFixtures": [
+        "weak-key"
+      ]
+    },
+    {
+      "id": "TLS-SIGNATURE",
+      "severity": "high",
+      "failWhen": "Certificate signature uses MD5 or SHA-1.",
+      "passWhen": "Certificate signature uses SHA-256, SHA-384, SHA-512 or Ed25519.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "valid"
+      ],
+      "failFixtures": [
+        "sha1"
+      ]
+    },
+    {
+      "id": "TLS-LEGACY-PROTOCOL",
+      "severity": "high",
+      "failWhen": "TLS 1.0/1.1 handshake succeeds, or complete reliable enumeration includes either.",
+      "passWhen": "Modern TLS works and explicit legacy probes return protocol-version rejection, or complete reliable enumeration excludes legacy protocols.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "modern-protocol"
+      ],
+      "failFixtures": [
+        "legacy-protocol"
+      ]
+    },
+    {
+      "id": "HTTPS-REDIRECT",
+      "severity": "medium",
+      "failWhen": "HTTP root responds without a valid redirect to an authorized HTTPS endpoint.",
+      "passWhen": "HTTP root returns 301, 302, 303, 307 or 308 with a validated HTTPS redirect target.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "redirect"
+      ],
+      "failFixtures": [
+        "no-redirect"
+      ]
+    },
+    {
+      "id": "HTTPS-HSTS",
+      "severity": "low",
+      "failWhen": "Authenticated HTTPS root response has missing, malformed, duplicated max-age, or max-age=0 HSTS.",
+      "passWhen": "Authenticated HTTPS root response has one valid positive integer max-age directive.",
+      "unknownWhen": "Required evidence is absent, inconsistent, stale for the selected assessment, or collection failed. A negotiated protocol alone does not establish all supported protocols.",
+      "notApplicableWhen": "The operator's versioned policy explicitly excludes this check for the asset; never infer exclusion from timeout.",
+      "passFixtures": [
+        "valid"
+      ],
+      "failFixtures": [
+        "hsts-missing",
+        "hsts-invalid",
+        "hsts-disabled"
+      ]
+    }
+  ]
+}
