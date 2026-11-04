@@ -1,0 +1,9 @@
+{
+  "name": "@ai-security/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@ai-security/runtime": "0.1.0"
+  }
+}
