@@ -12,13 +12,13 @@
 
 ## שלב 1
 
-תאריך: 4 בנובמבר 2026. ענף: stage/01-bootstrap. מצב: המימוש והבדיקות המקומיות הושלמו; בדיקת CI ו־Compose ממתינה להעלאה.
+תאריך: 4 בנובמבר 2026. ענף: stage/01-bootstrap. מצב: הושלם; הבדיקות המקומיות, CI ו־Compose עברו.
 
 תוצרים: שלד Node.js ו־React, שירות Python, הרצה מקומית, Docker Compose, קובצי נעילה, דף פתיחה, בדיקות ו־CI. נוצר מסמך אפיון המתעדכן בכל שלב, והוספה הנחיית עבודה ב־AGENTS.md.
 
 בדיקות זמינות שבוצעו: Google DNS החזיר Status=0; SSL Labs /info החזיר engineVersion=2.4.3. לא הופעלה סריקה ולא בוצע רישום. גישת assessment היא תלות פתוחה של שלב 6.
 
-הסביבה המקומית: Windows, Node.js 24.22.2, Python 3.13.16, uv 0.13.1. OpenSSL זמין דרך Git for Windows. Docker אינו מותקן; אימות Compose מיועד ל־CI.
+הסביבה המקומית: Windows, Node.js 24.22.2, Python 3.13.16, uv 0.13.1. OpenSSL זמין דרך Git for Windows. Docker אינו מותקן מקומית; אימות Compose בוצע בהצלחה ב־CI.
 
 בדיקות מקומיות שעברו:
 
@@ -32,7 +32,13 @@
 
 בכלי הפיתוח קיימות 5 התרעות moderate שמקורן ב־minimatch העקיף של ESLint. הקלט לכלי מגיע מהגדרות המאגר, ולא מיעדי הסריקה. לא בוצע downgrade לגרסת ESLint לא נתמכת או override של major רק כדי להעלים התרעה. יש לעקוב אחר תיקון תואם upstream; הכלי אינו נכלל ב־image הריצה של ה־backend או בשרת nginx הסופי.
 
-בריצת CI הראשונה בדיקות הקוד והדפדפן עברו על Ubuntu 24.04. MongoDB עצר עקב אי־תאימות ל־kernel של runner הקונטיינרים; בדיקת Compose הועברה ל־Ubuntu 22.04 עם kernel מסדרת 6.8. תוצאות ההרצה המתוקנת יתווספו לאחר האימות. השלב הבא לאחר השלמתן: שלב 2, חוזים ומעבדת TLS.
+בריצת CI הראשונה בדיקות הקוד והדפדפן עברו על Ubuntu 24.04. MongoDB עצר עקב אי־תאימות ל־kernel של runner הקונטיינרים; בדיקת Compose הועברה ל־Ubuntu 22.04 עם kernel מסדרת 6.8. ההרצה המתוקנת עברה בשני המסלולים: Code and browser checks וגם Docker Compose smoke. Compose הפעיל ארבעה רכיבי יישום, MongoDB ו־Redis; בדיקות health וה־proxy עברו.
+
+- קומיט המימוש: [1d43bee](https://github.com/liorma6/AI-security-agent-/commit/1d43bee47d045729698ce8471caec60ca2fa602d).
+- קוד שנבדק ב־CI לאחר תיקון הסביבה: [9a82716](https://github.com/liorma6/AI-security-agent-/commit/9a82716e9d2fbd5c1ef98e60636483b1d7811a0b).
+- [ריצת CI מוצלחת](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558).
+
+לאחר ההרצה עודכנו רק מסמכי המצב והתוצאות. חיבור assessment ל־SSL Labs נשאר תלות של שלב 6. השלב הבא: שלב 2, חוזים ומעבדת TLS.
 
 ## תבנית לשלב הבא
 
