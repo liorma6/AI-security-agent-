@@ -19,6 +19,8 @@ Node 24 הוא קו LTS; Python 3.13 נבחר כדי להשתמש באותה ג�
 
 ## השלכות
 
+בדיקת הקונטיינרים רצה על runner מסוג Ubuntu 22.04 עם kernel מסדרת 6.8. בריצה הראשונה על Ubuntu 24.04, MongoDB עצר בזמן startup בשל kernel שאינו תואם. לפי [תיעוד MongoDB](https://www.mongodb.com/docs/v8.0/release-notes/8.0/), קיימת אי־תאימות בין MongoDB 8.x לבין Linux kernels בטווח 6.19–7.0.13. לא מבטלים את מנגנון ההגנה של MongoDB. בדיקת CI מתעדת את גרסת ה־kernel בפועל; להרצה מקומית נדרש host תואם. יש לבחון מחדש את בחירת ה־runner לפני ש־Ubuntu 22.04 יפסיק להיתמך ב־GitHub Actions.
+
 npm ci ו־uv sync --frozen הם דרכי ההתקנה לשימוש רגיל. שינוי קובץ dependencies מחייב לעדכן את קובץ הנעילה שלו. הרשאות והגדרות localhost ב־Compose אינן הגדרות פריסה ציבורית.
 
 אין הבטחה שה־images חסינים מכל חולשה. בשלב המסירה תיבדק עדכניות הגרסאות ותישקל נעילה ל־digest. Stage 1 אינו התקנת Docker Desktop במחשב המשתמש.

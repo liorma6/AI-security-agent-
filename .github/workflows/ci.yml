@@ -41,13 +41,15 @@ jobs:
       - run: npm run test:web
   containers:
     name: Docker Compose smoke
-    runs-on: ubuntu-24.04
+    # MongoDB 8.x rejects the kernel currently used by the 24.04 hosted image.
+    runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
+      - run: uname -r
       - run: docker compose config --quiet
       - run: docker compose up --build --wait --wait-timeout 180
       - run: node scripts/smoke.mjs --stack

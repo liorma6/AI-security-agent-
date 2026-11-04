@@ -34,6 +34,8 @@ npm run dev
 
 ## הרצה עם Docker
 
+נדרש Linux kernel התואם ל־MongoDB. סביבת הבדיקות משתמשת ב־Ubuntu 22.04 עם kernel מסדרת 6.8; מגבלת התאימות לגרסאות kernel אחרות מתועדת ב־[החלטות הסביבה](docs/decisions/0001-runtime-and-local-environment.md).
+
 ```sh
 docker compose up --build --wait
 ```
