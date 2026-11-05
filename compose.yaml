@@ -7,6 +7,10 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: "3001"
+      APP_MODE: orchestration_test
+      MONGO_URL: mongodb://mongo:27017
+      REDIS_URL: redis://redis:6379
+      ALLOWED_TARGETS: ${ALLOWED_TARGETS:-}
     ports:
       - "127.0.0.1:${API_PORT:-3001}:3001"
     read_only: true
@@ -26,6 +30,10 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: "3002"
+      APP_MODE: orchestration_test
+      MONGO_URL: mongodb://mongo:27017
+      REDIS_URL: redis://redis:6379
+      ALLOWED_TARGETS: ${ALLOWED_TARGETS:-}
     ports:
       - "127.0.0.1:${SCANNER_PORT:-3002}:3002"
     read_only: true
@@ -74,7 +82,7 @@ services:
       retries: 20
   redis:
     image: redis:8.2.11-alpine
-    command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
     volumes:
       - redis-data:/data
     healthcheck:

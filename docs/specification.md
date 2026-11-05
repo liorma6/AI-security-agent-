@@ -1,6 +1,6 @@
 # AI Security Agent — System Specification
 
-Revision 0.2.1 · November 5, 2026 · Service bootstrap, data contracts and TLS laboratory
+Revision 0.3.0 · November 5, 2026 · Authorized assets, durable scan requests and queue processing
 
 ## Purpose and scope
 
@@ -10,17 +10,17 @@ The proposed Node.js modules collect evidence from websites. The assessment scop
 
 ## Available in this revision
 
-The React home page requests `GET /api/health` through its own origin and reports the connection state in English. Express and the scanner process each expose `GET /health`. FastAPI exposes its own `GET /health`. The services report process liveness with version `0.1.0`, `stage: 1` and `mode: "bootstrap"`. These values identify the running services independently of the documentation revision.
+The React home page requests `GET /api/health` through its own origin and reports the connection state in English. Express and the scanner process each expose `GET /health`. FastAPI exposes its own `GET /health`. API and scanner processes configured for orchestration report `stage: 3` and `mode: "orchestration_test"`. Their /ready endpoints probe MongoDB and Redis. The bootstrap mode and ML service retain their own capability flags.
 
 | Component | Observable behavior | Planned responsibility |
 | --- | --- | --- |
 | Web | Shows the result of a real API request on desktop and mobile | Manage assets, request scans, inspect evidence and give feedback |
-| API | Reports `scanning: false` and `persistence: false` | Authorize targets, store requests and serve results |
-| Scanner | Reports `scanning: false` and `queueConsumer: false` | Consume jobs, collect observations and evaluate rules |
+| API | Normalizes and authorizes targets, persists scan requests, provides pagination and scan state | Serve evidence, findings and feedback |
+| Scanner | Consumes jobs, rechecks authorization and commits an explicit partial orchestration result | Collect observations and evaluate rules |
 | ML service | Reports `inference: false` and `modelLoaded: false` | Serve predictions for a versioned feature schema |
-| MongoDB and Redis | Run on the private Compose network with health checks and persistent volumes | Store scan records and manage the job queue |
+| MongoDB and Redis | Persist assets and scan state, enforce uniqueness and dispatch work | Support later observations and findings |
 
-The development launcher runs the four application processes. Compose also runs MongoDB and Redis. The current UI can be exercised using the [installation and verification instructions](../README.md). Site scanning, persistence of findings and trained inference are pending.
+The development launcher runs the four application processes. Compose also runs MongoDB and Redis. The current UI can be exercised using the [installation and verification instructions](../README.md). Accepted scan requests persist across service restarts. The current worker labels its execution as an orchestration test and records each security source as unavailable. Site evidence and trained inference are scheduled for later stages.
 
 ## Operator workflows
 
@@ -41,8 +41,8 @@ The development launcher runs the four application processes. Compose also runs 
 | --- | --- | --- |
 | FR01 | Start the four application components, load React and read each backend's health response. | Verified in stage 1 |
 | FR02 | When the API is unreachable, show a visible failure state on desktop or mobile. | Verified in stage 1 |
-| FR03 | Normalize a submitted hostname and authorize it against server policy. | Planned, stage 3 |
-| FR04 | Return HTTP 202 with a scan ID, persist the request and recover from duplicate jobs or a failed dispatch. | Planned, stage 3 |
+| FR03 | Normalize a submitted hostname and authorize it against server policy. | Implemented in stage 3, integration verification in progress |
+| FR04 | Return HTTP 202 with a scan ID, persist the request and recover from duplicate jobs or a failed dispatch. | Implemented in stage 3, integration verification in progress |
 | FR05 | Collect TLS and HTTP observations that match known lab configurations. | Planned, stage 4 |
 | FR06 | Return pass, fail, unknown or not_applicable with evidence, policy version and severity where applicable. | Planned, stage 5 |
 | FR07 | Integrate Google Public DNS and SSL Labs and verify each with an authorized live target. | Availability probed in stage 1. Integration planned for stage 6 |
@@ -71,7 +71,7 @@ The development launcher runs the four application processes. Compose also runs 
 
 ## Data and interface design
 
-The [JSON Schema and OpenAPI description](../packages/contracts/README.md) define version 1.0.0. OpenAPI marks each operation as implemented or planned. JavaScript and Python validate the same 17 accepted and 21 rejected examples. Both check dates, UUIDs and IP addresses. The target data model separates measurements, rule decisions and human review.
+The [JSON Schema and OpenAPI description](../packages/contracts/README.md) define version 1.1.0 and continue to validate version 1.0.0 records. The update adds an execution-mode label, operational health and readiness, and unavailable-storage errors. OpenAPI identifies implemented asset and scan operations. JavaScript and Python validate the same 17 accepted and 21 rejected examples. Both check dates, UUIDs and IP addresses. The target data model separates measurements, rule decisions and human review.
 
 | Record | Meaning |
 | --- | --- |
@@ -82,11 +82,11 @@ The [JSON Schema and OpenAPI description](../packages/contracts/README.md) defin
 | Feedback | A reviewer supplies a label, rationale and evidence references. Treatment states include resolved and accepted_risk. |
 | ModelVersion and prediction | Record the feature and dataset versions, artifact identity, evaluation scope and threshold. A prediction carries a score or an explicit abstention. |
 
-The future API accepts targets at `/api/assets` and jobs at `/api/scans`. A scan request returns HTTP 202 and a location to poll. Findings, feedback, state changes and exports have separate operations. The worker will call the internal `POST /predict` endpoint. Ownership, reference integrity, chronological ordering and legal state changes require service-level checks.
+The API accepts targets at `/api/assets` and jobs at `/api/scans` in orchestration mode. A scan request returns HTTP 202 and a location to poll. Findings, feedback, state changes and exports have separate operations. The worker will call the internal `POST /predict` endpoint. The service checks exact-hostname authorization, asset references and request-key consistency. Unique indexes arbitrate asset creation and idempotent scan requests. POST /api/scans returns after a journaled MongoDB write. A dispatcher retries incomplete requests using the scan UUID as the queue job ID. The worker records attempts, rechecks policy and conditionally commits one terminal result. [Recovery decision](decisions/0002-durable-orchestration.md).
 
 ## Collection policy and laboratory
 
-The public scan path will require a server-side allowlist. Validate every A and AAAA answer, handle IPv4-mapped IPv6 addresses and reject non-public destinations. Connect to the validated address using the original hostname for Host, SNI and identity verification. Reapply the policy to each redirect. Bound response size, timeouts, retries, redirects and per-domain concurrency. Render certificate and HTTP values as text.
+The API and worker enforce the same exact-hostname allowlist. Input is normalized for case, trailing dots and IDNA. IP literals, credentials, unsupported ports and non-root URLs are rejected. Network-level checks belong to the collector stage. Validate every A and AAAA answer, handle IPv4-mapped IPv6 addresses and reject non-public destinations. Connect to the validated address using the original hostname for Host, SNI and identity verification. Reapply the policy to each redirect. Bound response size, timeouts, retries, redirects and per-domain concurrency. Render certificate and HTTP values as text.
 
 Record certificate validity against the observation time, hostname against SAN, the selected trust profile, certificate chain, key and signature information. A dedicated probe may inspect an invalid certificate and retain its verification error. External provider connections use ordinary TLS verification. An approved private CA belongs to the target's trust profile.
 
@@ -115,6 +115,7 @@ Delivery includes this specification, a GitHub repository, a reproducible ML exp
 | November 4, 2026 | Stage 0 defined scope, proposal and implementation plan. | [Planning commit](https://github.com/liorma6/AI-security-agent-/commit/784f1adcff4a87df5e3027da5fdd3e5e9c2dd56d) |
 | November 4, 2026 | Stage 1 delivered four application components, health endpoints, Compose, build, smoke and browser checks. | Four Node.js tests, two Python tests, two browser tests and a six-service Compose run. [Stage 1 results](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558) |
 | November 4, 2026 | Stage 2 delivered contracts, policy, labeling guidance and the certificate laboratory. | 50 Node.js tests, 41 Python tests, 12 lab subtests, two browser tests and both CI jobs passed. [Stage 2 results](https://github.com/liorma6/AI-security-agent-/actions/runs/41897401889) |
+| November 5, 2026 | Stage 3 adds assets, persistent requests, queue dispatch, readiness and recovery tests. | Local input, contract, build and browser checks passed. Real-storage CI verification is in progress. |
 | November 5, 2026 | Adopted English for project material and the UI. Published operating instructions and updated the specification. | The browser suite checks English content, page direction and API connection states. |
 
 See the [stage log](stage-log.md) for validation details and open dependencies, the [architecture](architecture.md) for runtime boundaries and the [implementation plan](implementation-plan.md) for upcoming work.

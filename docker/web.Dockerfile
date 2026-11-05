@@ -6,6 +6,7 @@ COPY services/api/package.json services/api/package.json
 COPY services/scanner/package.json services/scanner/package.json
 COPY packages/runtime/package.json packages/runtime/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
+COPY packages/orchestration/package.json packages/orchestration/package.json
 RUN npm ci
 COPY apps/web apps/web
 RUN npm run build --workspace @ai-security/web

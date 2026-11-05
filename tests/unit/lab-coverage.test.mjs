@@ -28,5 +28,5 @@ test('the design does not claim planned API operations are already implemented',
   const api = read('../../packages/contracts/openapi.json');
   const operations = Object.values(api.paths).flatMap((path) => ['get', 'post', 'patch'].filter((method) => path[method]).map((method) => path[method]));
   const implemented = operations.filter((operation) => operation['x-implementation-status'] === 'implemented');
-  assert.deepEqual(implemented.map((operation) => operation.operationId), ['getApiHealth']);
+  assert.deepEqual(implemented.map((operation) => operation.operationId).sort(), ['getApiHealth', 'getApiReadiness', 'createAsset', 'listAssets', 'createScan', 'getScan'].sort());
 });

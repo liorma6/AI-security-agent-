@@ -46,6 +46,8 @@ jobs:
     # MongoDB 8.x rejects the kernel currently used by the 24.04 hosted image.
     runs-on: ubuntu-22.04
     timeout-minutes: 20
+    env:
+      ALLOWED_TARGETS: demo.example.com
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -55,7 +57,31 @@ jobs:
       - run: docker compose config --quiet
       - run: docker compose up --build --wait --wait-timeout 180
       - run: node scripts/smoke.mjs --stack
+      - run: node scripts/demo-scan.mjs demo.example.com
       - if: failure()
         run: docker compose logs --no-color --tail=100
       - if: always()
         run: docker compose down --volumes
+  orchestration:
+    name: Durable orchestration integration
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    services:
+      mongo:
+        image: mongo:8.0.34
+        ports: ["27017:27017"]
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'quit(db.adminCommand({ping:1}).ok ? 0 : 1)'"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+      redis:
+        image: redis:8.2.11-alpine
+        ports: ["6379:6379"]
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run test:integration

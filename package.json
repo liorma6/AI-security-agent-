@@ -13,7 +13,8 @@
     "services/api",
     "services/scanner",
     "packages/runtime",
-    "packages/contracts"
+    "packages/contracts",
+    "packages/orchestration"
   ],
   "scripts": {
     "dev": "node --env-file-if-exists=.env scripts/dev.mjs",
@@ -27,7 +28,9 @@
     "smoke": "node --env-file-if-exists=.env scripts/smoke.mjs",
     "smoke:stack": "node --env-file-if-exists=.env scripts/smoke.mjs --stack",
     "test:web": "playwright test",
-    "check:providers": "node scripts/check-providers.mjs"
+    "check:providers": "node scripts/check-providers.mjs",
+    "test:integration": "node --test --test-concurrency=1 tests/integration/*.test.mjs",
+    "demo": "node --env-file-if-exists=.env scripts/demo-scan.mjs"
   },
   "devDependencies": {
     "@redocly/cli": "2.75.0",

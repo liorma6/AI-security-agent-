@@ -2,8 +2,8 @@
   "openapi": "3.1.2",
   "info": {
     "title": "AI Security Agent API",
-    "version": "1.0.0",
-    "description": "Versioned design contract. Only GET /api/health is implemented at stage 2. This local single-operator API is not a public deployment."
+    "version": "1.1.0",
+    "description": "Local single-operator API. Asset and scan operations run in orchestration_test mode with MongoDB and Redis. Later-stage operations remain planned."
   },
   "servers": [
     {
@@ -57,9 +57,9 @@
         "tags": [
           "Scans"
         ],
-        "description": "Planned contract, available only from implementation stage 3. Stage 2 does not expose this route.",
+        "description": "Available in orchestration_test mode. Scan results identify all security sources as unmeasured.",
         "x-implementation-stage": 3,
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "requestBody": {
           "required": true,
           "content": {
@@ -130,6 +130,16 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "Storage unavailable or orchestration mode disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
           }
         }
       },
@@ -139,9 +149,9 @@
         "tags": [
           "Scans"
         ],
-        "description": "Planned contract, available only from implementation stage 3. Stage 2 does not expose this route.",
+        "description": "Available in orchestration_test mode. Scan results identify all security sources as unmeasured.",
         "x-implementation-stage": 3,
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "responses": {
           "200": {
             "description": "List targets",
@@ -202,6 +212,16 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "Storage unavailable or orchestration mode disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -233,9 +253,9 @@
         "tags": [
           "Scans"
         ],
-        "description": "Planned contract, available only from implementation stage 3. Stage 2 does not expose this route.",
+        "description": "Available in orchestration_test mode. Scan results identify all security sources as unmeasured.",
         "x-implementation-stage": 3,
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "requestBody": {
           "required": true,
           "content": {
@@ -315,8 +335,40 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "Storage unavailable or orchestration mode disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency key already belongs to a different asset",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "description": "Reuse the key to recover the same accepted request. A different asset with the same key returns 409.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]{1,128}$"
+            }
+          }
+        ]
       }
     },
     "/api/scans/{scanId}": {
@@ -338,9 +390,9 @@
         "tags": [
           "Scans"
         ],
-        "description": "Planned contract, available only from implementation stage 3. Stage 2 does not expose this route.",
+        "description": "Available in orchestration_test mode. Scan results identify all security sources as unmeasured.",
         "x-implementation-stage": 3,
-        "x-implementation-status": "planned",
+        "x-implementation-status": "implemented",
         "responses": {
           "200": {
             "description": "Read scan progress",
@@ -394,6 +446,16 @@
           },
           "500": {
             "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Storage unavailable or orchestration mode disabled",
             "content": {
               "application/json": {
                 "schema": {
@@ -900,6 +962,39 @@
           }
         ]
       }
+    },
+    "/ready": {
+      "get": {
+        "operationId": "getApiReadiness",
+        "tags": [
+          "Health"
+        ],
+        "summary": "Check MongoDB and Redis readiness",
+        "x-implementation-stage": 3,
+        "x-implementation-status": "implemented",
+        "responses": {
+          "200": {
+            "description": "Dependencies ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Readiness"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Bootstrap mode or unavailable dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Readiness"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -993,6 +1088,9 @@
       },
       "Health": {
         "$ref": "./schemas/contracts.schema.json#/$defs/Health"
+      },
+      "Readiness": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/Readiness"
       }
     }
   }

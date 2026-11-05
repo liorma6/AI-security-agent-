@@ -7,9 +7,11 @@ COPY services/api/package.json services/api/package.json
 COPY services/scanner/package.json services/scanner/package.json
 COPY packages/runtime/package.json packages/runtime/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
+COPY packages/orchestration/package.json packages/orchestration/package.json
 RUN npm ci --omit=dev --ignore-scripts
 COPY packages/runtime packages/runtime
 COPY packages/contracts packages/contracts
+COPY packages/orchestration packages/orchestration
 COPY services/api services/api
 COPY services/scanner services/scanner
 USER node

@@ -1,12 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ai-security-agent.invalid/schemas/1.0.0/contracts.json",
-  "title": "AI Security Agent contracts v1",
-  "description": "Stage 2 contracts; schemas do not implement API routes or authorize targets.",
+  "$id": "https://ai-security-agent.invalid/schemas/1.1.0/contracts.json",
+  "title": "AI Security Agent contracts v1.1",
+  "description": "Shared wire contracts. Authorization and state transitions are enforced by services.",
   "$defs": {
     "SchemaVersion": {
       "type": "string",
-      "const": "1.0.0"
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ]
     },
     "Hostname": {
       "type": "string",
@@ -132,8 +135,7 @@
       "additionalProperties": false,
       "properties": {
         "schemaVersion": {
-          "type": "string",
-          "const": "1.0.0"
+          "$ref": "#/$defs/SchemaVersion"
         },
         "id": {
           "type": "string",
@@ -192,7 +194,10 @@
       "additionalProperties": false,
       "properties": {
         "hostname": {
-          "$ref": "#/$defs/Hostname"
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "description": "A DNS hostname or HTTP(S) root URL. The service normalizes case, a trailing dot and IDNA, then checks the exact server allowlist."
         }
       },
       "required": [
@@ -260,8 +265,7 @@
       "additionalProperties": false,
       "properties": {
         "schemaVersion": {
-          "type": "string",
-          "const": "1.0.0"
+          "$ref": "#/$defs/SchemaVersion"
         },
         "id": {
           "type": "string",
@@ -321,6 +325,11 @@
             "$ref": "#/$defs/SourceState"
           },
           "minItems": 1
+        },
+        "executionMode": {
+          "type": "string",
+          "const": "orchestration_test",
+          "description": "Explicitly labels a queue/storage exercise whose security sources remain unmeasured."
         }
       },
       "required": [
@@ -725,8 +734,7 @@
       "additionalProperties": false,
       "properties": {
         "schemaVersion": {
-          "type": "string",
-          "const": "1.0.0"
+          "$ref": "#/$defs/SchemaVersion"
         },
         "id": {
           "type": "string",
@@ -922,8 +930,7 @@
       "additionalProperties": false,
       "properties": {
         "schemaVersion": {
-          "type": "string",
-          "const": "1.0.0"
+          "$ref": "#/$defs/SchemaVersion"
         },
         "ruleId": {
           "$ref": "#/$defs/RuleId"
@@ -1118,8 +1125,7 @@
       "additionalProperties": false,
       "properties": {
         "schemaVersion": {
-          "type": "string",
-          "const": "1.0.0"
+          "$ref": "#/$defs/SchemaVersion"
         },
         "id": {
           "type": "string",
@@ -1216,8 +1222,7 @@
       "additionalProperties": false,
       "properties": {
         "schemaVersion": {
-          "type": "string",
-          "const": "1.0.0"
+          "$ref": "#/$defs/SchemaVersion"
         },
         "id": {
           "type": "string",
@@ -1381,8 +1386,7 @@
       "additionalProperties": false,
       "properties": {
         "schemaVersion": {
-          "type": "string",
-          "const": "1.0.0"
+          "$ref": "#/$defs/SchemaVersion"
         },
         "id": {
           "type": "string",
@@ -1692,7 +1696,8 @@
                 "conflict",
                 "rate_limited",
                 "internal_error",
-                "not_implemented"
+                "not_implemented",
+                "service_unavailable"
               ]
             },
             "message": {
@@ -1796,7 +1801,10 @@
         },
         "mode": {
           "type": "string",
-          "const": "bootstrap"
+          "enum": [
+            "bootstrap",
+            "orchestration_test"
+          ]
         },
         "capabilities": {
           "type": "object",
@@ -1813,6 +1821,9 @@
             },
             "inference": {
               "type": "boolean"
+            },
+            "scanRequests": {
+              "type": "boolean"
             }
           },
           "required": []
@@ -1828,6 +1839,38 @@
         "stage",
         "mode",
         "capabilities"
+      ]
+    },
+    "Readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "ready",
+            "degraded"
+          ]
+        },
+        "dependencies": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mongo": {
+              "type": "boolean"
+            },
+            "redis": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "mongo",
+            "redis"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "dependencies"
       ]
     }
   }

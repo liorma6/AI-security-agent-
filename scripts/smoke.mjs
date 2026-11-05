@@ -28,9 +28,14 @@ try {
       const data = await response.json();
       assert.equal(data.service, service);
       assert.equal(data.status, 'ok');
-      assert.equal(data.stage, 1);
-      assert.equal(data.mode, 'bootstrap');
-      assert.ok(Object.values(data.capabilities).every((enabled) => enabled === false));
+      const orchestration = service !== 'ml' && data.mode === 'orchestration_test';
+      assert.equal(data.stage, orchestration ? 3 : 1);
+      assert.equal(data.mode, orchestration ? 'orchestration_test' : 'bootstrap');
+      assert.equal(data.capabilities.scanning ?? data.capabilities.inference, false);
+      if (orchestration) {
+        const readiness = await waitFor('http://127.0.0.1:' + ports[service] + '/ready');
+        assert.equal((await readiness.json()).status, 'ready');
+      }
       process.stdout.write('PASS ' + service + ' health and honest capabilities\n');
     }
     const html = await (await waitFor('http://127.0.0.1:' + ports.web)).text();

@@ -35,10 +35,8 @@
   },
   {
     "name": "A URL is not a normalized hostname",
-    "schema": "CreateAssetRequest",
-    "value": {
-      "hostname": "https://example.com/"
-    }
+    "schema": "Hostname",
+    "value": "https://example.com/"
   },
   {
     "name": "Clients cannot self-authorize",
