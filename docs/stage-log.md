@@ -28,4 +28,6 @@ Completed November 4, 2026 on `stage/02-contracts-and-lab`, based on stage 1 com
 
 Published a practical README for the software in this branch, translated the specification and supporting records, and updated the page language, layout direction and browser assertions. The working agreement requires English for project files and visible interface text. The next functional stage is 3, assets, scans, storage and queue.
 
+The English revision passed both the code/browser job and the six-service Docker Compose job. A repository-wide check covered 71 tracked files, internal documentation links and Markdown tables. [Verified commit](https://github.com/liorma6/AI-security-agent-/commit/c15981ad5e75f7270e1bdd268e345f92e380b5ec) and [CI run](https://github.com/liorma6/AI-security-agent-/actions/runs/41949219698).
+
 For the next stage, record the date and branch, implemented requirements, actual checks, verified commit and CI run, open dependencies and next stage.
