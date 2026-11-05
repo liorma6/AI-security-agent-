@@ -19,4 +19,6 @@ Completed November 4, 2026 on `stage/01-bootstrap`. Delivered the React interfac
 
 Published a practical README for the software in this branch, translated the specification and supporting records, and updated the page language, layout direction and browser assertions. The working agreement requires English for project files and visible interface text. The next functional stage is 2, contracts and the TLS laboratory.
 
+The English revision passed both the code/browser job and the six-service Docker Compose job. A repository-wide check covered 51 tracked files, internal documentation links and Markdown tables. [Verified commit](https://github.com/liorma6/AI-security-agent-/commit/276e1d125b9c21295eaf48cd5760539c1651fc99) and [CI run](https://github.com/liorma6/AI-security-agent-/actions/runs/41949219958).
+
 For the next stage, record the date and branch, implemented requirements, actual checks, verified commit and CI run, open dependencies and next stage.
