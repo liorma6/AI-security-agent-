@@ -1,44 +1,38 @@
-# כללי TLS ומדיניות הבדיקה
+# TLS and HTTPS assessment policy
 
-גרסת מדיניות 1.0.0. זהו מפרט למנוע שימומש בשלב 5. המעבדה מוכיחה את תכונות תרחישי הבדיקה; היא עדיין אינה מנוע שמעריך אתרי משתמשים.
+Policy version 1.0.0 defines the rule engine planned for stage 5. Each rule below links to known-good and known-bad fixture IDs in the lab. The severities are project policy ratings. The machine-readable definitions and thresholds live in the [rule catalog](../packages/contracts/policy/rules.json).
 
-מקור האמת שניתן לקריאה בקוד הוא [rules.json](../packages/contracts/policy/rules.json). החומרות הן מדיניות ראשונית של הפרויקט ולא ציון CVSS.
-
-| כלל | תנאי כשל | חומרה | תרחיש תקין | תרחיש כשל |
+| Rule | Failure condition | Severity | Passing fixtures | Failing fixtures |
 | --- | --- | --- | --- | --- |
-| TLS-EXPIRED | notAfter קטן או שווה לזמן המדידה | high | valid | expired |
-| TLS-NOT-YET-VALID | notBefore מאוחר מזמן המדידה | high | valid | future |
-| TLS-EXPIRING | תעודה תקפה עם 30 ימים או פחות עד הפקיעה | low | valid | expiring |
-| TLS-HOSTNAME | SAN אינו תואם ל־hostname המבוקש עם SNI נכון | high | valid, sni | wrong-host |
-| TLS-TRUST | אימות השרשרת נכשל מול פרופיל האמון שנבחר | high | chain-complete, private-approved | chain-missing, private-untrusted |
-| TLS-KEY-STRENGTH | RSA קטן מ־2048 או EC קטן מ־256 ביטים | high | valid, ec | weak-key, בבדיקה לא מקוונת |
-| TLS-SIGNATURE | חתימה עם MD5 או SHA-1 | high | valid | sha1, בבדיקה לא מקוונת |
-| TLS-LEGACY-PROTOCOL | השרת מקבל TLS 1.0 או 1.1 | high | modern-protocol | legacy-protocol |
-| HTTPS-REDIRECT | דף השורש ב־HTTP אינו מפנה ל־HTTPS מורשה | medium | redirect | no-redirect |
-| HTTPS-HSTS | HTTPS מאומת ללא max-age תקין וחיובי | low | valid | hsts-missing, hsts-invalid, hsts-disabled |
+| TLS-EXPIRED | Certificate expiry is at or before measurement time. | High | valid | expired |
+| TLS-NOT-YET-VALID | Validity begins after measurement time. | High | valid | future |
+| TLS-EXPIRING | A currently valid certificate expires within 30 days. | Low | valid | expiring |
+| TLS-HOSTNAME | SAN fails to match the requested hostname with the correct SNI. | High | valid, sni | wrong-host |
+| TLS-TRUST | Chain verification fails against the selected trust profile. | High | valid, chain-complete, private-approved | chain-missing, private-untrusted |
+| TLS-KEY-STRENGTH | RSA is below 2048 bits or EC below 256 bits. | High | valid, ec | weak-key (offline) |
+| TLS-SIGNATURE | Certificate signature uses MD5 or SHA-1. | High | valid | sha1 (offline) |
+| TLS-LEGACY-PROTOCOL | Endpoint accepts TLS 1.0 or 1.1. | High | modern-protocol | legacy-protocol |
+| HTTPS-REDIRECT | HTTP root responds without a valid redirect to an authorized HTTPS endpoint. | Medium | redirect | no-redirect |
+| HTTPS-HSTS | Authenticated HTTPS root response lacks a valid positive HSTS max-age. | Low | valid | hsts-missing, hsts-invalid, hsts-disabled |
 
-RSA ו־EC עומדים בסף אם גודל המפתח לפחות הסף המוגדר; Ed25519 מוכר מתקבל. סוג מפתח או חתימה שלא זוהו יחזירו unknown, ולא הנחה שהם חלשים. SHA-256, SHA-384 ו־SHA-512 הם אלגוריתמי חתימה מותרים במדיניות הראשונית. [המלצות TLS ב־RFC 9325](https://www.rfc-editor.org/rfc/rfc9325.html).
+The policy accepts RSA and EC keys at or above the size threshold and recognized Ed25519 keys. Permitted signatures include SHA-256, SHA-384, SHA-512 and Ed25519. An unrecognized algorithm yields unknown. [TLS recommendations, RFC 9325](https://www.rfc-editor.org/rfc/rfc9325.html).
 
-## תוצאות והפרדת שגיאות
+## Interpreting results
 
-RuleResult מחזיר pass, fail, unknown או not_applicable. רק fail יכול להפוך ל־Finding, והוא דורש ראיות, חומרה והמלצת תיקון. timeout, כשל DNS או כשל ספק הם תוצאות איסוף לא מוכרעות.
+A RuleResult is pass, fail, unknown or not_applicable. Only a fail can create a Finding, which requires evidence, severity and remediation. Return unknown for a timeout, DNS failure, unavailable provider or evidence that cannot support the decision. Give an explicit reason for not_applicable. For example, the near-expiry reminder is inapplicable to a certificate that has already expired.
 
-not_applicable דורש סיבה מפורשת במדיניות; למשל התרעת פקיעה קרובה אינה חלה על תעודה שכבר פגה. אין להסיק שהכלל אינו רלוונטי רק מכך שהאתר לא ענה.
+A single negotiated protocol describes one connection. To pass the legacy-protocol check, confirm a working modern connection and explicit protocol-version rejections for both legacy versions, or obtain complete, reliable enumeration from a provider. A timeout during a legacy probe leaves support inconclusive. [TLS 1.0 and 1.1 deprecation, RFC 8996](https://www.rfc-editor.org/rfc/rfc8996.html).
 
-כדי להכריז שאין TLS מיושן, דרושות בדיקות מפורשות של הגרסאות הישנות עם דחיית protocol-version לצד חיבור מודרני תקין, או מידע מלא ואמין מספק. פרוטוקול שנבחר בחיבור בודד אינו רשימת כל הגרסאות הנתמכות. [ביטול TLS 1.0 ו־1.1 ב־RFC 8996](https://www.rfc-editor.org/rfc/rfc8996.html).
+Read HSTS from an authenticated HTTPS response. A max-age of zero disables HSTS. This rule evaluates the root response. Preload enrollment and a site-wide audit are separate assessments. [HTTP Strict Transport Security, RFC 6797](https://www.rfc-editor.org/rfc/rfc6797.html).
 
-בדיקת HSTS תתבסס על תגובת HTTPS שאומתה. max-age=0 מבטל HSTS; בדיקת הפרויקט אינה בדיקת preload או ביקורת מלאה של כל הנתיבים והדומיינים. [RFC 6797](https://www.rfc-editor.org/rfc/rfc6797.html).
+## Host identity and trust
 
-## SNI ופרופיל אמון
+Use the operator-approved normalized hostname for SNI and compare SAN against that name. Record the IP address separately. Evaluate hostname and chain independently. The public default will use an identified runtime trust store. Bind an explicitly approved private CA to its target's trust profile. The lab demonstrates acceptance and rejection of the same certificate under different trust profiles.
 
-המפעיל בוחר hostname מנורמל. החיבור משתמש ב־SNI של אותו hostname, ובדיקת הזהות נעשית מול SAN ולא מול כתובת ה־IP שאליה התחברנו. אימות שם ושרשרת הם בדיקות נפרדות; כשל בשרשרת אינו סיבה לדלג על בירור התאמת השם.
+## Allowed destinations
 
-ברירת המחדל העתידית היא מאגר האמון של runtime עם גרסה מתועדת. CA פרטי מאושר נכנס לפרופיל ייעודי של היעד, ולא למאגר האמון הגלובלי. המעבדה מדגימה אותה תעודה שנדחית בפרופיל אחד ומתקבלת בפרופיל המאושר.
+The public path is limited to server-authorized targets, HTTP/HTTPS, and ports 80 and 443. The Endpoint schema also represents ephemeral lab ports. Runtime authorization is a separate check.
 
-## מדיניות כתובות
+Stages 3 and 4 will validate every A and AAAA result, including IPv4-mapped IPv6, and block loopback, private, link-local, special and other non-public addresses. Pin the connection to the checked address, preserve Host and SNI, and revalidate every redirect within a bounded hop count.
 
-במסלול הציבורי יתקבלו רק יעדים שנמצאים ברשימת השרת, בפרוטוקולים HTTP/HTTPS ובפורטים 80 ו־443. סכמת Endpoint מאפשרת גם פורטים אחרים לצורך המעבדה; אישור סכמטי אינו אישור לסרוק.
-
-בשלב 3–4 נאמת את כל תוצאות A ו־AAAA, כולל כתובות מיוחדות, IPv4 ממופה ב־IPv6, loopback, private, link-local ורשתות שאינן ציבוריות. החיבור יוצמד לכתובת שנבדקה, עם SNI ו־Host מקוריים. כל redirect ייבדק מחדש ויוגבל במספר צעדים.
-
-מסלול המעבדה מאפשר רק מאזינים שנוצרו באותו תהליך על 127.0.0.1 ובפורטים הדינמיים שהמעבדה הקצתה. הוא אינו דגל שמאפשר לכל משתמש לפנות לכתובות פרטיות. הסורק הציבורי והגנות הרשת עדיין אינם ממומשים בשלב 2.
+The fixture harness uses listeners created by the current run on 127.0.0.1 and their allocated ports. The lab is isolated from the public scan path. The [fixture guide](../tests/fixtures/tls/README.md) describes live, offline and synthetic evidence.

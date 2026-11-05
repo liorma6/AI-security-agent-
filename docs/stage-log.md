@@ -1,90 +1,31 @@
-# יומן שלבי הפרויקט
+# Stage and verification log
 
-בכל שלב מעדכנים גם את [מסמך האפיון](specification.md). יומן זה שומר את הביצוע, הבדיקות והתלויות, כדי לאפשר המשך עבודה בלי לשחזר את השיחה.
+This log records the code, checks and dependencies for each stage. The [specification](specification.md) tracks requirements and acceptance criteria.
 
-## שלב 0
+## Stage 0 — Proposal
 
-תאריך: 4 בנובמבר 2026. מצב: הושלם.
+Completed November 4, 2026. Selected authorized website and TLS assessment, documented the architecture and defined the stages and ML evaluation criteria. The proposal moved to the [implementation plan](implementation-plan.md) in stage 1. [Planning commit](https://github.com/liorma6/AI-security-agent-/commit/784f1adcff4a87df5e3027da5fdd3e5e9c2dd56d).
 
-נוצרו הצעת הפרויקט, מיקוד אתר ו־TLS, ארכיטקטורת יעד ותוכנית שלבים. המסמך המקורי הועבר בשלב 1 ל־implementation-plan.md.
+## Stage 1 — Service bootstrap
 
-קומיט: [784f1ad](https://github.com/liorma6/AI-security-agent-/commit/784f1adcff4a87df5e3027da5fdd3e5e9c2dd56d).
+Completed November 4, 2026 on `stage/01-bootstrap`. Delivered the React interface, two Node.js services, Python service, locked environments, local launcher, Compose stack, browser checks and CI. Established the living specification and its update policy. [Implementation commit](https://github.com/liorma6/AI-security-agent-/commit/1d43bee47d045729698ce8471caec60ca2fa602d).
 
-## שלב 1
+- Windows checks used Node.js 24.22.2, Python 3.13.16 and uv 0.13.1. ESLint, Ruff, four Node.js tests, two Python tests, the React build and the four-process smoke test passed. Both browser checks passed, including the unavailable-API case at mobile width. Desktop and mobile screenshots were inspected.
+- Google DNS returned status 0 and SSL Labs info returned engine version 2.4.3. Assessment access and registration remain dependencies for stage 6.
+- The production npm audit reported zero findings at the time. The development lint chain reported five moderate advisories involving minimatch. The lint tooling only consumes the repository configuration and is excluded from the final backend and web runtime images.
+- The first CI run passed code and browser checks but failed MongoDB startup on the container runner kernel. Moving the container check to Ubuntu 22.04 resolved the compatibility issue. All six Compose services became healthy, and the service endpoints, static UI and same-origin proxy passed. Docker verification ran in CI. [Verified code](https://github.com/liorma6/AI-security-agent-/commit/9a82716e9d2fbd5c1ef98e60636483b1d7811a0b) and [stage 1 CI run](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558).
 
-תאריך: 4 בנובמבר 2026. ענף: stage/01-bootstrap. מצב: הושלם; הבדיקות המקומיות, CI ו־Compose עברו.
+## Stage 2 — Contracts and TLS laboratory
 
-תוצרים: שלד Node.js ו־React, שירות Python, הרצה מקומית, Docker Compose, קובצי נעילה, דף פתיחה, בדיקות ו־CI. נוצר מסמך אפיון המתעדכן בכל שלב, והוספה הנחיית עבודה ב־AGENTS.md.
+Completed November 4, 2026 on `stage/02-contracts-and-lab`, based on stage 1 commit `bdacf0b`. Delivered shared contracts v1.0.0, the API description, ten rule definitions, the certificate generator, 18 loopback listeners, network and trust policies, and labeling guidance. FR14 and FR15 are implemented. Collection by the product, live provider assessment and ML training have separate acceptance gates. [Verified implementation](https://github.com/liorma6/AI-security-agent-/commit/92901314f13836613215946220dbb45b4779f1b6).
 
-בדיקות זמינות שבוצעו: Google DNS החזיר Status=0; SSL Labs /info החזיר engineVersion=2.4.3. לא הופעלה סריקה ולא בוצע רישום. גישת assessment היא תלות פתוחה של שלב 6.
+- The contract suites validated 17 accepted and 21 rejected examples in both languages. Review identified a missing optional Python date-time checker. The corrected environment installs format checkers and verifies rejection of an impossible date, malformed UUID and invalid IP. [jsonschema validation](https://python-jsonschema.readthedocs.io/en/stable/validate/).
+- The suite passed 50 Node.js tests, 41 Python tests and 12 lab subtests (13 test results including their parent). The lab covered SNI, trust profiles, certificate validity, chains, legacy protocols, redirect, HSTS and timeout. Tests inspected weak RSA and SHA-1 offline and marked provider failures as synthetic.
+- ESLint, Ruff, OpenAPI lint, React build, four-process smoke and two browser tests passed. The production npm audit reported zero findings at the time.
+- Both CI jobs passed. The Linux lab used OpenSSL 3.0.13 and the Windows lab used 3.2.4. Compose reported all six services healthy and passed all endpoint and web proxy checks. [stage 2 CI run](https://github.com/liorma6/AI-security-agent-/actions/runs/41897401889).
 
-הסביבה המקומית: Windows, Node.js 24.22.2, Python 3.13.16, uv 0.13.1. OpenSSL זמין דרך Git for Windows. Docker אינו מותקן מקומית; אימות Compose בוצע בהצלחה ב־CI.
+## November 5, 2026 — English documentation and interface
 
-בדיקות מקומיות שעברו:
+Published a practical README for the software in this branch, translated the specification and supporting records, and updated the page language, layout direction and browser assertions. The working agreement requires English for project files and visible interface text. The next functional stage is 3, assets, scans, storage and queue.
 
-- ESLint ו־Ruff.
-- 4 בדיקות Node.js ו־2 בדיקות Python.
-- build של React.
-- smoke שמפעיל ארבעה תהליכים, בודק health ואת proxy ה־API ומסיים אותם.
-- 2 בדיקות דפדפן: חיבור אמיתי לשרת ומצב כשל במסך נייד.
-- בדיקה חזותית של צילומי המסך במחשב ובנייד.
-- בדיקת npm audit לתלויות ריצה: ללא ממצאים בעת הבדיקה.
-
-בכלי הפיתוח קיימות 5 התרעות moderate שמקורן ב־minimatch העקיף של ESLint. הקלט לכלי מגיע מהגדרות המאגר, ולא מיעדי הסריקה. לא בוצע downgrade לגרסת ESLint לא נתמכת או override של major רק כדי להעלים התרעה. יש לעקוב אחר תיקון תואם upstream; הכלי אינו נכלל ב־image הריצה של ה־backend או בשרת nginx הסופי.
-
-בריצת CI הראשונה בדיקות הקוד והדפדפן עברו על Ubuntu 24.04. MongoDB עצר עקב אי־תאימות ל־kernel של runner הקונטיינרים; בדיקת Compose הועברה ל־Ubuntu 22.04 עם kernel מסדרת 6.8. ההרצה המתוקנת עברה בשני המסלולים: Code and browser checks וגם Docker Compose smoke. Compose הפעיל ארבעה רכיבי יישום, MongoDB ו־Redis; בדיקות health וה־proxy עברו.
-
-- קומיט המימוש: [1d43bee](https://github.com/liorma6/AI-security-agent-/commit/1d43bee47d045729698ce8471caec60ca2fa602d).
-- קוד שנבדק ב־CI לאחר תיקון הסביבה: [9a82716](https://github.com/liorma6/AI-security-agent-/commit/9a82716e9d2fbd5c1ef98e60636483b1d7811a0b).
-- [ריצת CI מוצלחת](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558).
-
-לאחר ההרצה עודכנו רק מסמכי המצב והתוצאות. חיבור assessment ל־SSL Labs נשאר תלות של שלב 6. השלב הבא: שלב 2, חוזים ומעבדת TLS.
-
-## שלב 2
-
-תאריך: 4 בנובמבר 2026. ענף: stage/02-contracts-and-lab, מבוסס על סיום שלב 1 ב־bdacf0b. מצב: הושלם; הבדיקות המקומיות ושני מסלולי CI עברו.
-
-לבקשת המשתמש נבדקה מחדש ריצת CI של שלב 1: [41848432558](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558). שני המסלולים סיימו בהצלחה, כולל ששת שירותי Compose. הריצה הראשונה נכשלה בתאימות MongoDB ל־kernel; התיקון והריצה החוזרת מתועדים למעלה. קומיט סיום שלב 1 שינה תיעוד בלבד.
-
-תוצרי שלב 2:
-
-- חבילת contracts בגרסה 1.0.0: סכמות JSON Schema, מאמת Node.js, ‏17 דוגמאות תקינות ו־21 שגויות הנבדקות גם ב־Python, ו־OpenAPI המבחין בין health הקיים לנתיבים העתידיים.
-- עשרה כללי TLS/HTTPS עם חומרות, תנאי הכרעה ומיפוי לתרחישים תקינים ופגומים. המדיניות עדיין אינה מנוע ביצוע.
-- מחולל תעודות Python ומעבדה עם 18 מאזיני loopback. תעודות נוצרות ביחס למועד ההרצה; מפתחות ו־CA חד־פעמיים נשארים מחוץ ל־Git ול־images.
-- בדיקות חיות של תוקף, SNI, שם מארח, שרשרת, אמון פרטי, פרוטוקולים, HTTP/HSTS ו־timeout. מפתח חלש ו־SHA-1 נבדקים בקבצים. כשלי DNS וספק מסומנים synthetic.
-- מדיניות SNI, מאגר אמון וכתובות מותרות, מדריך תיוג, אפיון גרסה 0.2 והרחבת CI.
-
-דרישות FR14 ו־FR15 קיבלו מימוש. FR03–FR13 נשארות מתוכננות בהתאם לשלביהן. דף הפתיחה ו־health מציינים עדיין את יכולות שלד שלב 1; לא נוספה יכולת סריקת אתרים למוצר.
-
-בדיקות מקומיות שעברו על Windows עם Node.js 24.22.2, ‏Python 3.13.16 ו־OpenSSL 3.2.4:
-
-- ESLint ו־Ruff.
-- 50 בדיקות Node.js ו־41 בדיקות Python, ללא כשלים או דילוגים.
-- אימות OpenAPI 3.1.2 באמצעות Redocly.
-- 12 תתי־בדיקה של מעבדת TLS (13 תוצאות כולל בדיקת האב), ללא כשלים או דילוגים.
-- build של React, smoke של ארבעת רכיבי היישום ושתי בדיקות דפדפן.
-- npm audit --omit=dev: ללא ממצאים בתלויות הריצה בעת הבדיקה.
-
-בביקורת נמצאה תלות אופציונלית חסרה לאימות פורמט date-time ב־Python. נוספה קבוצת format-nongpl של jsonschema, נעילת התלויות עודכנה ונוספו בדיקות לדחיית תאריך לא אפשרי, UUID שגוי וכתובת IP שגויה. בדיקה נוספת מבטיחה שלכל format בסכמה מותקן בודק, כדי למנוע דילוג שקט בעתיד. כל הבדיקות עברו שוב לאחר התיקון. [התנהגות הפורמטים בספריית jsonschema](https://python-jsonschema.readthedocs.io/en/stable/validate/).
-
-אימות מרוחק הושלם בהצלחה:
-
-- קומיט המימוש שנבדק: [9290131](https://github.com/liorma6/AI-security-agent-/commit/92901314f13836613215946220dbb45b4779f1b6).
-- [ריצת CI של שלב 2](https://github.com/liorma6/AI-security-agent-/actions/runs/41897401889): שני המסלולים הסתיימו ב־success.
-- Code and browser checks: התקנה מקובצי נעילה, lint, חוזים, OpenAPI, מעבדה, Python, build, smoke ודפדפן. סביבת Linux השתמשה ב־OpenSSL 3.0.13.
-- Docker Compose smoke: ששת השירותים דיווחו Healthy; בדיקות API, scanner, ML ותוכן web עם העברה ל־API עברו. Docker אינו מותקן מקומית, ולכן אימות זה בוצע ב־CI.
-
-לאחר הריצה עודכנו רק מסמכי המצב והראיות. לא בוצעה סריקה של אתר חיצוני.
-
-מגבלות: חוזים אינם אוכפים לבדם הרשאת יעד, DNS, מעברי מצב או תקינות הפניות בין רשומות. נתיבי API עסקיים, איסוף במוצר ומנוע הכללים ייבנו בשלבים 3–5. רישום SSL Labs נשאר תלות של שלב 6. המעבדה אינה dataset לאימון ואינה הוכחה ליכולת ML.
-
-השלב הבא: שלב 3 — יעדים, סריקות, אחסון ותור. הוא יתחיל בבקשה נפרדת של המשתמש.
-
-## תבנית לשלב הבא
-
-- תאריך, ענף ומצב.
-- מה השתנה במערכת ובאפיון.
-- דרישות שקיבלו מימוש.
-- בדיקות שהורצו ותוצאות בפועל.
-- קישור לקומיט ולבדיקות CI.
-- תלויות פתוחות והשלב הבא.
+For the next stage, record the date and branch, implemented requirements, actual checks, verified commit and CI run, open dependencies and next stage.

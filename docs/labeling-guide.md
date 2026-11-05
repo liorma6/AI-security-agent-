@@ -1,40 +1,30 @@
-# מדריך תיוג ממצאים
+# Finding labeling guide
 
-גרסה 1.0.0, שלב 2. מדריך זה מגדיר את התהליך העתידי לאיסוף נתוני ML. דוגמאות החוזים ותרחישי המעבדה הם חומר בדיקה, לא dataset מתויג שנאסף מאתרים אמיתיים.
+Version 1.0.0. A label answers whether a particular finding was correct for its endpoint, observation time and policy. Record the hostname, endpoint, certificate fingerprint, rule and policy version, SNI and trust profile. Match evidence from different sources to the same target and time window.
 
-## יחידת התיוג
-
-מתייגים ממצא ביחס ל־hostname, endpoint, fingerprint של תעודה, זמן המדידה, כלל וגרסת מדיניות, ופרופיל אמון. לפני תיוג יש לבדוק שהמקורות מתייחסים לאותו יעד ולאותה תקופה.
-
-| תווית | מתי משתמשים בה | ראיות נדרשות |
+| Label | When to use it | Required evidence |
 | --- | --- | --- |
-| true_positive | הממצא נכון בזמן המדידה ובהקשר המדיניות | ראיה עצמאית שמאשרת את התקלה |
-| false_positive | הממצא שגוי עבור אותו יעד ואותו זמן | ראיה נגדית והסבר לטעות |
-| uncertain | חסר מידע או שקיימת סתירה שלא נפתרה | נימוק מה חסר ומה צריך לבדוק שוב |
+| true_positive | The finding was correct at measurement time under the selected policy. | Independent evidence confirming the issue. |
+| false_positive | The finding was wrong for that endpoint and time. | Counterevidence and an explanation of the error. |
+| uncertain | Evidence is incomplete or conflicting. | An explanation of what is missing and what would resolve it. |
 
-תעודה שבאמת פגה ואז הוחלפה היא true_positive עם מצב טיפול resolved. סיכון שהמפעיל החליט לקבל הוא accepted_risk, ותווית אמיתות הממצא נשארת נפרדת. כשל תקשורת אינו תעודה פגומה.
+## Review procedure
 
-## תהליך בדיקה
+1. Verify the hostname, endpoint identity, SNI, measurement time and trust profile.
+2. Read the original observation and the rule that generated the finding.
+3. Compare it with known lab configuration or an independent measurement with a recorded time.
+4. Record the label, rationale, reviewer and observation references. Definitive labels require at least one evidence reference.
+5. Preserve uncertain labels while reviewers resolve a disagreement.
 
-1. לאמת את זהות היעד, SNI, הזמן ופרופיל האמון.
-2. לקרוא את הראיה המקורית ואת הכלל שהפיק את הממצא.
-3. להשוות לתצורת מעבדה ידועה או למדידה עצמאית עם זמן מתועד.
-4. לרשום תווית, נימוק, זהות בודק ומזהי הראיות. תווית ודאית מחייבת לפחות ראיה אחת.
-5. במחלוקת לשמור uncertain עד לבירור, בלי לכפות תווית לצורך אימון.
+Record treatment and truth separately. A certificate that expired and was replaced has a true_positive historical finding with treatment state resolved. A consciously accepted risk retains its truth label and receives the accepted_risk treatment state. Later measurements can reveal an intervening certificate replacement. A provider grade and a model score are supporting inputs and need independent review.
 
-מדידה חדשה אינה מוכיחה שמדידה ישנה הייתה שגויה. שינוי תעודה בין המדידות יכול להסביר את ההבדל. דירוג של ספק או החלטת המודל אינם אמת מוחלטת ואינם תחליף לבדיקה.
+## Examples and data provenance
 
-## שימוש במעבדה
+- **Expired fixture.** The validity window ends before generation time. A matching expiry finding is true_positive.
+- **Private CA.** The operator authorized private-root.pem, but a measurement used root.pem. Verify which trust profile produced the finding. A failure assigned to the approved profile can be a false_positive.
+- **Stalled handshake.** The timeout fixture supplies no certificate. Record an inconclusive collection result and keep a definitive TLS label pending evidence.
+- **Certificate replaced since observation.** Retain the earlier true finding and record the repair against the subsequent observation.
 
-האמת במעבדה נגזרת מהגדרות השרת וממאפייני התעודה שנוצרה, ונבדקת באמצעות handshake, אימות שרשרת, בדיקת זהות ותגובות HTTP. תרחישי DNS וספק שאינו זמין הם הדמיות המסומנות synthetic. מפתח חלש וחתימת SHA-1 נבדקים בקבצים, ולא מוצגים כאילו בוצע חיבור חי אליהם.
+Lab ground truth comes from server configuration, generated certificate properties, handshakes, identity and chain checks, and HTTP responses. DNS/provider failure examples are synthetic. Weak RSA keys and SHA-1 signatures are checked offline. The contract examples are test material. The feedback UI, labeled dataset and model experiment are scheduled for stages 7, 8 and 9 respectively.
 
-תרחישים שמקורם באותה משפחת תצורה או אותו אתר יישארו באותה קבוצת חלוקה לאימון או לבדיקה. היצירה מחדש של תעודות אינה הופכת וריאציות של אותו תרחיש לדוגמאות בלתי תלויות.
-
-## דוגמאות
-
-- expired מול זמן ההפקה של המעבדה: ממצא פקיעה יהיה true_positive.
-- private עם root.pem בלבד, כאשר היעד אושר מראש דווקא ל־private-root.pem: יש לבדוק את פרופיל המדידה; שימוש בפרופיל השגוי יכול ליצור false_positive. CA פרטי כשלעצמו אינו שגיאה.
-- timeout ללא תעודה: unknown בשלב האיסוף; אין תווית ודאית של חולשת TLS.
-- תעודה שפגה אתמול והוחלפה היום: ממצא ישן נפתר, ולא הופך ל־false_positive.
-
-ממשק התיוג ייבנה בשלב 7, dataset בשלב 8 וניסוי המודל בשלב 9.
+Keep sites and related fixture families in one partition. Regenerating a certificate for the same scenario does not create an independent sample. Publish results separately for laboratory and real-site observations.

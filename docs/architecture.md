@@ -1,54 +1,39 @@
-# ארכיטקטורת המערכת
+# Service architecture
 
-שלב 1 הקים תהליכים נפרדים ודרך הרצה משותפת. שלב 2 מוסיף חוזים ומעבדת TLS נפרדת. היכולות העסקיות עדיין אינן ממומשות.
-
-## זרימה פעילה בשלב 1
+## Running application
 
 ```mermaid
 flowchart LR
-    B[Browser] --> W[React web]
-    W -->|GET /api/health| A[Express API]
-    S[Node scanner liveness]
-    P[Python ML liveness]
-    M[(MongoDB infrastructure)]
-    R[(Redis infrastructure)]
+    Browser --> Web[React interface]
+    Web -->|GET /api/health| API[Express API]
+    Scanner[Node.js scanner process]
+    ML[Python ML service]
+    Mongo[(MongoDB)]
+    Redis[(Redis)]
 ```
 
-הדפדפן פונה לאותו origin של web. Vite בהרצה המקומית ו־nginx בקונטיינר מעבירים בקשות /api לשרת Express. אין צורך ב־CORS פתוח או בכתובת backend שנצרבת בקוד הדפדפן.
+The browser loads the React page and requests health information from its own origin. Vite forwards the request in development. The production web image serves the static build with nginx and proxies the same path. The scanner and ML service expose separate health endpoints. Compose starts MongoDB and Redis and checks each with its native client.
 
-scanner ו־ML הם תהליכים עצמאיים עם health. MongoDB ו־Redis קיימים ב־Compose ומבצעים בדיקות health משלהם, אך עדיין אינם משמשים לשמירת סריקות או לתור.
-
-## פורטים
-
-| רכיב | פורט ברירת מחדל במחשב | חשיפה |
+| Component | Default host port | Exposure |
 | --- | --- | --- |
-| web | 5173 | loopback בלבד |
-| api | 3001 | loopback בלבד |
-| scanner | 3002 | loopback בלבד |
-| ml | 8000 | loopback בלבד |
-| MongoDB | אין | רשת Compose בלבד |
-| Redis | אין | רשת Compose בלבד |
+| Web | 5173 | Loopback |
+| API | 3001 | Loopback |
+| Scanner | 3002 | Loopback |
+| ML | 8000 | Loopback |
+| MongoDB and Redis | Internal only | Compose network |
 
-אפשר לשנות את ארבעת הפורטים דרך .env. בתוך קונטיינרים פורטי היישום קבועים; Compose ממפה אותם לפורטים המקומיים שנבחרו. npm run dev מפעיל ארבעה תהליכים ישירים ומסיים אותם יחד ביציאה.
+The Compose application containers run as non-root users with read-only root filesystems and temporary storage where needed. Separate named volumes hold database and queue data. Set application host ports in `.env`. The source launcher starts four local processes and stops them together. See the [operating instructions](../README.md).
 
-## גבולות health
+## Health semantics
 
-status=ok פירושו שהתהליך מקבל בקשות. capabilities מכיל false עבור יכולות עתידיות. היעדר מודל אינו תקלה בשלב 1, ולכן ML חי אך modelLoaded=false. החל משלב 3 נגדיר readiness של התלויות והפעולות העסקיות בנפרד מ־liveness.
+`status: "ok"` means a process accepts a health request. Each backend reports bootstrap mode and its capability flags. The API reports scanning and persistence as disabled. The scanner reports queue consumption as disabled. The ML service reports inference as disabled and `modelLoaded: false`. Readiness for business operations belongs to the implementation of those operations.
 
-## הרצה ונתונים
+## Contracts and test laboratory
 
-הקונטיינרים של היישום רצים כמשתמש שאינו root. מערכות הקבצים שלהם מוגדרות לקריאה בלבד; nginx משתמש ב־tmpfs לנתונים זמניים. MongoDB ו־Redis משתמשים ב־volumes עמידים.
+The [contracts package](../packages/contracts/README.md) holds JSON Schema, OpenAPI, valid and invalid examples and a versioned rule catalog. JavaScript and Python validate the same examples against the same schema. OpenAPI declares the implementation stage and status of each operation.
 
-הרצה מקומית ללא Docker מספיקה לשלב 1 כי אין עדיין תלות עסקית במסד או בתור. בשלבים הבאים הרצה מלאה תצריך תשתיות אלה. אין להסיק מתנאי ההרצה הנוכחיים שכבר נבדקה התמדה עסקית.
+The Python generator creates disposable CAs and certificates relative to each run. A separate Node.js lab hosts HTTP, HTTPS and TCP listeners on ephemeral loopback ports. Its tests exercise real handshakes and HTTP responses. Weak RSA and SHA-1 certificates are inspected as files. DNS and provider failures use labeled synthetic examples. The lab CA is supplied per connection. Generated credentials are excluded from Git and Docker builds. [Fixture guide](../tests/fixtures/tls/README.md).
 
-## חוזים ומעבדה בשלב 2
+## Planned scan flow
 
-packages/contracts מחזיק JSON Schema משותף, OpenAPI, דוגמאות וקטלוג כללים עם גרסה. JavaScript ו־Python בודקים את אותן דוגמאות מול אותה סכמת מקור. זו הפרדת חוזה מהטכנולוגיה שמממשת אותו, ולא API עסקי שכבר זמין.
-
-מחולל Python יוצר CA ותעודות חדשות ביחס לזמן הנוכחי. שרת המעבדה ב־Node.js מפעיל HTTPS, HTTP ו־TCP על loopback בפורטים דינמיים. הבדיקות מאמתות את תכונות התרחישים בחיבורים אמיתיים; קבצי RSA חלש ו־SHA-1 נבדקים ללא שרת. כשלי DNS וספק מיוצגים בדוגמאות synthetic נפרדות.
-
-המעבדה אינה מחוברת לנתיבי היישום או לתור. המפתחות וה־CA אינם מותקנים במערכת ההפעלה ואינם מועתקים ל־images. health והמסך עדיין מצהירים על יכולות שלד שלב 1. [פרטי המדיניות](rules-and-policy.md) ו־[הוראות המעבדה](../tests/fixtures/tls/README.md).
-
-## ארכיטקטורת היעד
-
-בהמשך API ישמור בקשות ויפרסם לתור, scanner יאסוף ראיות ויחשב ממצאים, ושירות Python יחזיר ציון ממודל מתועד. תרשים היעד וגבולות האחריות המלאים נמצאים ב־[תוכנית הביצוע](implementation-plan.md).
+Express will authorize a target, persist an accepted request in MongoDB and dispatch through BullMQ on Redis. The scanner will consume jobs, collect TLS, HTTP, DNS and provider evidence, evaluate the rule policy and store results. Versioned ML predictions will supplement those results. The API will serve progress, evidence and feedback to React. See the [specification](specification.md) and [implementation plan](implementation-plan.md).
