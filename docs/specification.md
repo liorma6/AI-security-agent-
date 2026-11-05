@@ -41,8 +41,8 @@ The development launcher runs the four application processes. Compose also runs 
 | --- | --- | --- |
 | FR01 | Start the four application components, load React and read each backend's health response. | Verified in stage 1 |
 | FR02 | When the API is unreachable, show a visible failure state on desktop or mobile. | Verified in stage 1 |
-| FR03 | Normalize a submitted hostname and authorize it against server policy. | Implemented in stage 3, integration verification in progress |
-| FR04 | Return HTTP 202 with a scan ID, persist the request and recover from duplicate jobs or a failed dispatch. | Implemented in stage 3, integration verification in progress |
+| FR03 | Normalize a submitted hostname and authorize it against server policy. | Verified in stage 3 |
+| FR04 | Return HTTP 202 with a scan ID, persist the request and recover from duplicate jobs or a failed dispatch. | Verified in stage 3 |
 | FR05 | Collect TLS and HTTP observations that match known lab configurations. | Planned, stage 4 |
 | FR06 | Return pass, fail, unknown or not_applicable with evidence, policy version and severity where applicable. | Planned, stage 5 |
 | FR07 | Integrate Google Public DNS and SSL Labs and verify each with an authorized live target. | Availability probed in stage 1. Integration planned for stage 6 |
@@ -115,7 +115,7 @@ Delivery includes this specification, a GitHub repository, a reproducible ML exp
 | November 4, 2026 | Stage 0 defined scope, proposal and implementation plan. | [Planning commit](https://github.com/liorma6/AI-security-agent-/commit/784f1adcff4a87df5e3027da5fdd3e5e9c2dd56d) |
 | November 4, 2026 | Stage 1 delivered four application components, health endpoints, Compose, build, smoke and browser checks. | Four Node.js tests, two Python tests, two browser tests and a six-service Compose run. [Stage 1 results](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558) |
 | November 4, 2026 | Stage 2 delivered contracts, policy, labeling guidance and the certificate laboratory. | 50 Node.js tests, 41 Python tests, 12 lab subtests, two browser tests and both CI jobs passed. [Stage 2 results](https://github.com/liorma6/AI-security-agent-/actions/runs/41897401889) |
-| November 5, 2026 | Stage 3 adds assets, persistent requests, queue dispatch, readiness and recovery tests. | Local input, contract, build and browser checks passed. Real-storage CI verification is in progress. |
+| November 5, 2026 | Stage 3 adds assets, persistent requests, queue dispatch, readiness and recovery tests. | 59 Node.js tests, 41 Python tests, 12 lab subtests, eight integration scenarios, two browser tests and all three CI jobs passed. [Stage 3 results](https://github.com/liorma6/AI-security-agent-/actions/runs/42112392327) |
 | November 5, 2026 | Adopted English for project material and the UI. Published operating instructions and updated the specification. | The browser suite checks English content, page direction and API connection states. |
 
 See the [stage log](stage-log.md) for validation details and open dependencies, the [architecture](architecture.md) for runtime boundaries and the [implementation plan](implementation-plan.md) for upcoming work.

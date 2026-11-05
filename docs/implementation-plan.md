@@ -2,7 +2,7 @@
 
 **AI Security Agent** · Proposal dated November 4, 2026 · Updated November 5, 2026
 
-Stages 0–2 are complete. Stage 3 is implemented and undergoing integration verification. Stage 4 is next after acceptance. The [specification](specification.md) tracks the requirements and the [stage log](stage-log.md) records validation. Installation and user-facing operation are documented in the [README](../README.md).
+Stages 0–3 are complete and verified. Stage 4, TLS and HTTP collection, is next. The [specification](specification.md) tracks the requirements and the [stage log](stage-log.md) records validation. Installation and user-facing operation are documented in the [README](../README.md).
 
 ## Project proposal
 
@@ -58,7 +58,7 @@ Report precision, recall, F1, confusion matrix, the count of true findings filte
 | 0. Proposal | Define scope, architecture, ML experiment, external dependencies and acceptance criteria. Completed. | `docs: define project proposal and staged implementation plan` |
 | 1. Bootstrap | Pin runtimes and lockfiles. Supply four processes, Compose, health checks, example configuration and CI. Verify the README, six-service stack and provider availability. Registration remains a stage 6 dependency. Completed. | `chore: bootstrap services docker and ci` |
 | 2. Contracts and lab | Publish schemas, OpenAPI, rule severities, SNI, trust and address policy, labeling guide and disposable TLS servers. Every rule has pass/fail fixtures, collection failures are separate, and regenerated certificates use relative dates. Completed. | `test: add tls lab fixtures and scan contracts` |
-| 3. Assets, scans, storage and queue | Add Asset and Scan APIs, allowlists, MongoDB indexes and BullMQ dispatch. Return 202 promptly. Prove persistence after restart and recovery after a worker or publish failure without duplicate results. Mark test jobs. Implemented, integration verification in progress. | `feat: add asset scan persistence and job orchestration` |
+| 3. Assets, scans, storage and queue | Add Asset and Scan APIs, allowlists, MongoDB indexes and BullMQ dispatch. Return 202 promptly. Prove persistence after restart and recovery after a worker or publish failure without duplicate results. Mark test jobs. Completed and verified with real-storage integration and Compose checks. | `feat: add asset scan persistence and job orchestration` |
 | 4. TLS and HTTP collection | Store certificate, identity and HTTP evidence. Enforce network, timeout, size and redirect limits. Verify known lab identities, DNS rebinding, forbidden redirects and collection timeouts. | `feat: collect tls and https evidence safely` |
 | 5. Rules and baseline | Produce explained findings, handle inconclusive evidence, deduplicate and correlate rescans. Match the known lab outcomes, mark repaired findings resolved and account for stale measurements. | `feat: add explainable tls risk rules and baseline` |
 | 6. External APIs | Add DNS and SSL Labs adapters, cache, polling, provider messages, bounded retries and partial results. Test READY, ERROR, partial, 429 and outages. Complete an authorized live smoke test for both providers. | `feat: integrate dns and external tls assessment` |

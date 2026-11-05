@@ -34,10 +34,13 @@ For the next stage, record the date and branch, implemented requirements, actual
 
 ## Stage 3 — Assets, persistence and queue
 
-November 5, 2026. Branch stage/03-assets-and-queue. Implementation is complete and integration verification is in progress.
+Completed November 5, 2026 on stage/03-assets-and-queue. FR03 and FR04 are implemented and verified.
 
 Implemented normalized exact-hostname authorization, asset creation/listing, persistent scan acceptance, idempotent retries, indexed MongoDB storage, Redis/BullMQ dispatch and a separate worker. The dispatcher recovers incomplete requests from MongoDB. The worker rechecks authorization and atomically commits an explicitly labeled partial orchestration result. Liveness and dependency readiness have separate endpoints.
 
-Added real-storage integration scenarios for competing API processes, pagination, stable request IDs, API restarts, repeated delivery, a killed worker, Redis connection failure and revoked authorization. CI now runs a dedicated integration job and a real Compose demonstration. Local lint, 59 Node tests, 41 Python tests, OpenAPI, build, smoke and both browser checks passed. Remote integration and container results will be recorded after the run.
+- Eight real-storage integration scenarios passed, with nine test results including their parent. They cover a busy HTTP port, competing API processes, pagination, stable request IDs, API restarts, repeated delivery, a killed worker, Redis connection failure and revoked authorization. Tests used actual MongoDB and Redis containers and separate application processes.
+- All three CI jobs passed. The code job passed lint, Ruff, OpenAPI, 59 Node.js tests, 41 Python tests, 12 lab subtests (13 results including their parent), React build, smoke and two browser checks. The six-service Compose job also submitted and completed an orchestration demonstration. [Verified code](https://github.com/liorma6/AI-security-agent-/commit/ee12814f35b17d4cb9d537e36508b80ca9d442a9) and [stage 3 CI run](https://github.com/liorma6/AI-security-agent-/actions/runs/42112392327).
+- Local Windows lint, Node.js, Python, OpenAPI, build, smoke and browser checks passed. Docker and real-storage integration were verified in GitHub Actions because Docker is unavailable on the local workstation. The production npm audit reported zero advisories at verification time.
+- Review added regressions for path/query delimiters that URL normalization could otherwise discard, and for releasing storage connections when the HTTP listener cannot bind. Both corrections passed the full CI suite.
 
 The contracts package is now 1.1.0 with continued validation of 1.0.0 records. Collector work, risk rules, provider assessment and ML remain assigned to later stages. The next requested functional stage is 4.
