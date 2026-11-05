@@ -123,6 +123,17 @@ test('durable scan orchestration with real MongoDB, Redis and separate service p
   let asset;
   let second;
   let originalScan;
+  await t.test('an occupied HTTP port closes storage connections and exits with a failure', async () => {
+    const child = spawn(process.execPath, ['services/api/src/index.js'], {
+      cwd: root, windowsHide: true, stdio: 'ignore',
+      env: { ...process.env, APP_MODE: 'orchestration_test', HOST: '127.0.0.1',
+        PORT: new URL(api.base).port, MONGO_URL: config.mongoUrl, REDIS_URL: proxy.url,
+        MONGO_DATABASE: config.database, QUEUE_NAME: config.queueName, ALLOWED_TARGETS: config.allowedTargets },
+    });
+    children.add(child);
+    await until(async () => child.exitCode, value => value !== null, 7000);
+    assert.equal(child.exitCode, 1);
+  });
   await t.test('exact allowlist and concurrent target creation across two API processes', async () => {
     assert.equal((await request(api, '/api/assets', { hostname: 'forbidden.example' })).status, 403);
     const results = await Promise.all(Array.from({ length: 8 }, (_, i) => request(i % 2 ? api : otherApi, '/api/assets', { hostname: 'HTTPS://DEMO.EXAMPLE.COM/' })));

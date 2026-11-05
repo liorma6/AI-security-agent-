@@ -34,14 +34,14 @@ export function serve(app, { service, port, host = '127.0.0.1', onClose = async 
   });
   server.on('error', (error) => {
     process.stderr.write(JSON.stringify({ event: 'server_error', service, code: error.code }) + '\n');
-    process.exitCode = 1;
+    shutdown(1);
   });
-  const shutdown = () => {
-    server.close(async () => { await onClose(); process.exit(0); });
+  const shutdown = (exitCode = 0) => {
+    server.close(async () => { await onClose(); process.exit(exitCode); });
     server.closeIdleConnections();
     setTimeout(() => process.exit(1), 5000).unref();
   };
-  process.once('SIGINT', shutdown);
-  process.once('SIGTERM', shutdown);
+  process.once('SIGINT', () => shutdown());
+  process.once('SIGTERM', () => shutdown());
   return server;
 }
