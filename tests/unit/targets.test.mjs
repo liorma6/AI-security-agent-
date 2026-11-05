@@ -12,7 +12,8 @@ test('hostnames and root URLs normalize to the same allowlist identity', () => {
 test('unsafe target syntax is rejected before storage', () => {
   for (const input of [null, '', '127.0.0.1', '[::1]', 'http://2130706433/', 'https://user:pass@example.com/',
     'https://example.com:8080', 'https://example.com/path', 'https://example.com/?q=a', 'https://example.com/#a',
-    '*.example.com', 'localhost', 'service.local', 'metadata.internal', 'ftp://example.com', 'a b.example', 'example.com:443']) {
+    '*.example.com', 'localhost', 'service.local', 'metadata.internal', 'ftp://example.com', 'a b.example', 'example.com:443',
+    'example.com/path', 'example.com?query=1', 'example.com#fragment', 'example.com\\path', 'exam\nple.com', 'example%2ecom']) {
     assert.throws(() => normalizeHostname(input), { status: 400 }, String(input));
   }
 });

@@ -26,6 +26,9 @@ export function normalizeHostname(input) {
     }
     hostname = url.hostname;
   }
+  if (/[\\/?#@:%\s]/u.test(hostname)) {
+    throw new RequestError(400, 'invalid_request', 'Supply a hostname or an HTTP(S) root URL.');
+  }
   hostname = domainToASCII(hostname.toLowerCase().replace(/\.$/, ''));
   if (isIP(hostname) || !validateContract('Hostname', hostname).valid ||
       /(^|\.)(localhost|local|internal|home|lan|onion)$/.test(hostname)) {
