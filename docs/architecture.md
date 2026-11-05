@@ -1,46 +1,33 @@
-# ארכיטקטורת המערכת
+# Service architecture
 
-שלב 1 מקים תהליכים נפרדים ודרך הרצה משותפת. היכולות העסקיות עדיין אינן ממומשות.
-
-## זרימה פעילה בשלב 1
+## Running application
 
 ```mermaid
 flowchart LR
-    B[Browser] --> W[React web]
-    W -->|GET /api/health| A[Express API]
-    S[Node scanner liveness]
-    P[Python ML liveness]
-    M[(MongoDB infrastructure)]
-    R[(Redis infrastructure)]
+    Browser --> Web[React interface]
+    Web -->|GET /api/health| API[Express API]
+    Scanner[Node.js scanner process]
+    ML[Python ML service]
+    Mongo[(MongoDB)]
+    Redis[(Redis)]
 ```
 
-הדפדפן פונה לאותו origin של web. Vite בהרצה המקומית ו־nginx בקונטיינר מעבירים בקשות /api לשרת Express. אין צורך ב־CORS פתוח או בכתובת backend שנצרבת בקוד הדפדפן.
+The browser loads the React page and requests health information from its own origin. Vite forwards the request in development. The production web image serves the static build with nginx and proxies the same path. The scanner and ML service expose separate health endpoints. Compose starts MongoDB and Redis and checks each with its native client.
 
-scanner ו־ML הם תהליכים עצמאיים עם health. MongoDB ו־Redis קיימים ב־Compose ומבצעים בדיקות health משלהם, אך עדיין אינם משמשים לשמירת סריקות או לתור.
-
-## פורטים
-
-| רכיב | פורט ברירת מחדל במחשב | חשיפה |
+| Component | Default host port | Exposure |
 | --- | --- | --- |
-| web | 5173 | loopback בלבד |
-| api | 3001 | loopback בלבד |
-| scanner | 3002 | loopback בלבד |
-| ml | 8000 | loopback בלבד |
-| MongoDB | אין | רשת Compose בלבד |
-| Redis | אין | רשת Compose בלבד |
+| Web | 5173 | Loopback |
+| API | 3001 | Loopback |
+| Scanner | 3002 | Loopback |
+| ML | 8000 | Loopback |
+| MongoDB and Redis | Internal only | Compose network |
 
-אפשר לשנות את ארבעת הפורטים דרך .env. בתוך קונטיינרים פורטי היישום קבועים; Compose ממפה אותם לפורטים המקומיים שנבחרו. npm run dev מפעיל ארבעה תהליכים ישירים ומסיים אותם יחד ביציאה.
+The Compose application containers run as non-root users with read-only root filesystems and temporary storage where needed. Separate named volumes hold database and queue data. Set application host ports in `.env`. The source launcher starts four local processes and stops them together. See the [operating instructions](../README.md).
 
-## גבולות health
+## Health semantics
 
-status=ok פירושו שהתהליך מקבל בקשות. capabilities מכיל false עבור יכולות עתידיות. היעדר מודל אינו תקלה בשלב 1, ולכן ML חי אך modelLoaded=false. החל משלב 3 נגדיר readiness של התלויות והפעולות העסקיות בנפרד מ־liveness.
+`status: "ok"` means a process accepts a health request. Each backend reports bootstrap mode and its capability flags. The API reports scanning and persistence as disabled. The scanner reports queue consumption as disabled. The ML service reports inference as disabled and `modelLoaded: false`. Readiness for business operations belongs to the implementation of those operations.
 
-## הרצה ונתונים
+## Planned scan flow
 
-הקונטיינרים של היישום רצים כמשתמש שאינו root. מערכות הקבצים שלהם מוגדרות לקריאה בלבד; nginx משתמש ב־tmpfs לנתונים זמניים. MongoDB ו־Redis משתמשים ב־volumes עמידים.
-
-הרצה מקומית ללא Docker מספיקה לשלב 1 כי אין עדיין תלות עסקית במסד או בתור. בשלבים הבאים הרצה מלאה תצריך תשתיות אלה. אין להסיק מתנאי ההרצה הנוכחיים שכבר נבדקה התמדה עסקית.
-
-## ארכיטקטורת היעד
-
-בהמשך API ישמור בקשות ויפרסם לתור, scanner יאסוף ראיות ויחשב ממצאים, ושירות Python יחזיר ציון ממודל מתועד. תרשים היעד וגבולות האחריות המלאים נמצאים ב־[תוכנית הביצוע](implementation-plan.md).
+Express will authorize a target, persist an accepted request in MongoDB and dispatch through BullMQ on Redis. The scanner will consume jobs, collect TLS, HTTP, DNS and provider evidence, evaluate the rule policy and store results. Versioned ML predictions will supplement those results. The API will serve progress, evidence and feedback to React. See the [specification](specification.md) and [implementation plan](implementation-plan.md).

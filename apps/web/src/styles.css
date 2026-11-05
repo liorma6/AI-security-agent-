@@ -5,9 +5,7 @@ body { margin: 0; }
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 30px 0; border-bottom: 1px solid #d8ded5; }
 .brand { font-size: 17px; font-weight: 700; display: flex; gap: 10px; align-items: center; }
 .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #173a34; color: white; }
-.stage { font-size: 13px; color: #64796e; }
 .intro { padding: 66px 0 44px; max-width: 650px; }
-.eyebrow { color: #65796e; font-size: 13px; margin: 0 0 18px; }
 h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.12; letter-spacing: -1.8px; margin: 0 0 24px; font-weight: 600; }
 .description { font-size: 18px; line-height: 1.8; max-width: 500px; color: #607267; }
 .status { display: inline-flex; gap: 9px; align-items: center; font-size: 13px; margin-top: 16px; background: #e5ece1; padding: 10px 14px; border-radius: 7px; }
@@ -15,22 +13,10 @@ h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.12; letter-spacing: -1.8p
 .status[data-state="connected"] .status-dot { background: #36845d; }
 .status[data-state="unavailable"] { background: #f5e3d4; color: #783e22; }
 .status[data-state="unavailable"] .status-dot { background: #a3552e; }
-.progress-card { background: #fffef9; border: 1px solid #d8ded5; border-radius: 16px; padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
-.progress-card h2 { font-size: 23px; margin: 0 0 12px; }
-.progress-card p:not(.eyebrow) { line-height: 1.8; color: #607267; margin: 0; }
-.milestones { margin: 0; padding: 0; list-style: none; }
-.milestones li { display: flex; align-items: center; gap: 14px; padding: 12px 0; color: #77857b; }
-.milestones li > span { border: 1px solid #d8ded5; border-radius: 50%; padding: 9px; font-size: 11px; }
-.milestones .current { color: #173a34; }
-.milestones .current > span { background: #e5ece1; border-color: #e5ece1; }
-.milestones strong { font-size: 14px; }
-.milestones small { display: block; margin-top: 4px; font-size: 12px; color: #7a877d; }
 footer { padding: 25px 0 35px; color: #7a877d; font-size: 12px; }
 @media (max-width: 640px) {
   .workspace { padding: 0 22px; }
   .topbar { padding: 22px 0; gap: 12px; }
   .brand { font-size: 13px; }
-  .stage { font-size: 11px; }
   .intro { padding-top: 42px; }
-  .progress-card { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
 }

@@ -24,39 +24,25 @@ export default function App() {
   }, []);
 
   const status = {
-    loading: 'בודק את החיבור לשרת…',
-    connected: 'החיבור לשרת פעיל',
-    unavailable: 'השרת אינו זמין כרגע. אפשר לרענן ולנסות שוב.',
+    loading: 'Checking the API connection…',
+    connected: 'Connected to the API',
+    unavailable: 'API unavailable. Check that the service is running, then refresh this page.',
   }[connection];
 
   return (
     <main className="workspace">
       <header className="topbar">
-        <span className="brand" dir="ltr"><span className="brand-mark" aria-hidden="true">A</span> AI Security Agent</span>
-        <span className="stage">שלב 1 מתוך 12</span>
+        <span className="brand"><span className="brand-mark" aria-hidden="true">A</span> AI Security Agent</span>
       </header>
       <section className="intro" aria-labelledby="title">
-        <p className="eyebrow">סביבת העבודה שלך</p>
-        <h1 id="title">הבסיס לבדיקת<br />אבטחת האתר שלך.</h1>
-        <p className="description">מרכז אחד לבדיקות HTTPS ותעודות TLS, ממצאים מוסברים והערכת התרעות שווא.</p>
+        <h1 id="title">API connection</h1>
+        <p className="description">This page checks whether the web interface can reach your local API.</p>
         <div className="status" role="status" data-state={connection}>
           <span className="status-dot" aria-hidden="true" />
           {status}
         </div>
       </section>
-      <section className="progress-card" aria-labelledby="progress-title">
-        <div>
-          <p className="eyebrow">התקדמות הפרויקט</p>
-          <h2 id="progress-title">סביבת העבודה בהקמה</h2>
-          <p>בשלב הזה נבנה הבסיס להפעלת המערכת. סריקת אתרים וניתוח ממצאים יתווספו בשלבים הבאים.</p>
-        </div>
-        <ol className="milestones">
-          <li className="current"><span>01</span><div><strong>הקמת הסביבה</strong><small>השלב הנוכחי</small></div></li>
-          <li><span>02</span><div><strong>הגדרת הבדיקות</strong><small>השלב הבא</small></div></li>
-          <li><span>03</span><div><strong>ניהול סריקות</strong><small>בהמשך</small></div></li>
-        </ol>
-      </section>
-      <footer>המערכת עדיין אינה מבצעת סריקות או מציגה הערכות אבטחה.</footer>
+      <footer><a href="/api/health">View the API health response</a></footer>
     </main>
   );
 }

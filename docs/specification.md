@@ -1,169 +1,115 @@
-# מסמך אפיון AI security agent
+# AI Security Agent — System Specification
 
-מסמך האפיון המתעדכן של הפרויקט. הוא מגדיר את ההתנהגות המבוקשת, את המימוש הקיים ואת הראיות להשלמת כל שלב. בכל שלב מעדכנים את סטטוס הדרישות ואת היסטוריית השינויים במסמך זה; פירוט תוצאות ההרצה נשמר גם ביומן השלבים.
+Revision 0.1.1 · November 5, 2026 · Service bootstrap
 
-גרסת מסמך: 0.1. תאריך עדכון: 4 בנובמבר 2026. שלב 1, הקמת הסביבה, הושלם. בדיקות הקוד, ה־build, ארבעת התהליכים והדפדפן עברו מקומית וב־CI; גם הרצת Compose עם ששת השירותים עברה. השלב הבא הוא שלב 2.
+## Purpose and scope
 
-## מטרת המערכת
+The system is designed for a site operator who needs to assess an authorized website's HTTPS configuration, inspect the evidence behind a TLS finding and verify a repair. A later experiment will measure whether a model can reduce false alerts while retaining verified findings. This revision covers a single operator running the system locally.
 
-לאפשר למפעיל אתר לזהות סיכונים בתעודות TLS ובהגדרות HTTPS, להבין על אילו ראיות מבוסס כל ממצא, ולבחון אם למידת מכונה יכולה לצמצם התרעות שווא בלי להסתיר סיכונים אמיתיים.
+The proposed Node.js modules collect evidence from websites. The assessment scope covers DNS, TLS certificates and the HTTP/HTTPS root on public ports 80 and 443. Package auditing, source-code analysis, crawling, exploitation and automatic repair are outside this scope. The original proposal uses “SSL” for certificate assessment. This specification uses “TLS” for the protocol the application will measure.
 
-המערכת מתוכננת עבור מפעיל אחד בסביבה מקומית. הוא מוסיף יעדים מאושרים, מפעיל סריקה, מעיין בתוצאות, מתעד החלטות ומריץ בדיקה נוספת לאחר תיקון. המערכת אינה משנה את האתר הנבדק.
+## Available in this revision
 
-## היקף ופרשנות הדרישות
+The React home page requests `GET /api/health` through its own origin and reports the connection state in English. Express and the scanner process each expose `GET /health`. FastAPI exposes its own `GET /health`. The services report process liveness with version `0.1.0`, `stage: 1` and `mode: "bootstrap"`. These values identify the running services independently of the documentation revision.
 
-ההיקף שנבחר הוא בדיקת אתרים ותעודות TLS באמצעות רכיבי Node.js. ניתוח קוד Node.js או חבילות npm אינו כלול. ההנחיה המקורית לגבי modules לא פורטה, והמשתמש בחר להתקדם במיקוד אתר ו־TLS.
-
-הטכנולוגיות המחייבות הן Node.js, Express, React, Python, ספריות TLS או OpenSSL, MongoDB, Docker ו־GitHub. המערכת תחולק לשירותים ותתקשר עם APIs חיצוניים. Redis ו־BullMQ נבחרו לתור העתידי.
-
-הפחתת False Positives היא שאלת ניסוי שיש למדוד. אין הנחה שהמודל בהכרח ישפר את מנוע הכללים. accepted risk וממצא שנפתר אינם התרעות שווא.
-
-## מה קיים כעת
-
-- שלד של ארבעה רכיבי יישום: React, API ב־Express, תהליך scanner ב־Node.js ושירות ML ב־FastAPI.
-- endpoints של health שמצהירים על חיות התהליך ועל היכולות שטרם מומשו.
-- דף פתיחה בעברית שמציג את מצב החיבור האמיתי ל־API.
-- הרצה מקומית של ארבעת הרכיבים, ללא צורך ב־MongoDB או Redis בשלב הנוכחי.
-- הגדרות Compose ליישום ול־MongoDB ו־Redis. הנתונים של שני שירותי התשתית מיועדים להישמר ב־volumes.
-- נעילת תלויות, בדיקות קוד ו־HTTP, בדיקות דפדפן ותהליך CI.
-- מסמכי תכנון, אפיון, ארכיטקטורה ויומן שלבים, והוראה מחייבת לעדכנם בכל שלב.
-
-אין עדיין ניהול יעדים, סריקות, חיבור תפעולי למסד או לתור, איסוף TLS, ממצאים או מודל מאומן. endpoint תקין של health אינו הוכחה שיכולות אלה קיימות.
-
-## משתמשים ותרחישי שימוש
-
-| מזהה | תרחיש יעד | שלב מימוש |
+| Component | Observable behavior | Planned responsibility |
 | --- | --- | --- |
-| UC01 | המפעיל פותח את המערכת ורואה אם החיבור לשרת זמין | 1 |
-| UC02 | המפעיל מוסיף דומיין מאושר ומפעיל סריקה | 3 ו־7 |
-| UC03 | המפעיל עוקב אחרי סריקה ומקבל תוצאות מלאות או חלקיות | 3 עד 7 |
-| UC04 | המפעיל קורא ראיות, חומרה והמלצת תיקון | 5 ו־7 |
-| UC05 | המפעיל מתייג ממצא עם נימוק וראיות | 7 |
-| UC06 | המפעיל משווה בדיקה חוזרת לתוצאות קודמות | 5 ו־7 |
-| UC07 | המפעיל רואה המלצת ML והסבר למגבלותיה | 9 ו־10 |
-| UC08 | המפעיל מייצא ממצאים והדגמה למסירה | 7 ו־12 |
+| Web | Shows the result of a real API request on desktop and mobile | Manage assets, request scans, inspect evidence and give feedback |
+| API | Reports `scanning: false` and `persistence: false` | Authorize targets, store requests and serve results |
+| Scanner | Reports `scanning: false` and `queueConsumer: false` | Consume jobs, collect observations and evaluate rules |
+| ML service | Reports `inference: false` and `modelLoaded: false` | Serve predictions for a versioned feature schema |
+| MongoDB and Redis | Run on the private Compose network with health checks and persistent volumes | Store scan records and manage the job queue |
 
-## דרישות פונקציונליות ומעקב
+The development launcher runs the four application processes. Compose also runs MongoDB and Redis. The current UI can be exercised using the [installation and verification instructions](../README.md). Site scanning, persistence of findings and trained inference are pending.
 
-| מזהה | דרישה | קריטריון קבלה | סטטוס |
-| --- | --- | --- | --- |
-| FR01 | הפעלת ארבעת רכיבי היישום | health תקין לכל backend ודף React נטען | מומש ונבדק מקומית וב־CI בשלב 1 |
-| FR02 | הצגת כשל תקשורת אמיתי | API שאינו זמין אינו מוצג כתקין | מומש ונבדק בשלב 1 |
-| FR03 | ניהול יעדים מורשים | קלט מנורמל, מדיניות יעדים והוכחת בדיקות קלט | מתוכנן לשלב 3 |
-| FR04 | תור והתמדה | 202 עם מזהה, התאוששות וללא תוצאות כפולות | מתוכנן לשלב 3 |
-| FR05 | איסוף TLS ו־HTTP | ראיות נכונות מול שרתי מעבדה | מתוכנן לשלב 4 |
-| FR06 | הערכת חולשות | תוצאות pass/fail/unknown/not_applicable לפי כללים | מתוכנן לשלב 5 |
-| FR07 | חיבור APIs חיצוניים | Google DNS ו־SSL Labs נבדקים מול שירות חי | זמינות נבדקה; אינטגרציה בשלב 6 |
-| FR08 | ממשק ממצאים | חומרה, מקור, זמן מדידה, ראיות והמלצה | מתוכנן לשלב 7 |
-| FR09 | תיוג וייצוא | נימוק לתיוג, הפרדה מ־resolved ו־accepted_risk | מתוכנן לשלב 7 |
-| FR10 | נתוני אימון מתועדים | מקור ותווית לכל דוגמה, חלוקה לפי קבוצות | מתוכנן לשלב 8 |
-| FR11 | אימון והערכה | ניסוי ניתן לשחזור מול baseline | מתוכנן לשלב 9 |
-| FR12 | חיזוי עם fallback | כשל מודל אינו מונע הצגת בדיקות הכללים | מתוכנן לשלב 10 |
-| FR13 | חבילת מסירה | אפיון, GitHub, סרטון, פוסטר ומצגת | מתוכנן לשלב 12 |
+## Operator workflows
 
-## דרישות איכות
-
-| מזהה | דרישה | תכנון והוכחת קבלה |
+| ID | Workflow | Stage |
 | --- | --- | --- |
-| NFR01 | התקנה ניתנת לשחזור | Node ו־Python נעולים; npm ci ו־uv sync --frozen; images עם תגיות גרסה מדויקות |
-| NFR02 | הפרדת שירותים | תהליכים וקונטיינרים נפרדים עם גבולות אחריות ברורים |
-| NFR03 | עומסים | יעד ראשוני בשלב 11: 20 לקוחות ו־200 עבודות; p95 לקבלת בקשה מתחת ל־500ms בתנאים מתועדים |
-| NFR04 | התאוששות | idempotency, שמירה עמידה והתאוששות מפרסום לתור בשלב 3 |
-| NFR05 | דיוק ויושרה בתוצאות | כשל איסוף אינו חולשה; תוצאה חלקית מסומנת; ספק מדומה אינו בדיקה חיה |
-| NFR06 | שימוש מקומי | חשיפת פורטים ל־127.0.0.1 בלבד; בסיס הנתונים והתור אינם מפורסמים למחשב המארח |
-| NFR07 | סודיות | אין סודות, raw scan data או מודלים פרטיים ב־Git; קובץ .env מוחרג |
-| NFR08 | תחזוקה | כל שלב מעדכן אפיון ויומן, נבדק ונשמר בקומיט |
-| NFR09 | שימושיות | דף בעברית עם RTL, תמיכה בנייד והודעת כשל ברורה |
+| UC01 | Open the home page and check whether the web interface can reach the API. | 1, available |
+| UC02 | Add an authorized domain and submit a scan. | 3 and 7 |
+| UC03 | Follow scan progress and distinguish complete from partial results. | 3–7 |
+| UC04 | Read the finding, its severity, evidence and recommended fix. | 5 and 7 |
+| UC05 | Label a finding and record the supporting evidence. | 7 |
+| UC06 | Compare a repeat scan after correcting an issue. | 5 and 7 |
+| UC07 | Inspect the model recommendation and the limits of its evidence. | 9 and 10 |
+| UC08 | Export results and prepare a reproducible demonstration. | 7 and 12 |
 
-תגיות images נעולות לגרסה אך אינן נעולות עדיין ל־digest; התוכן שמספק המפיץ לתגית יכול להשתנות. לפני מסירה יש לשקול נעילה ל־digest ועדכוני אבטחה מבוקרים.
+## Functional requirements
 
-## ארכיטקטורה ואחריות
-
-| רכיב | אחריות כעת | אחריות מתוכננת |
+| ID | Acceptance criterion | Status |
 | --- | --- | --- |
-| web | דף פתיחה וקריאת health דרך אותו origin | ניהול יעדים וממצאים |
-| api | liveness ו־404 לנתיבים שלא מומשו | יעדים, סריקות, קריאת תוצאות ומשוב |
-| scanner | תהליך עצמאי שמדווח שאינו מבצע סריקות | צריכת תור, איסוף, כללים וקריאה ל־ML |
-| ml | health ללא מודל וללא endpoint חיזוי | חיזוי וגרסאות מודל |
-| MongoDB | שירות תשתית ב־Compose | אחסון יעדים, סריקות, תצפיות, ממצאים ומשוב |
-| Redis | שירות תשתית ב־Compose | תור BullMQ |
+| FR01 | Start the four application components, load React and read each backend's health response. | Verified in stage 1 |
+| FR02 | When the API is unreachable, show a visible failure state on desktop or mobile. | Verified in stage 1 |
+| FR03 | Normalize a submitted hostname and authorize it against server policy. | Planned, stage 3 |
+| FR04 | Return HTTP 202 with a scan ID, persist the request and recover from duplicate jobs or a failed dispatch. | Planned, stage 3 |
+| FR05 | Collect TLS and HTTP observations that match known lab configurations. | Planned, stage 4 |
+| FR06 | Return pass, fail, unknown or not_applicable with evidence, policy version and severity where applicable. | Planned, stage 5 |
+| FR07 | Integrate Google Public DNS and SSL Labs and verify each with an authorized live target. | Availability probed in stage 1. Integration planned for stage 6 |
+| FR08 | Show severity, source, measurement time, evidence and remediation for each finding. | Planned, stage 7 |
+| FR09 | Export results and record reasoned labels independently of treatment state. | Planned, stage 7 |
+| FR10 | Record provenance, label rationale and group membership for training data. | Planned, stage 8 |
+| FR11 | Reproduce training and compare against a fixed baseline on held-out groups. | Planned, stage 9 |
+| FR12 | Continue to display rule findings when the model abstains or fails. | Planned, stage 10 |
+| FR13 | Deliver the specification, repository, YouTube video, poster and presentation. | Final delivery planned for stage 12 |
 
-בשלב 1 הזרימה הפעילה היא דפדפן → web → api health. אין כעת תקשורת עסקית בין scanner, MongoDB, Redis ו־ML.
+## Quality requirements
 
-פירוט ההרצה ותרשים המערכת נמצאים ב־[מסמך הארכיטקטורה](architecture.md).
+| ID | Requirement and verification |
+| --- | --- |
+| NFR01 | Reproduce installations with pinned runtimes, dependency lockfiles and versioned images. Review image digests for final delivery. |
+| NFR02 | Run the web, API, scanner and ML components as separate processes and containers. |
+| NFR03 | Measure acceptance latency for 200 local jobs with 20 concurrent clients. The stage 11 target is p95 below 500 ms with zero lost jobs. Report full scan time separately. |
+| NFR04 | Use durable requests, idempotent writes and queue reconciliation. Verify recovery by interrupting dispatch and restarting a worker. |
+| NFR05 | Keep collection failures distinct from confirmed weaknesses. Identify partial scans, cached observations and simulated providers. |
+| NFR06 | Publish application ports on loopback and keep storage and queue ports internal to Compose. |
+| NFR07 | Exclude credentials, private scan data, generated keys, environment files and private model artifacts from Git. |
+| NFR08 | Update the specification and record the tested commit, evidence and open dependencies for each stage. |
+| NFR09 | Provide an English, left-to-right interface with readable mobile layouts and explicit connection errors. |
 
-## ממשקים ממומשים
+## Data and interface design
 
-| שירות | בקשה | תשובה |
+Stage 2 will define shared schemas, valid and invalid examples, and a versioned OpenAPI description. The target data model separates measurements, rule decisions and human review.
+
+| Record | Meaning |
+| --- | --- |
+| Asset | Normalized hostname with authorization granted by server policy. |
+| Scan | Asset, attempt, policy version, timestamps and the status of each source. A scan moves from queued to running, then completed, partial or failed. |
+| Observation | Source, measurement and retrieval time, hostname, endpoint and source-specific evidence. A collection error carries an error reason. |
+| RuleResult and Finding | A failed rule can produce a finding with observation references, severity and remediation. Insufficient evidence yields unknown. |
+| Feedback | A reviewer supplies a label, rationale and evidence references. Treatment states include resolved and accepted_risk. |
+| ModelVersion and prediction | Record the feature and dataset versions, artifact identity, evaluation scope and threshold. A prediction carries a score or an explicit abstention. |
+
+The future API accepts targets at `/api/assets` and jobs at `/api/scans`. A scan request returns HTTP 202 and a location to poll. Findings, feedback, state changes and exports have separate operations. The worker will call the internal `POST /predict` endpoint. Ownership, reference integrity, chronological ordering and legal state changes require service-level checks.
+
+## Collection policy and laboratory
+
+The public scan path will require a server-side allowlist. Validate every A and AAAA answer, handle IPv4-mapped IPv6 addresses and reject non-public destinations. Connect to the validated address using the original hostname for Host, SNI and identity verification. Reapply the policy to each redirect. Bound response size, timeouts, retries, redirects and per-domain concurrency. Render certificate and HTTP values as text.
+
+Record certificate validity against the observation time, hostname against SAN, the selected trust profile, certificate chain, key and signature information. A dedicated probe may inspect an invalid certificate and retain its verification error. External provider connections use ordinary TLS verification. An approved private CA belongs to the target's trust profile.
+
+Stage 2 will introduce disposable certificate fixtures for valid and invalid sites, pass and fail examples for each rule, a labeling guide, and separate examples for collection failures. The collector and rule engine are scheduled for stages 4 and 5.
+
+## Data science and evaluation
+
+Use evidence from the same endpoint, time, certificate and trust profile to label a finding true_positive, false_positive or uncertain. A certificate that actually expired and was later replaced is a true finding with a resolved treatment state. A model will rank candidates for repeat inspection while factual TLS findings retain their rule severity.
+
+Compare logistic regression and a tree model with a rules, deduplication and repeat-verification baseline. Group samples by site, shared certificate or fixture family. Fit preprocessing on the training partition and choose the threshold on validation data before opening the held-out test partition. Report precision, recall, F1, a confusion matrix, uncertainty, class counts and errors by source and rule.
+
+The experimental target is at least 20% fewer false alerts at 95% or higher recall, with every verified critical finding still visible. A small or inconclusive sample supports recommendation-only operation. Data collection, model training and measured performance are future work.
+
+## Integration dependencies and delivery
+
+On November 4, 2026, the availability probe obtained Google DNS status 0 for example.com and SSL Labs engine version 2.4.3 from the v4 info endpoint. Live SSL Labs assessment still requires registration and an authorized target. Keep provider measurement time and cache age, honor rate limits and mark incomplete scans as partial.
+
+Delivery includes this specification, a GitHub repository, a reproducible ML experiment, an installation guide, a demonstration video with a published YouTube link, a poster and a presentation. Final verification includes opening every artifact and reproducing the demo from a clean checkout.
+
+## Revision and validation history
+
+| Date | Scope | Evidence |
 | --- | --- | --- |
-| API | GET /health וגם GET /api/health | 200 JSON עם service=api ויכולות scanning=false, persistence=false |
-| scanner | GET /health | 200 JSON עם scanning=false ו־queueConsumer=false |
-| ML | GET /health | 200 JSON עם inference=false ו־modelLoaded=false |
-| web בקונטיינר | GET /health | 200 JSON של שרת התוכן |
-| web | GET /api/health | העברה ל־API בלי שינוי משמעות התוצאה |
+| November 4, 2026 | Stage 0 defined scope, proposal and implementation plan. | [Planning commit](https://github.com/liorma6/AI-security-agent-/commit/784f1adcff4a87df5e3027da5fdd3e5e9c2dd56d) |
+| November 4, 2026 | Stage 1 delivered four application components, health endpoints, Compose, build, smoke and browser checks. | Four Node.js tests, two Python tests, two browser tests and a six-service Compose run. [Stage 1 results](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558) |
+| November 5, 2026 | Adopted English for project material and the UI. Published operating instructions and updated the specification. | The browser suite checks English content, page direction and API connection states. |
 
-שלושת שירותי ה־backend מחזירים גם status=ok, version=0.1.0, stage=1 ו־mode=bootstrap. התשובה אינה ניתנת למטמון. שדות אלה מעידים על תהליך פעיל בלבד.
-
-GET /api/scans ו־POST /predict אינם ממומשים ומחזירים 404. אין להציג מהם תוצאות דמה מוצלחות.
-
-## ישויות וממשקים עתידיים
-
-בשלב 2 יוגדרו חוזים מלאים עבור Asset, Scan, Observation, Finding, Feedback ו־ModelVersion. מצבי הסריקה המתוכננים הם queued, running, completed, partial ו־failed. בכל ראיה יישמרו מקור, זמן מדידה וזהות endpoint.
-
-ה־API העתידי יכלול יצירת יעדים וסריקות, קריאת מצב וממצאים, משוב וייצוא. יצירת סריקה תחזיר 202; הלקוח יבדוק התקדמות בנפרד. חוזים אלה הם תכנון בלבד עד לשלב המימוש שלהם.
-
-## אבטחת הסורק המתוכננת
-
-היעדים יוגבלו לרשימה שהמפעיל הגדיר ולפורטים 80 ו־443. ייבדקו כתובות IPv4/IPv6 וכל הפניה; החיבור יוצמד לכתובת שאושרה עם hostname נכון ב־Host וב־SNI. המעבדה תהיה במסלול נפרד ומוגבל.
-
-לא יושבת אימות TLS בכל התהליך. מסלול בדיקת תעודה פגומה ישמור במפורש את שגיאות האימות. יוגבלו זמן, גודל תגובה, קצב ומספר ניסיונות. כל הנתונים מהיעד יוצגו כטקסט.
-
-מנגנונים אלה ייבנו וייבדקו בשלבים 3–4 לפני פתיחת יכולת סריקה. שלב 1 אינו סורק יעדים.
-
-## נתונים ולמידת מכונה
-
-ה־baseline יורכב מבדיקות עובדתיות, הסרת כפילויות ואימות חוזר. לאחר בניית נתונים מתויגים נבחן Logistic Regression ומודל עצים. קדם־עיבוד וספים יילמדו בלי שימוש בקבוצת הבדיקה.
-
-החלוקה תפריד קבוצות של אותו אתר או תרחיש, ולא שורות אקראיות מאותו מקור. true_positive, false_positive ו־uncertain יהיו תוויות שונות; resolved ו־accepted_risk יהיו מצבי טיפול.
-
-יעדי הניסוי הראשוניים: הפחתה של 20% בהתרעות שווא תוך Recall של 95% לפחות, בלי הסתרה של ממצא קריטי מאומת. הספים הם יעדים שטרם נמדדו. אם אין שיפור מוכח או שיש מעט מדי נתונים, המודל יישאר כלי המלצה. אין מודל או נתוני אימון בשלב 1.
-
-## אינטגרציות ותלויות חיצוניות
-
-ב־4 בנובמבר 2026 בוצעה שאילתת Google DNS עבור example.com והתקבלה תשובה תקינה עם Status=0. קריאת SSL Labs /api/v4/info הצליחה והחזירה engineVersion=2.4.3. לא הופעלה סריקת אתר.
-
-בדיקת info אינה מאמתת הרשאת assessment. חיבור SSL Labs בפועל דורש רישום מתאים; SSLLABS_EMAIL נשאר ריק בדוגמת הסביבה. פרטי אדם או ארגון לא הומצאו ולא נשלחו לצורך רישום.
-
-הבדיקות החיות זמינות בפקודה npm run check:providers ונפרדות מבדיקות CI, כדי שכשל ספק זמני לא ייראה ככשל בקוד.
-
-## אסטרטגיית בדיקה
-
-שלב 1 כולל בדיקות יחידה ל־HTTP ולהגדרות פורטים, בדיקות Python, build של React, הרצת smoke של כל ארבעת תהליכי היישום ובדיקות דפדפן של הצלחה וכשל תקשורת. כל הבדיקות עברו. Compose נבדק ב־CI על Ubuntu 22.04 עם שירותי MongoDB ו־Redis אמיתיים, לאחר תיקון התאימות ל־kernel של סביבת הבדיקות.
-
-הסביבה המקומית היא Windows. הותקנו בתיקיית העבודה בלבד Node.js 24.22.2 ו־Python 3.13.16; התקנות המערכת לא שונו. uv 0.13.1 זמין. Docker אינו מותקן במחשב. OpenSSL זמין דרך Git for Windows; איסוף TLS עצמו ייבנה בהמשך.
-
-תוצאות הבדיקות וקישורי CI מתועדים ב־[יומן השלבים](stage-log.md). [ריצת CI מוצלחת לקוד של שלב 1](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558). נשארה אזהרה מתועדת בתלויות הפיתוח של כלי ה־lint; audit לתלויות הריצה לא החזיר ממצאים בעת הבדיקה.
-
-## תוצרי מסירה
-
-מסמך זה ילווה את כל השלבים וישמש בסיס למסמך האפיון הסופי. לצידו יימסרו המאגר, הוראות התקנה, ניסוי ML, סרטון עם קישור YouTube אמיתי לאחר פרסום, פוסטר ומצגת. יתר תוצרי ההגשה יוכנו בשלב 12.
-
-## היסטוריית שלבים
-
-| שלב | שינוי באפיון ובמערכת | מצב וראיות |
-| --- | --- | --- |
-| 0 | בחירת מיקוד אתר ו־TLS, הצעה, ארכיטקטורת יעד ותוכנית שלבים | הושלם; קומיט 784f1ad |
-| 1 | יצירת מסמך אפיון חי, שלד ארבעה רכיבים, health, הרצה מקומית, Compose ובדיקות | הושלם; 4 בדיקות Node, שתי בדיקות Python, שתי בדיקות דפדפן, build, smoke ו־Compose עברו |
-| 2–12 | החוזים, הסורק, הממשק, הנתונים, ML, העומסים והמסירה | טרם התחילו |
-
-בכל שלב נוסף יש לעדכן את הטבלה, את סעיפי ההתנהגות שהשתנו ואת סטטוס FR/NFR המתאים. תוצאות קודמות נשמרות בהיסטוריה ולא נמחקות כשמתווספת יכולת.
-
-## הפניות
-
-- [תוכנית הביצוע המלאה](implementation-plan.md)
-- [ארכיטקטורה](architecture.md)
-- [יומן שלבים](stage-log.md)
-- [החלטות סביבת הפיתוח](decisions/0001-runtime-and-local-environment.md)
-- [TLS של Node.js](https://nodejs.org/api/tls.html)
-- [SSL Labs API v4](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v4.md)
-- [Google DNS JSON API](https://developers.google.com/speed/public-dns/docs/doh/json)
+See the [stage log](stage-log.md) for validation details and open dependencies, the [architecture](architecture.md) for runtime boundaries and the [implementation plan](implementation-plan.md) for upcoming work.

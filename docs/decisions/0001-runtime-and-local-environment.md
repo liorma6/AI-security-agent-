@@ -1,32 +1,21 @@
-# גרסאות וסביבת הרצה
+# Runtime and local environment
 
-החלטה משלב 1, 4 בנובמבר 2026.
+Decision recorded November 4, 2026.
 
-## בחירה
+| Component | Selected versions |
+| --- | --- |
+| JavaScript runtime and package manager | Node.js 24.22.2 and npm 11.19.1 |
+| Python and environment manager | Python 3.13.16 and uv 0.13.1 |
+| Application | Express 5.3.0, React 19.3.1, Vite 8.3.5 and FastAPI 0.162.0 |
+| JavaScript checks | ESLint 10.14.0 with built-in JSX handling and React Hooks rules |
+| Infrastructure | MongoDB 8.0.34, Redis 8.2.11 and nginx 1.30.6 |
 
-- Node.js 24.22.2 ו־npm 11.19.1; קובץ .nvmrc, engines, קובץ נעילה ו־images משתמשים בגרסה זו.
-- Python 3.13.16 ו־uv 0.13.1; .python-version ו־image תואמים. uv.lock נועל גם תלויות עקיפות.
-- Express 5.3.0, React 19.3.1, Vite 8.3.5 ו־FastAPI 0.162.0.
-- ESLint 10.14.0 עם תמיכת JSX המובנית ובדיקות hooks; נבחר קו ESLint הנתמך.
-- MongoDB 8.0.34 ו־Redis 8.2.11 עבור Compose. nginx 1.30.6 משמש להגשת build ול־proxy.
-- JavaScript ESM ו־Python רגיל, ללא build של backend. scikit-learn יתווסף בשלב המודלים ולא נדרש ל־health.
+The repository uses ECMAScript modules and plain Python. The supported Node release line and Python version were selected to match local development and the container images. The package and image versions were checked against their registries. The ML runtime will acquire training dependencies when model development begins.
 
-## נימוקים
+Use `npm ci` and `uv sync --project services/ml --frozen` for reproducible installs. Change package declarations and lockfiles together. Source checks on Windows use isolated runtimes in the development workspace. Container checks run on GitHub-hosted Linux. Compose configures a local, single-operator deployment.
 
-Node 24 הוא קו LTS; Python 3.13 נבחר כדי להשתמש באותה גרסה זמינה דרך uv ובקונטיינר. הגרסאות אומתו מול מאגרי npm, PyPI ומפיצי images. עדכון גרסאות יבוצע בצורה מפורשת יחד עם נעילות ובדיקות.
+## MongoDB host compatibility
 
-במחשב קיימות התקנות ישנות יותר של Node וגרסת Python שונה. לצורך הבדיקות הותקנו גרסאות מבודדות תחת תיקיית העבודה; לא שונתה התקנה מערכתית. Docker אינו מותקן מקומית, ולכן הרצת Compose תיבדק ב־GitHub Actions, והרצת התהליכים תיבדק גם ב־Windows.
+The first container run on Ubuntu 24.04 stopped during MongoDB startup on an incompatible kernel. The Compose job now uses Ubuntu 22.04 and logged a working kernel in the 6.8 series. The code and browser job uses Ubuntu 24.04. Check the actual host kernel when diagnosing startup failures, and revisit the runner choice when support changes. The stage 1 investigation identified a MongoDB 8.x incompatibility with kernels 6.19 through 7.0.13. [MongoDB 8.0 release notes](https://www.mongodb.com/docs/v8.0/release-notes/8.0/) and [stage 1 CI run](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558).
 
-## השלכות
-
-בדיקת הקונטיינרים רצה על runner מסוג Ubuntu 22.04 עם kernel מסדרת 6.8. בריצה הראשונה על Ubuntu 24.04, MongoDB עצר בזמן startup בשל kernel שאינו תואם. לפי [תיעוד MongoDB](https://www.mongodb.com/docs/v8.0/release-notes/8.0/), קיימת אי־תאימות בין MongoDB 8.x לבין Linux kernels בטווח 6.19–7.0.13. לא מבטלים את מנגנון ההגנה של MongoDB. בדיקת CI מתעדת את גרסת ה־kernel בפועל; להרצה מקומית נדרש host תואם. יש לבחון מחדש את בחירת ה־runner לפני ש־Ubuntu 22.04 יפסיק להיתמך ב־GitHub Actions.
-
-npm ci ו־uv sync --frozen הם דרכי ההתקנה לשימוש רגיל. שינוי קובץ dependencies מחייב לעדכן את קובץ הנעילה שלו. הרשאות והגדרות localhost ב־Compose אינן הגדרות פריסה ציבורית.
-
-אין הבטחה שה־images חסינים מכל חולשה. בשלב המסירה תיבדק עדכניות הגרסאות ותישקל נעילה ל־digest. Stage 1 אינו התקנת Docker Desktop במחשב המשתמש.
-
-## מקורות
-
-- [Node.js releases](https://nodejs.org/en/about/previous-releases)
-- [Vite requirements](https://vite.dev/guide/)
-- [uv lock and sync](https://docs.astral.sh/uv/concepts/projects/sync/)
+The images use version tags. Review upstream fixes and consider digest pinning for delivery. [Node.js release lines](https://nodejs.org/en/about/previous-releases), [Vite requirements](https://vite.dev/guide/) and [uv locking and syncing](https://docs.astral.sh/uv/concepts/projects/sync/).

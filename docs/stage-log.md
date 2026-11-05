@@ -1,50 +1,22 @@
-# יומן שלבי הפרויקט
+# Stage and verification log
 
-בכל שלב מעדכנים גם את [מסמך האפיון](specification.md). יומן זה שומר את הביצוע, הבדיקות והתלויות, כדי לאפשר המשך עבודה בלי לשחזר את השיחה.
+This log records the code, checks and dependencies for each stage. The [specification](specification.md) tracks requirements and acceptance criteria.
 
-## שלב 0
+## Stage 0 — Proposal
 
-תאריך: 4 בנובמבר 2026. מצב: הושלם.
+Completed November 4, 2026. Selected authorized website and TLS assessment, documented the architecture and defined the stages and ML evaluation criteria. The proposal moved to the [implementation plan](implementation-plan.md) in stage 1. [Planning commit](https://github.com/liorma6/AI-security-agent-/commit/784f1adcff4a87df5e3027da5fdd3e5e9c2dd56d).
 
-נוצרו הצעת הפרויקט, מיקוד אתר ו־TLS, ארכיטקטורת יעד ותוכנית שלבים. המסמך המקורי הועבר בשלב 1 ל־implementation-plan.md.
+## Stage 1 — Service bootstrap
 
-קומיט: [784f1ad](https://github.com/liorma6/AI-security-agent-/commit/784f1adcff4a87df5e3027da5fdd3e5e9c2dd56d).
+Completed November 4, 2026 on `stage/01-bootstrap`. Delivered the React interface, two Node.js services, Python service, locked environments, local launcher, Compose stack, browser checks and CI. Established the living specification and its update policy. [Implementation commit](https://github.com/liorma6/AI-security-agent-/commit/1d43bee47d045729698ce8471caec60ca2fa602d).
 
-## שלב 1
+- Windows checks used Node.js 24.22.2, Python 3.13.16 and uv 0.13.1. ESLint, Ruff, four Node.js tests, two Python tests, the React build and the four-process smoke test passed. Both browser checks passed, including the unavailable-API case at mobile width. Desktop and mobile screenshots were inspected.
+- Google DNS returned status 0 and SSL Labs info returned engine version 2.4.3. Assessment access and registration remain dependencies for stage 6.
+- The production npm audit reported zero findings at the time. The development lint chain reported five moderate advisories involving minimatch. The lint tooling only consumes the repository configuration and is excluded from the final backend and web runtime images.
+- The first CI run passed code and browser checks but failed MongoDB startup on the container runner kernel. Moving the container check to Ubuntu 22.04 resolved the compatibility issue. All six Compose services became healthy, and the service endpoints, static UI and same-origin proxy passed. Docker verification ran in CI. [Verified code](https://github.com/liorma6/AI-security-agent-/commit/9a82716e9d2fbd5c1ef98e60636483b1d7811a0b) and [stage 1 CI run](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558).
 
-תאריך: 4 בנובמבר 2026. ענף: stage/01-bootstrap. מצב: הושלם; הבדיקות המקומיות, CI ו־Compose עברו.
+## November 5, 2026 — English documentation and interface
 
-תוצרים: שלד Node.js ו־React, שירות Python, הרצה מקומית, Docker Compose, קובצי נעילה, דף פתיחה, בדיקות ו־CI. נוצר מסמך אפיון המתעדכן בכל שלב, והוספה הנחיית עבודה ב־AGENTS.md.
+Published a practical README for the software in this branch, translated the specification and supporting records, and updated the page language, layout direction and browser assertions. The working agreement requires English for project files and visible interface text. The next functional stage is 2, contracts and the TLS laboratory.
 
-בדיקות זמינות שבוצעו: Google DNS החזיר Status=0; SSL Labs /info החזיר engineVersion=2.4.3. לא הופעלה סריקה ולא בוצע רישום. גישת assessment היא תלות פתוחה של שלב 6.
-
-הסביבה המקומית: Windows, Node.js 24.22.2, Python 3.13.16, uv 0.13.1. OpenSSL זמין דרך Git for Windows. Docker אינו מותקן מקומית; אימות Compose בוצע בהצלחה ב־CI.
-
-בדיקות מקומיות שעברו:
-
-- ESLint ו־Ruff.
-- 4 בדיקות Node.js ו־2 בדיקות Python.
-- build של React.
-- smoke שמפעיל ארבעה תהליכים, בודק health ואת proxy ה־API ומסיים אותם.
-- 2 בדיקות דפדפן: חיבור אמיתי לשרת ומצב כשל במסך נייד.
-- בדיקה חזותית של צילומי המסך במחשב ובנייד.
-- בדיקת npm audit לתלויות ריצה: ללא ממצאים בעת הבדיקה.
-
-בכלי הפיתוח קיימות 5 התרעות moderate שמקורן ב־minimatch העקיף של ESLint. הקלט לכלי מגיע מהגדרות המאגר, ולא מיעדי הסריקה. לא בוצע downgrade לגרסת ESLint לא נתמכת או override של major רק כדי להעלים התרעה. יש לעקוב אחר תיקון תואם upstream; הכלי אינו נכלל ב־image הריצה של ה־backend או בשרת nginx הסופי.
-
-בריצת CI הראשונה בדיקות הקוד והדפדפן עברו על Ubuntu 24.04. MongoDB עצר עקב אי־תאימות ל־kernel של runner הקונטיינרים; בדיקת Compose הועברה ל־Ubuntu 22.04 עם kernel מסדרת 6.8. ההרצה המתוקנת עברה בשני המסלולים: Code and browser checks וגם Docker Compose smoke. Compose הפעיל ארבעה רכיבי יישום, MongoDB ו־Redis; בדיקות health וה־proxy עברו.
-
-- קומיט המימוש: [1d43bee](https://github.com/liorma6/AI-security-agent-/commit/1d43bee47d045729698ce8471caec60ca2fa602d).
-- קוד שנבדק ב־CI לאחר תיקון הסביבה: [9a82716](https://github.com/liorma6/AI-security-agent-/commit/9a82716e9d2fbd5c1ef98e60636483b1d7811a0b).
-- [ריצת CI מוצלחת](https://github.com/liorma6/AI-security-agent-/actions/runs/41848432558).
-
-לאחר ההרצה עודכנו רק מסמכי המצב והתוצאות. חיבור assessment ל־SSL Labs נשאר תלות של שלב 6. השלב הבא: שלב 2, חוזים ומעבדת TLS.
-
-## תבנית לשלב הבא
-
-- תאריך, ענף ומצב.
-- מה השתנה במערכת ובאפיון.
-- דרישות שקיבלו מימוש.
-- בדיקות שהורצו ותוצאות בפועל.
-- קישור לקומיט ולבדיקות CI.
-- תלויות פתוחות והשלב הבא.
+For the next stage, record the date and branch, implemented requirements, actual checks, verified commit and CI run, open dependencies and next stage.

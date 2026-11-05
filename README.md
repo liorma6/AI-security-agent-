@@ -1,24 +1,32 @@
 # AI Security Agent
 
-מערכת לבדיקת אבטחת HTTPS ותעודות TLS, עם ממצאים מוסברים ולמידת מכונה לבחינת התרעות שווא.
+AI Security Agent is a local application for developing an HTTPS and TLS assessment service. This bootstrap version runs a React interface, an Express API, a Node.js scanner process and a Python service. The interface reports API connectivity. Website scanning and ML scoring are planned capabilities.
 
-**מצב נוכחי:** שלב 1 הושלם — שלד השירותים פועל, והבדיקות המקומיות ובדיקות GitHub Actions עברו, כולל Docker Compose. סריקות, אחסון ממצאים ומודל ML שייכים לשלבים הבאים.
+```sh
+git clone --branch stage/01-bootstrap https://github.com/liorma6/AI-security-agent-.git
+cd AI-security-agent-
+```
 
-- [מסמך האפיון המתעדכן](docs/specification.md) — דרישות, המימוש הקיים והיסטוריית כל שלב.
-- [הצעת הפרויקט ותוכנית הביצוע](docs/implementation-plan.md)
-- [ארכיטקטורה](docs/architecture.md)
-- [יומן שלבים ובדיקות](docs/stage-log.md)
-- [החלטות סביבת הפיתוח](docs/decisions/0001-runtime-and-local-environment.md)
+## Start with Docker
 
-## דרישות מוקדמות
+Use Docker with the Compose v2 plugin and Linux containers. Start the stack from the repository root.
 
-Node.js **24.22.2** עם npm **11.19.1**, וכלי uv **0.13.1**. uv יוריד את Python **3.13.16** בעת ההתקנה אם הגרסה אינה זמינה. הגרסאות נעולות ב־.nvmrc, .python-version וקובצי הנעילה.
+```sh
+docker compose up --build --wait
+```
 
-להרצת קונטיינרים נדרש Docker עם Compose v2 וקונטיינרי Linux. בשלב 1 אפשר להריץ את ארבעת רכיבי היישום גם בלי Docker.
+Open [the application](http://127.0.0.1:5173). The home page shows **Connected to the API** after a successful health request. To inspect the six services and then stop the stack while keeping its data volumes, use these commands.
 
-## הרצה מקומית
+```sh
+docker compose ps
+docker compose down
+```
 
-מתיקיית המאגר:
+Compose starts the web interface, API, scanner service, ML service, MongoDB and Redis. The application ports bind to loopback. MongoDB and Redis use the internal Compose network. For the Linux kernel used to verify MongoDB startup, see the [runtime notes](docs/decisions/0001-runtime-and-local-environment.md).
+
+## Run from source
+
+Use Node.js 24.22.2, npm 11.19.1 and uv 0.13.1. The Python project pins Python 3.13.16. uv installs it if needed. Run these commands from the repository root.
 
 ```sh
 npm ci
@@ -26,31 +34,24 @@ uv sync --project services/ml --frozen
 npm run dev
 ```
 
-פתחו [http://127.0.0.1:5173](http://127.0.0.1:5173). הפקודה מפעילה יחד את web, api, scanner ו־ml. סיום עם Ctrl+C סוגר את התהליכים. לא נדרשים MongoDB ו־Redis להרצה המקומית בשלב זה; עדיין אין שמירת נתונים או עיבוד תור.
+Open [the application](http://127.0.0.1:5173). Press Ctrl+C in the terminal to stop all four processes. This mode runs with the default configuration and requires only the application processes. On Windows, use `npm.cmd` if PowerShell restricts `npm.ps1`.
 
-ברירות המחדל פועלות בלי קובץ סביבה. לשינוי פורטים אפשר להעתיק את .env.example ל־.env ולערוך אותו. אל תכניסו פרטים אמיתיים לקובץ הדוגמה ואל תעלו .env למאגר.
+## Configuration and health checks
 
-ב־PowerShell, אם מדיניות הרצת scripts חוסמת npm.ps1, השתמשו ב־npm.cmd במקום npm.
+To change ports, copy [.env.example](.env.example) to `.env` and set the values below. Choose four distinct, free ports. Run one stack at a time on the chosen ports.
 
-## הרצה עם Docker
+| Component | Port setting | Default URL |
+| --- | --- | --- |
+| Web | `WEB_PORT` | http://127.0.0.1:5173 |
+| Express API | `API_PORT` | http://127.0.0.1:3001/health |
+| Scanner service | `SCANNER_PORT` | http://127.0.0.1:3002/health |
+| Python ML service | `ML_PORT` | http://127.0.0.1:8000/health |
 
-נדרש Linux kernel התואם ל־MongoDB. סביבת הבדיקות משתמשת ב־Ubuntu 22.04 עם kernel מסדרת 6.8; מגבלת התאימות לגרסאות kernel אחרות מתועדת ב־[החלטות הסביבה](docs/decisions/0001-runtime-and-local-environment.md).
+Open the API health URL to see `service: "api"`, `status: "ok"` and the current capability flags. The web server forwards `/api/health` to the same API. If the page shows **API unavailable**, check the API health URL and the API process output, or run `docker compose logs api web` for a container stack.
 
-```sh
-docker compose up --build --wait
-```
+## Development checks
 
-אותה כתובת מקומית תציג את היישום. Compose מפעיל גם MongoDB ו־Redis עם volumes עמידים, אך הם עדיין אינם מחוברים לפעולות עסקיות. הפורטים החשופים מוגבלים ל־127.0.0.1.
-
-לעצירה תוך שמירת הנתונים:
-
-```sh
-docker compose down
-```
-
-## בדיקות
-
-לאחר התקנת התלויות:
+After installing from source, run the checks below with the application ports free. The smoke test starts the built web interface and the three backend services, checks their HTTP responses, and stops them.
 
 ```sh
 npm run lint
@@ -63,48 +64,9 @@ npx playwright install chromium
 npm run test:web
 ```
 
-smoke מפעיל את השירותים, בודק health ואת ה־build של React, מאמת את ההעברה ל־API ומסיים את התהליכים. הריצו אותו כאשר סביבת dev או Compose אינה תופסת את הפורטים. בדיקות הדפדפן מפעילות סביבת בדיקה משלהן.
+To verify an already running Compose stack with Node.js, run `npm run smoke:stack`.
 
-כאשר Compose כבר פועל:
+## Documentation
 
-```sh
-npm run smoke:stack
-```
-
-GitHub Actions מפעיל בדיקות קוד, Python, build, smoke ודפדפן, ובנפרד build והרצה של Compose עם בדיקת כל השירותים. קומיטים שמשנים רק Markdown או docs אינם מפעילים מחדש בדיקות קוד.
-
-## בדיקת זמינות ספקים
-
-```sh
-npm run check:providers
-```
-
-הפקודה מבצעת שאילתת DNS ל־example.com וקריאת info של SSL Labs. היא אינה מפעילה סריקה ואינה רושמת משתמש. חיבור assessment חי ל־SSL Labs הוא חלק משלב 6 וידרוש רישום מתאים.
-
-## שירותים בשלב 1
-
-| רכיב | כתובת מקומית | התנהגות |
-| --- | --- | --- |
-| web | http://127.0.0.1:5173 | דף פתיחה עם מצב חיבור אמיתי |
-| api | http://127.0.0.1:3001/health | liveness; scanning=false |
-| scanner | http://127.0.0.1:3002/health | liveness; queueConsumer=false |
-| ml | http://127.0.0.1:8000/health | liveness; modelLoaded=false |
-
-health תקין מעיד שהתהליך פועל. הוא אינו מעיד שכבר ניתן לסרוק אתר או לקבל הערכת אבטחה.
-
-## מבנה הפרויקט
-
-```text
-apps/web/               React and Vite
-services/api/           Express API
-services/scanner/       Node.js scanner scaffold
-services/ml/            Python FastAPI service
-packages/runtime/      Shared Node.js service utilities
-packages/contracts/    Contracts reserved for stage 2
-scripts/               Development, smoke and provider checks
-tests/                 Node.js and browser tests
-docker/                Application images and web proxy
-docs/                  Specification, plan and stage history
-```
-
-בכל שלב מעדכנים את האפיון ואת יומן השלבים ומעלים קומיט עם הבדיקות שבוצעו. השלב הבא הוא שלב 2 — חוזים ומעבדת TLS.
+- [System specification](docs/specification.md)
+- [Service architecture](docs/architecture.md)
