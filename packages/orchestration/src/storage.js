@@ -1,11 +1,13 @@
 import { randomUUID } from 'node:crypto';
 import { MongoClient } from 'mongodb';
+import { validateContract } from '@ai-security/contracts';
 import { RequestError } from './targets.js';
 
 const publicRecord = (record) => {
   if (!record) return null;
-  const { _id, requestKey, dispatchAt, executions, resultWrites, ...value } = record;
+  const { _id, requestKey, dispatchAt, executions, resultWrites, collectedObservations, collectionLease, ...value } = record;
   void _id; void requestKey; void dispatchAt; void executions; void resultWrites;
+  void collectedObservations; void collectionLease;
   return value;
 };
 const now = () => new Date().toISOString();
@@ -34,7 +36,7 @@ export async function openStore(config) {
         const createdAt = now();
         const id = randomUUID();
         const record = {
-          _id: id, id, schemaVersion: '1.1.0', hostname, createdAt,
+          _id: id, id, schemaVersion: '1.2.0', hostname, createdAt,
           authorization: { scope: 'public', approvedBy: 'server-allowlist', approvedAt: createdAt, policyVersion: '1.0.0' },
         };
         // A unique hostname also arbitrates simultaneous requests from several API processes.
@@ -52,8 +54,8 @@ export async function openStore(config) {
       async createScan(assetId, requestKey) {
         const id = randomUUID();
         const record = {
-          _id: id, id, assetId, requestKey, schemaVersion: '1.1.0',
-          executionMode: 'orchestration_test', status: 'queued', createdAt: now(),
+          _id: id, id, assetId, requestKey, schemaVersion: '1.2.0',
+          executionMode: config.mode === 'collection' ? 'collection' : 'orchestration_test', status: 'queued', createdAt: now(),
           startedAt: null, completedAt: null, attempt: 1, executions: 0, resultWrites: 0,
           dispatchAt: new Date(0), policyVersion: '1.0.0',
           sources: ['tls', 'http', 'dns', 'ssllabs'].map(source => ({ source, status: 'pending', reason: null })),
@@ -65,6 +67,28 @@ export async function openStore(config) {
         return publicRecord(stored);
       },
       async getScan(id) { return publicRecord(await scans.findOne({ _id: id })); },
+      async getObservations(id) {
+        const record = await scans.findOne({ _id: id }, { projection: { collectedObservations: 1 } });
+        return record ? { scanId: id, items: record.collectedObservations ?? [] } : null;
+      },
+      async acquireAsset(id, owner) {
+        return assets.findOneAndUpdate({
+          _id: id, $or: [{ collectionLease: { $exists: false } }, { 'collectionLease.until': { $lte: new Date() } }],
+        }, { $set: { collectionLease: { owner, until: new Date(Date.now() + 45000) } } }, { returnDocument: 'after' });
+      },
+      async releaseAsset(id, owner) {
+        await assets.updateOne({ _id: id, 'collectionLease.owner': owner }, { $unset: { collectionLease: '' } });
+      },
+      async finishCollection(id, result) {
+        if (!validateContract('ObservationList', { scanId: id, items: result.observations }).valid ||
+            result.observations.some(item => item.scanId !== id) ||
+            !result.sources.every(source => validateContract('SourceState', source).valid) ||
+            !['completed', 'partial', 'failed'].includes(result.status)) throw new Error('Invalid collected result');
+        return scans.updateOne({ _id: id, status: { $in: ['queued', 'running'] } }, {
+          $set: { status: result.status, completedAt: now(), sources: result.sources, collectedObservations: result.observations },
+          $inc: { resultWrites: 1 },
+        });
+      },
       async beginScan(id) {
         return scans.findOneAndUpdate(
           { _id: id, status: { $in: ['queued', 'running'] } },

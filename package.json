@@ -30,7 +30,8 @@
     "test:web": "playwright test",
     "check:providers": "node scripts/check-providers.mjs",
     "test:integration": "node --test --test-concurrency=1 tests/integration/*.test.mjs",
-    "demo": "node --env-file-if-exists=.env scripts/demo-scan.mjs"
+    "demo": "node --env-file-if-exists=.env scripts/demo-scan.mjs",
+    "demo:lab": "node scripts/demo-collection.mjs"
   },
   "devDependencies": {
     "@redocly/cli": "2.75.0",

@@ -28,4 +28,4 @@ generated/ contains unencrypted disposable private keys and is excluded from Git
 
 Tests check certificate dates, hostname mismatch, SNI behavior, chain completeness, explicit private trust, RSA/EC key properties, an actual SHA-1 signed certificate, protocol negotiation, redirect/HSTS headers and a stalled handshake.
 
-Synthetic DNS/provider errors are contract fixtures, not live integrations. A passing lab test proves the fixture's behavior; it does not yet prove that the stage 4 scanner or stage 5 risk engine is implemented.
+Synthetic DNS/provider errors are contract fixtures, not live integrations. The fixture suite proves the fixture behavior. The separate collector suite runs the implemented product collector against these servers and additional bounded-response/redirect scenarios. Risk-rule evaluation is scheduled for stage 5.

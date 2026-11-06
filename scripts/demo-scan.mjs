@@ -22,7 +22,10 @@ while (Date.now() < deadline) {
   const result = await request('/api/scans/' + scan.id);
   if (['partial', 'completed', 'failed'].includes(result.status)) {
     console.log(JSON.stringify(result, null, 2));
-    process.exit(result.status === 'partial' ? 0 : 1);
+    if (result.executionMode === 'collection') {
+      console.log(JSON.stringify(await request('/api/scans/' + scan.id + '/observations'), null, 2));
+    }
+    process.exit(result.status === 'failed' ? 1 : 0);
   }
   await delay(300);
 }

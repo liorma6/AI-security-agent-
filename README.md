@@ -1,92 +1,99 @@
 # AI Security Agent
 
-AI Security Agent is a local toolkit for building evidence-based HTTPS and TLS assessments. The current version stores authorized targets and scan requests in MongoDB, dispatches jobs through Redis and BullMQ, and records their progress. It also includes a reproducible TLS laboratory and an English React interface.
+AI Security Agent collects evidence about authorized websites' HTTPS and TLS configuration. Node.js workers inspect certificates, verify identity and trust, and record HTTP responses and redirects. MongoDB stores targets, scan state and observations. Redis and BullMQ dispatch work. A React page reports the API connection.
 
-The current worker runs in **orchestration_test** mode. Its result identifies the security sources awaiting implementation and ends as **partial**. TLS collection, risk findings and ML scoring are planned capabilities.
+The current release provides collection through the API and command line. Scans finish **partial** while external DNS and SSL Labs evidence await stage 6. Risk findings, the full dashboard and ML scoring have later implementation stages.
 
 ## Install and start
 
-Clone the repository and copy `.env.example` to `.env`. The example authorizes `demo.example.com` for the local orchestration demonstration.
+Use Docker with Compose v2 and Linux containers. Clone the repository and copy .env.example to .env.
 
-```sh
+~~~sh
 git clone https://github.com/liorma6/AI-security-agent-.git
 cd AI-security-agent-
-```
+~~~
 
-Use Docker with Compose v2 and Linux containers, then start the six-service stack.
+Set APP_MODE=collection and add the exact domains you are authorized to assess to ALLOWED_TARGETS in .env, separated by commas. The default allowlist is empty.
 
-```sh
+~~~sh
 docker compose up --build --wait
 docker compose ps
-```
+~~~
 
-Open [the application](http://127.0.0.1:5173). Its current page reports the API connection. Inspect service readiness at [API readiness](http://127.0.0.1:3001/ready) and [worker readiness](http://127.0.0.1:3002/ready). To stop the stack while retaining MongoDB and Redis data, run `docker compose down`. See the [runtime notes](docs/decisions/0001-runtime-and-local-environment.md) for the verified MongoDB host kernel.
+Open [the application](http://127.0.0.1:5173). Check dependencies at [API readiness](http://127.0.0.1:3001/ready) and [worker readiness](http://127.0.0.1:3002/ready). The current page shows the API connection. Submit scans with the API or command below.
 
-## Submit an orchestration job
+Stop with docker compose down to retain stored data. Named volumes hold MongoDB and Redis data. The [runtime notes](docs/decisions/0001-runtime-and-local-environment.md) describe the verified MongoDB host kernel.
 
-With the stack running and Node.js 24.22.2 installed, run the demonstration from the repository root.
+## Submit a scan and read evidence
 
-```sh
-npm run demo -- demo.example.com
-```
+With Node.js 24.22.2 installed, run this from the repository root, replacing the hostname with your allowlisted target.
 
-It creates the authorized target, submits a scan, prints its ID and polls for the stored result. The result has `executionMode: "orchestration_test"`, `status: "partial"` and a reason for each unmeasured source.
+~~~sh
+npm run demo -- your-authorized-domain.example
+~~~
+
+The command creates the asset, submits a scan, prints its ID, polls the stored status and prints its observations. Collection begins only after a scan request. Allowlisted redirect destinations must also have permitted public DNS answers.
 
 | Operation | Behavior |
 | --- | --- |
-| POST /api/assets | Normalize an authorized hostname or root URL and return the stored asset. |
-| GET /api/assets | List assets with limit (1–100) and cursor pagination. |
-| POST /api/scans | Persist a request, return HTTP 202 and a Location header. |
-| GET /api/scans/{scanId} | Read queued, running, partial or failed state and timestamps. |
+| POST /api/assets | Normalize and store an authorized hostname or root URL. |
+| GET /api/assets | List assets with a limit of 1–100 and cursor pagination. |
+| POST /api/scans | Persist a request and return HTTP 202 with its Location. |
+| GET /api/scans/{scanId} | Read status, execution mode, timestamps and source summaries. |
+| GET /api/scans/{scanId}/observations | Read the bounded set of committed evidence and collection errors. |
 | GET /health and /api/health | Read API liveness and capability flags. |
 | GET /ready | Check MongoDB and Redis availability. |
 
-Pass an `Idempotency-Key` header to POST /api/scans when retrying the same request. Reusing a key for a different asset returns 409. If Redis is unavailable, accepted requests stay in MongoDB and the dispatcher retries. A storage failure returns 503. [API contract](packages/contracts/openapi.json).
+Use the same Idempotency-Key header when retrying a scan request. Reusing a key for another asset returns 409. Accepted requests remain in MongoDB during a Redis outage. A storage failure returns 503. Execution mode is fixed when the request is accepted. Older orchestration requests retain their original behavior. [API contract](packages/contracts/openapi.json).
+
+TLS observations contain certificate dates, SAN names, fingerprints, public key details, signature algorithm, chain and hostname verification, and the negotiated protocol/cipher. HTTP observations include endpoint identity, status, Location and authenticated HTTPS HSTS. Each observation records its measurement time and either evidence or a collection error. [Collection policy and limits](docs/decisions/0003-tls-http-collection.md).
+
+## Local laboratory demonstration
+
+Install the source dependencies below and OpenSSL 3.x. Place openssl on PATH or set OPENSSL_BIN to its executable.
+
+~~~sh
+npm run demo:lab
+~~~
+
+This command creates disposable certificates and loopback listeners, runs the product collector against an expired certificate and HTTP redirect, prints measured evidence, then removes the temporary lab. It runs independently of MongoDB and Redis.
+
+For a queue-only demonstration, set APP_MODE=orchestration_test and ALLOWED_TARGETS=demo.example.com in .env, recreate the API and scanner containers, and run npm run demo -- demo.example.com. This mode exercises storage and dispatch and records unmeasured sources explicitly.
 
 ## Configuration
 
-Both the API and worker use the same exact-hostname allowlist. Set `ALLOWED_TARGETS` in `.env` and restart the affected processes after a change. Authorization is checked at submission and again by the worker.
-
-| Setting | Default or purpose |
+| Setting | Purpose |
 | --- | --- |
-| APP_MODE | Source mode defaults to bootstrap. Set orchestration_test for storage and queue processing. Compose enables orchestration_test. |
-| ALLOWED_TARGETS | Empty denies all targets. The example file lists demo.example.com. |
+| APP_MODE | collection enables TLS/HTTP collection. orchestration_test exercises the queue. Source defaults to bootstrap for UI development, while Compose defaults to collection. |
+| ALLOWED_TARGETS | Exact comma-separated hostnames. Empty denies all targets. Restart API and worker after changes. |
 | MONGO_URL / MONGO_DATABASE | Source defaults to mongodb://127.0.0.1:27017 and ai_security. |
 | REDIS_URL / QUEUE_NAME | Source defaults to redis://127.0.0.1:6379 and scans. |
 | WEB_PORT / API_PORT | Default host ports 5173 / 3001. |
 | SCANNER_PORT / ML_PORT | Default host ports 3002 / 8000. |
+| TLS_TRUST_PROFILES_FILE | Optional source-run JSON file binding an approved CA to an exact hostname. See the collection decision. |
 
-Choose distinct free application ports. Compose publishes them on loopback and connects to MongoDB and Redis by internal service name. Bootstrap mode supports interface development with four application processes. Use /ready to distinguish a working process from available storage and queue dependencies.
+Compose uses its internal mongo and redis service addresses. Application ports bind to loopback. Its development override exposes storage ports on loopback for source processes.
 
-## Run application processes from source
+The supplied local MongoDB container has database authentication disabled and is reachable on the Compose service network. It uses a project-owned volume and requires no MongoDB Atlas account. Source processes use the official MongoDB Node.js driver and MONGO_URL. A shared or cloud deployment requires its own access and credential configuration.
 
-Use Node.js 24.22.2, npm 11.19.1 and uv 0.13.1. uv installs the pinned Python 3.13.16 environment. First start only the storage services with the development port mappings, then install and run the application.
+## Run from source
 
-```sh
+Use Node.js 24.22.2, npm 11.19.1 and uv 0.13.1. uv installs the pinned Python 3.13.16 environment. After copying and configuring .env, start storage, install dependencies and launch the application.
+
+~~~sh
 docker compose -f compose.yaml -f compose.development.yaml up -d --wait mongo redis
 npm ci
 uv sync --project services/ml --frozen
 npm run dev
-```
+~~~
 
-With the example `.env`, this connects to the local storage ports and runs the full orchestration path. Press Ctrl+C to stop the application processes. Stop the development storage using `docker compose -f compose.yaml -f compose.development.yaml down`. On Windows, use `npm.cmd` if PowerShell restricts `npm.ps1`.
-
-## TLS laboratory
-
-Install the source dependencies and OpenSSL 3.x. Put openssl on PATH or set OPENSSL_BIN to its executable.
-
-```sh
-npm run test:lab
-npm run lab
-```
-
-The lab creates fresh certificates and isolated loopback listeners. It covers expired and future certificates, hostname mismatch, chain errors, explicit private trust, legacy protocols, redirects, HSTS and timeout. The interactive command prints endpoints and stops with Ctrl+C. [Lab guide](tests/fixtures/tls/README.md).
+Press Ctrl+C to stop application processes. Stop development storage using docker compose -f compose.yaml -f compose.development.yaml down. On Windows, use npm.cmd if PowerShell restricts npm.ps1.
 
 ## Checks and troubleshooting
 
-Run checks after installing dependencies. Keep application ports free for smoke and browser checks.
+Install source dependencies and OpenSSL before running the checks. Keep application ports free for smoke and browser tests.
 
-```sh
+~~~sh
 npm run lint
 npm test
 npm run check:openapi
@@ -97,16 +104,17 @@ npm run build
 npm run smoke
 npx playwright install chromium
 npm run test:web
-```
+~~~
 
-Run `npm run test:integration` with MongoDB and Redis reachable through MONGO_URL and REDIS_URL, or their localhost defaults. It creates an isolated temporary database and queue, starts separate API/worker processes, injects connection and process failures and removes its test data. Tests cover concurrent retries, API restarts, duplicate job delivery, worker crashes, queue outages and authorization revocation. They use the full persistence path. CI runs them with real containers.
+Run npm run test:integration with MongoDB and Redis reachable through MONGO_URL and REDIS_URL or their localhost defaults. Tests create isolated databases and queues, verify persistence and recovery, collect actual loopback TLS/HTTP evidence and remove their test data. CI provides real containers.
 
-For a running Compose stack, run `npm run smoke:stack`. If a request stays queued, inspect /ready and `docker compose logs api scanner redis mongo`. A 403 means the exact normalized hostname needs approval in ALLOWED_TARGETS. After changing Compose configuration, run `docker compose up -d --build`.
+For a running Compose stack, use npm run smoke:stack. If a scan stays queued, inspect /ready and docker compose logs api scanner redis mongo. A 403 requires the exact hostname in ALLOWED_TARGETS. A target_blocked observation identifies a destination rejected during collection. After changing Compose configuration, run docker compose up -d --build.
 
 ## Documentation
 
 - [System specification](docs/specification.md)
 - [Architecture and recovery design](docs/architecture.md)
 - [API and data contracts](packages/contracts/README.md)
+- [TLS laboratory](tests/fixtures/tls/README.md)
 - [TLS rules](docs/rules-and-policy.md)
 - [Finding labeling guide](docs/labeling-guide.md)

@@ -2,8 +2,8 @@
   "openapi": "3.1.2",
   "info": {
     "title": "AI Security Agent API",
-    "version": "1.1.0",
-    "description": "Local single-operator API. Asset and scan operations run in orchestration_test mode with MongoDB and Redis. Later-stage operations remain planned."
+    "version": "1.2.0",
+    "description": "Local single-operator API. Assets, scan requests, readiness and collected observations are implemented. Findings and model operations have later implementation stages."
   },
   "servers": [
     {
@@ -57,7 +57,7 @@
         "tags": [
           "Scans"
         ],
-        "description": "Available in orchestration_test mode. Scan results identify all security sources as unmeasured.",
+        "description": "Available with MongoDB and Redis in orchestration_test or collection mode. Scan requests retain their accepted execution mode.",
         "x-implementation-stage": 3,
         "x-implementation-status": "implemented",
         "requestBody": {
@@ -149,7 +149,7 @@
         "tags": [
           "Scans"
         ],
-        "description": "Available in orchestration_test mode. Scan results identify all security sources as unmeasured.",
+        "description": "Available with MongoDB and Redis in orchestration_test or collection mode. Scan requests retain their accepted execution mode.",
         "x-implementation-stage": 3,
         "x-implementation-status": "implemented",
         "responses": {
@@ -253,7 +253,7 @@
         "tags": [
           "Scans"
         ],
-        "description": "Available in orchestration_test mode. Scan results identify all security sources as unmeasured.",
+        "description": "Available with MongoDB and Redis in orchestration_test or collection mode. Scan requests retain their accepted execution mode.",
         "x-implementation-stage": 3,
         "x-implementation-status": "implemented",
         "requestBody": {
@@ -390,7 +390,7 @@
         "tags": [
           "Scans"
         ],
-        "description": "Available in orchestration_test mode. Scan results identify all security sources as unmeasured.",
+        "description": "Available with MongoDB and Redis in orchestration_test or collection mode. Scan requests retain their accepted execution mode.",
         "x-implementation-stage": 3,
         "x-implementation-status": "implemented",
         "responses": {
@@ -995,6 +995,102 @@
           }
         }
       }
+    },
+    "/api/scans/{scanId}/observations": {
+      "parameters": [
+        {
+          "name": "scanId",
+          "in": "path",
+          "required": true,
+          "description": "Public UUID of the resource",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getScanObservations",
+        "summary": "Read collected observations",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Returns the bounded observations committed with the terminal scan result. Queued requests and older orchestration tests return an empty list.",
+        "x-implementation-stage": 4,
+        "x-implementation-status": "implemented",
+        "responses": {
+          "200": {
+            "description": "Stored evidence and collection errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObservationList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Target forbidden by operator policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Storage unavailable or orchestration mode disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1091,6 +1187,9 @@
       },
       "Readiness": {
         "$ref": "./schemas/contracts.schema.json#/$defs/Readiness"
+      },
+      "ObservationList": {
+        "$ref": "./schemas/contracts.schema.json#/$defs/ObservationList"
       }
     }
   }

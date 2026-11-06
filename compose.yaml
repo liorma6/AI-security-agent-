@@ -7,7 +7,7 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: "3001"
-      APP_MODE: orchestration_test
+      APP_MODE: ${APP_MODE:-collection}
       MONGO_URL: mongodb://mongo:27017
       REDIS_URL: redis://redis:6379
       ALLOWED_TARGETS: ${ALLOWED_TARGETS:-}
@@ -30,7 +30,7 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: "3002"
-      APP_MODE: orchestration_test
+      APP_MODE: ${APP_MODE:-collection}
       MONGO_URL: mongodb://mongo:27017
       REDIS_URL: redis://redis:6379
       ALLOWED_TARGETS: ${ALLOWED_TARGETS:-}

@@ -28,11 +28,11 @@ try {
       const data = await response.json();
       assert.equal(data.service, service);
       assert.equal(data.status, 'ok');
-      const orchestration = service !== 'ml' && data.mode === 'orchestration_test';
-      assert.equal(data.stage, orchestration ? 3 : 1);
-      assert.equal(data.mode, orchestration ? 'orchestration_test' : 'bootstrap');
-      assert.equal(data.capabilities.scanning ?? data.capabilities.inference, false);
-      if (orchestration) {
+      const active = service !== 'ml' && ['orchestration_test', 'collection'].includes(data.mode);
+      const collection = active && data.mode === 'collection';
+      assert.equal(data.stage, collection ? 4 : (active ? 3 : 1));
+      assert.equal(data.capabilities.scanning ?? data.capabilities.inference, collection);
+      if (active) {
         const readiness = await waitFor('http://127.0.0.1:' + ports[service] + '/ready');
         assert.equal((await readiness.json()).status, 'ready');
       }

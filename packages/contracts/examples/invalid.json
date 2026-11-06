@@ -420,5 +420,35 @@
       },
       "error": null
     }
+  },
+  {
+    "name": "Plain HTTP cannot supply authenticated HSTS evidence",
+    "schema": "Observation",
+    "value": {
+      "schemaVersion": "1.2.0",
+      "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      "scanId": "00000000-0000-4000-8000-000000000002",
+      "source": "http",
+      "endpoint": {
+        "hostname": "example.com",
+        "ip": "192.0.2.1",
+        "port": 443,
+        "sni": "example.com",
+        "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "observedAt": "2026-11-04T12:00:00Z",
+      "fetchedAt": "2026-11-04T12:00:00Z",
+      "status": "ok",
+      "evidence": {
+        "statusCode": 200,
+        "location": null,
+        "hsts": "max-age=31536000",
+        "url": "https://example.com/",
+        "authenticated": false,
+        "bodyBytes": 12,
+        "redirectHop": 0
+      },
+      "error": null
+    }
   }
 ]

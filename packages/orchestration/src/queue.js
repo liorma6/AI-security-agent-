@@ -1,4 +1,6 @@
 import { Queue, Worker } from 'bullmq';
+import { randomUUID } from 'node:crypto';
+import { createCollector } from './collector/index.js';
 import Redis from 'ioredis';
 import { setTimeout as delay } from 'node:timers/promises';
 import { targetPolicy } from './targets.js';
@@ -43,7 +45,7 @@ export function startDispatcher(store, queue, { intervalMs = 1000, onError = rep
           }
           continue;
         }
-        await queue.add('orchestration_test', { scanId: scan.id }, {
+        await queue.add(scan.executionMode ?? 'orchestration_test', { scanId: scan.id }, {
           jobId: scan.id, attempts: 3, backoff: { type: 'exponential', delay: 500 },
           removeOnComplete: { count: 1000 }, removeOnFail: { count: 1000 },
         });
@@ -63,7 +65,8 @@ export function startDispatcher(store, queue, { intervalMs = 1000, onError = rep
   return { async close() { stopped = true; clearTimeout(timer); await active; } };
 }
 
-export function startWorker(store, config, { delayMs = 0 } = {}) {
+export function startWorker(store, config, { delayMs = 0, collect } = {}) {
+  const collector = config.mode === 'collection' ? collect ?? createCollector(config) : null;
   const policy = targetPolicy(config.allowedTargets);
   const connection = new Redis(config.redisUrl, { maxRetriesPerRequest: null, connectTimeout: 1000 });
   connection.on('error', error => report('worker_redis_unavailable', error));
@@ -81,7 +84,24 @@ export function startWorker(store, config, { delayMs = 0 } = {}) {
       return;
     }
     if (delayMs) await delay(delayMs);
-    // Stage 3 proves the queue/storage path. Each security source remains explicitly unmeasured.
+    if (record.executionMode === 'collection') {
+      if (!collector) throw new Error('This worker requires collection mode for this request.');
+      const owner = randomUUID();
+      const deadline = Date.now() + 60000;
+      while (!await store.acquireAsset(asset.id, owner)) {
+        if (Date.now() >= deadline) throw new Error('Target collection lease is busy.');
+        await delay(500);
+      }
+      try {
+        // A different delivery may have finished while this worker waited for the target lease.
+        const current = await store.getScan(record.id);
+        if (['queued', 'running'].includes(current.status)) {
+          await store.finishCollection(record.id, await collector(record, asset));
+        }
+      } finally { await store.releaseAsset(asset.id, owner); }
+      return;
+    }
+    // Older requests retain their original orchestration-only behavior.
     await store.finishScan(record.id, 'partial', 'Orchestration test only. Evidence collection is scheduled for a later stage.');
   }, { connection, concurrency: 2, lockDuration: 10000, stalledInterval: 2000, maxStalledCount: 2 });
   worker.on('error', error => report('worker_error', error));

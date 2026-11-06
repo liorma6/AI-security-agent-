@@ -44,3 +44,13 @@ Implemented normalized exact-hostname authorization, asset creation/listing, per
 - Review added regressions for path/query delimiters that URL normalization could otherwise discard, and for releasing storage connections when the HTTP listener cannot bind. Both corrections passed the full CI suite.
 
 The contracts package is now 1.1.0 with continued validation of 1.0.0 records. Collector work, risk rules, provider assessment and ML remain assigned to later stages. The next requested functional stage is 4.
+
+## Stage 4 — TLS and HTTP collection
+
+November 6, 2026 on stage/04-tls-http-collection. Implementation is complete and full integration verification is in progress.
+
+Added bounded TLS/HTTP collection, independent SAN and chain checks, explicit trust profiles, address pinning, public-address enforcement and redirect validation. The worker commits the evidence set and terminal state atomically and serializes collection of the same starting asset across workers. New requests retain their collection mode and older requests preserve orchestration semantics. GET /api/scans/{scanId}/observations and a disposable local lab demo expose the evidence.
+
+The local collector tests cover real TLS/HTTP fixtures, expired and future certificates, SNI, missing chains, explicit private trust, redirects, body/header limits and timeouts. Controlled DNS-answer tests cover rebinding and mixed address families. Real MongoDB/Redis evidence integration and the complete CI run are pending. The user-facing MongoDB explanation is recorded in the README with the local authentication and network settings.
+
+Risk findings belong to stage 5, external-provider evidence to stage 6 and trained predictions to stages 9–10. Live public-target acceptance requires an operator-supplied authorized domain.

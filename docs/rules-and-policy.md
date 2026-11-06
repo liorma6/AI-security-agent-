@@ -33,6 +33,6 @@ Use the operator-approved normalized hostname for SNI and compare SAN against th
 
 The public path is limited to server-authorized targets, HTTP/HTTPS, and ports 80 and 443. The Endpoint schema also represents ephemeral lab ports. Runtime authorization is a separate check.
 
-Stages 3 and 4 will validate every A and AAAA result, including IPv4-mapped IPv6, and block loopback, private, link-local, special and other non-public addresses. Pin the connection to the checked address, preserve Host and SNI, and revalidate every redirect within a bounded hop count.
+Stages 3 and 4 validate every A and AAAA result, including IPv4-mapped IPv6, and block loopback, private, link-local, special and other non-public addresses. Pin the connection to the checked address, preserve Host and SNI, and revalidate every redirect within a bounded hop count.
 
 The fixture harness uses listeners created by the current run on 127.0.0.1 and their allocated ports. The lab is isolated from the public scan path. The [fixture guide](../tests/fixtures/tls/README.md) describes live, offline and synthetic evidence.

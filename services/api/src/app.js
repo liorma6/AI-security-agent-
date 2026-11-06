@@ -21,13 +21,13 @@ function pagination(query) {
   return { limit, cursor: query.cursor === undefined ? null : uuid(query.cursor) };
 }
 
-export function createApp({ store, queue, allowedTargets = '' } = {}) {
+export function createApp({ store, queue, allowedTargets = '', mode = 'orchestration_test' } = {}) {
   const enabled = Boolean(store);
   const policy = targetPolicy(allowedTargets);
   return createServiceApp({
     service: 'api', healthPaths: ['/health', '/api/health'],
-    stage: enabled ? 3 : 1, mode: enabled ? 'orchestration_test' : 'bootstrap',
-    capabilities: { scanning: false, persistence: enabled, ...(enabled ? { scanRequests: true } : {}) },
+    stage: enabled ? (mode === 'collection' ? 4 : 3) : 1, mode: enabled ? mode : 'bootstrap',
+    capabilities: { scanning: enabled && mode === 'collection', persistence: enabled, ...(enabled ? { scanRequests: true } : {}) },
     configure(app) {
       app.get('/ready', async (_req, res) => {
         if (!enabled) return res.status(503).json({ status: 'degraded', dependencies: { mongo: false, redis: false } });
@@ -38,12 +38,13 @@ export function createApp({ store, queue, allowedTargets = '' } = {}) {
       });
       if (!enabled) {
         const unavailable = (_req, res) => res.status(503).json({ error: {
-          code: 'service_unavailable', message: 'Enable orchestration_test mode with MongoDB and Redis.',
+          code: 'service_unavailable', message: 'Enable collection or orchestration_test mode with MongoDB and Redis.',
         } });
         app.post('/api/assets', unavailable);
         app.get('/api/assets', unavailable);
         app.post('/api/scans', unavailable);
         app.get('/api/scans/:scanId', unavailable);
+        app.get('/api/scans/:scanId/observations', unavailable);
         return;
       }
       app.use('/api', express.json({ limit: '16kb' }));
@@ -70,6 +71,11 @@ export function createApp({ store, queue, allowedTargets = '' } = {}) {
         const scan = await store.getScan(uuid(req.params.scanId));
         if (!scan) throw new RequestError(404, 'not_found', 'Scan not found.');
         res.json(scan);
+      });
+      app.get('/api/scans/:scanId/observations', async (req, res) => {
+        const result = await store.getObservations(uuid(req.params.scanId));
+        if (!result) throw new RequestError(404, 'not_found', 'Scan not found.');
+        res.json(result);
       });
       app.use((error, _req, res, _next) => {
         void _next;

@@ -6,6 +6,6 @@
   "dependencies": {
     "@ai-security/runtime": "0.1.0",
     "@ai-security/orchestration": "0.1.0",
-    "@ai-security/contracts": "1.1.0"
+    "@ai-security/contracts": "1.2.0"
   }
 }

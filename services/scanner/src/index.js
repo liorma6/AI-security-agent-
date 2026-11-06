@@ -9,12 +9,12 @@ let store;
 let queue;
 let background;
 try {
-  if (config.mode === 'orchestration_test') {
+  if (config.mode !== 'bootstrap') {
     store = await openStore(config);
     queue = createQueue(config);
     background = startWorker(store, config, { delayMs: process.env.NODE_ENV === 'test' ? Number(process.env.TEST_WORK_DELAY_MS ?? 0) : 0 });
   }
-  serve(createApp({ store, queue, worker: background }), {
+  serve(createApp({ store, queue, worker: background, mode: config.mode }), {
     service: 'scanner', port: readPort(process.env.PORT ?? process.env.SCANNER_PORT, 3002),
     host: process.env.HOST ?? '127.0.0.1',
     async onClose() { await background?.close(); await queue?.close(); await store?.close(); },

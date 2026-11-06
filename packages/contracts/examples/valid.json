@@ -223,5 +223,97 @@
       }
     ],
     "nextCursor": null
+  },
+  "ObservationList": {
+    "scanId": "00000000-0000-4000-8000-000000000002",
+    "items": [
+      {
+        "schemaVersion": "1.2.0",
+        "id": "00000000-0000-4000-8000-000000000003",
+        "scanId": "00000000-0000-4000-8000-000000000002",
+        "source": "tls",
+        "endpoint": {
+          "hostname": "example.com",
+          "ip": "192.0.2.1",
+          "port": 443,
+          "sni": "example.com",
+          "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "observedAt": "2026-11-04T12:00:00Z",
+        "fetchedAt": "2026-11-04T12:00:00Z",
+        "status": "ok",
+        "evidence": {
+          "certificate": {
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "subject": "CN=example.com",
+            "issuer": "CN=Example laboratory CA",
+            "sans": [
+              "example.com"
+            ],
+            "notBefore": "2026-01-01T00:00:00Z",
+            "notAfter": "2026-10-01T00:00:00Z",
+            "keyType": "RSA",
+            "keyBits": 2048,
+            "signatureAlgorithm": "sha256WithRSAEncryption"
+          },
+          "chainSha256": [
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ],
+          "trustProfile": "lab-root",
+          "authorized": false,
+          "authorizationErrors": [
+            "CERT_HAS_EXPIRED"
+          ],
+          "negotiatedProtocol": "TLSv1.3",
+          "supportedProtocols": null,
+          "enumerationComplete": false,
+          "chainAuthorized": true,
+          "hostnameMatches": true,
+          "negotiatedCipher": "TLS_AES_256_GCM_SHA384",
+          "certificates": [
+            {
+              "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "subject": "CN=example.com",
+              "issuer": "CN=Example laboratory CA",
+              "sans": [
+                "example.com"
+              ],
+              "notBefore": "2026-01-01T00:00:00Z",
+              "notAfter": "2026-10-01T00:00:00Z",
+              "keyType": "RSA",
+              "keyBits": 2048,
+              "signatureAlgorithm": "sha256WithRSAEncryption"
+            }
+          ]
+        },
+        "error": null
+      },
+      {
+        "schemaVersion": "1.2.0",
+        "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "scanId": "00000000-0000-4000-8000-000000000002",
+        "source": "http",
+        "endpoint": {
+          "hostname": "example.com",
+          "ip": "192.0.2.1",
+          "port": 443,
+          "sni": "example.com",
+          "certificateSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "observedAt": "2026-11-04T12:00:00Z",
+        "fetchedAt": "2026-11-04T12:00:00Z",
+        "status": "ok",
+        "evidence": {
+          "statusCode": 200,
+          "location": null,
+          "hsts": "max-age=31536000",
+          "url": "https://example.com/",
+          "authenticated": true,
+          "bodyBytes": 12,
+          "redirectHop": 0
+        },
+        "error": null
+      }
+    ]
   }
 }
