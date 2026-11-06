@@ -12,6 +12,8 @@ flowchart LR
     Dispatcher --> Redis[(Redis and BullMQ)]
     Redis --> Worker[Node worker]
     Worker --> Mongo
+    Worker --> Policy[Destination and DNS policy]
+    Policy --> Target[Authorized TLS and HTTP endpoints]
     ML[Python ML health service]
 ```
 

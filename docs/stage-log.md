@@ -47,10 +47,14 @@ The contracts package is now 1.1.0 with continued validation of 1.0.0 records. C
 
 ## Stage 4 — TLS and HTTP collection
 
-November 6, 2026 on stage/04-tls-http-collection. Implementation is complete and full integration verification is in progress.
+Completed November 6, 2026 on stage/04-tls-http-collection. FR05 is implemented and verified.
 
 Added bounded TLS/HTTP collection, independent SAN and chain checks, explicit trust profiles, address pinning, public-address enforcement and redirect validation. The worker commits the evidence set and terminal state atomically and serializes collection of the same starting asset across workers. New requests retain their collection mode and older requests preserve orchestration semantics. GET /api/scans/{scanId}/observations and a disposable local lab demo expose the evidence.
 
-The local collector tests cover real TLS/HTTP fixtures, expired and future certificates, SNI, missing chains, explicit private trust, redirects, body/header limits and timeouts. Controlled DNS-answer tests cover rebinding and mixed address families. Real MongoDB/Redis evidence integration and the complete CI run are pending. The user-facing MongoDB explanation is recorded in the README with the local authentication and network settings.
+- Local Windows checks passed ESLint, Ruff, OpenAPI, 66 Node.js tests, 43 Python tests, 21 lab subtests (23 results including parents), React build, smoke and two browser tests. The disposable lab demonstration measured an expired certificate and authenticated redirect destination. The production npm audit reported zero advisories at verification time.
+- The product collector used actual loopback TLS/HTTP fixtures for SNI, expiry, future validity, missing chains, private trust, redirects, body/header limits and timeouts. Controlled DNS-answer tests covered rebinding and mixed address families. Accepted and rejected contract examples also ran in Python.
+- The real MongoDB/Redis integration suite passed 12 subtests (14 results including parents). Collection checks verified actual evidence through the API and workers, atomic persistence, API restart, duplicate delivery, lease ownership/expiry and backward compatibility. The earlier process-failure recovery scenarios also passed.
+- The initial Compose run exposed a stale nginx upstream address after the API container was recreated for collection mode. Dynamic service resolution fixed the failure. The repeat run verified all six services, the orchestration demonstration, collection-mode startup and the same-origin API connection after container replacement. All three CI jobs passed. [Verified implementation](https://github.com/liorma6/AI-security-agent-/commit/929cc90ecc7c4a763f350ae8eb050111c6567cef) and [stage 4 CI run](https://github.com/liorma6/AI-security-agent-/actions/runs/42248412211).
+- Docker and full storage integration ran in GitHub Actions. The local workstation validation covered source processes and the TLS/HTTP lab. The README now records MongoDB's local authentication/network settings and the distinction from an Atlas deployment.
 
 Risk findings belong to stage 5, external-provider evidence to stage 6 and trained predictions to stages 9–10. Live public-target acceptance requires an operator-supplied authorized domain.
