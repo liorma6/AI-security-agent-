@@ -1,11 +1,10 @@
 """Validate the project documentation using only the Python standard library."""
 
-from pathlib import Path
 import re
 import sys
-from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
-
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 CHAPTERS = [
@@ -22,10 +21,24 @@ CHAPTERS = [
 
 def main() -> int:
     issues = []
-    paths = [ROOT / name for name in ("README.md", "AGENTS.md", ".gitignore", ".gitattributes")]
-    for directory in ("docs", "scripts", ".github"):
-        paths.extend(path for path in (ROOT / directory).rglob("*") if path.is_file()
-                     and "__pycache__" not in path.parts)
+    paths = [
+        ROOT / name
+        for name in (
+            "README.md",
+            "AGENTS.md",
+            ".gitignore",
+            ".gitattributes",
+            ".python-version",
+            "pyproject.toml",
+            "uv.lock",
+        )
+    ]
+    for directory in ("docs", "scripts", ".github", "src", "tests"):
+        paths.extend(
+            path
+            for path in (ROOT / directory).rglob("*")
+            if path.is_file() and "__pycache__" not in path.parts
+        )
     for path in paths:
         name = path.relative_to(ROOT).as_posix()
         if not path.is_file():
@@ -84,9 +97,11 @@ def main() -> int:
     if issues:
         print("\n".join(issues), file=sys.stderr)
         return 1
-    print(f"Documentation checks passed: {len(paths)} English UTF-8 files, local links, "
-          "table structure, eight chapters and two UML diagrams.")
-    print("Application implementation and model experiments are pending.")
+    print(
+        f"Documentation checks passed: {len(paths)} English UTF-8 files, local links, "
+        "table structure, eight chapters and two UML diagrams."
+    )
+    print("Foundation contracts are implemented; model experiments and the demo are pending.")
     return 0
 
 

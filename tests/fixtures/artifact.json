@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "model_id": "fixture-classifier",
+  "model_revision": "fixture-v1",
+  "source": "synthetic-contract-fixture-no-model-file",
+  "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "preprocessing_version": "preserve-text-v1",
+  "label_mapping": {"legitimate": 0, "phishing": 1},
+  "threshold": 0.5,
+  "tokenizer": null
+}

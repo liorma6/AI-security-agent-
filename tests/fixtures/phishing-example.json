@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "example_id": "fixture-phishing-01",
+  "email": {"subject": "Fictional account warning", "body": "Your example account will close. Enter your password at https://account-check.example.invalid to keep it open."},
+  "label": "phishing",
+  "source_id": "phishguard-synthetic-fixtures",
+  "source_revision": "foundation-1",
+  "license": "CC0-1.0",
+  "group_id": "fixture-account-warning",
+  "split": "unassigned"
+}

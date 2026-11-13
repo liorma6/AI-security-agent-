@@ -2,14 +2,14 @@
 
 Updated November 13, 2026. The [project book](project-book.md) defines the course scope, requirements, research protocol and equal Lior/Sharon ownership. The [stage log](stage-log.md) records completed work and actual checks.
 
-The current deliverable is the specification and development plan. Stages 1-9 below are not implemented. Complete one requested stage at a time, verify its acceptance criteria and commit it before starting the next stage.
+Stages 0 and 1 are implemented at their stated scope. Stage 1 provides the Python foundation, contracts, synthetic fixtures and validation checks. Stages 2-9 are not implemented. Complete one requested stage at a time, verify its acceptance criteria and commit it before starting the next stage. Student review and course approval remain separate from implementation status.
 
 ## Stages and acceptance criteria
 
 | Stage | Deliverable and acceptance | Responsibility | Status |
 | --- | --- | --- | --- |
 | 0. Specification | Eight course chapters, PG01-PG10 requirements, STRIDE, UML, planned tests, learning record and balanced ownership; valid internal links and consistent status | Lior and Sharon review the AI-assisted drafts together | Draft prepared; verification recorded in stage log |
-| 1. Python foundation and contracts | Select a compatible development environment; define email, prediction and artifact records; add small reviewed fixtures and input-validation tests; document runnable commands | Lior: contracts and setup. Sharon: validation cases and fixture review. W02 | Planned |
+| 1. Python foundation and contracts | Select a compatible development environment; define email, prediction and artifact records; add small reviewed fixtures and input-validation tests; document runnable commands | Lior: contracts and setup. Sharon: validation cases and fixture review. W02 | Implemented and checked; student fixture review remains to be recorded |
 | 2. Dataset preparation | Review source/license and labels; ingest and deduplicate; assign campaign/template groups where identifiable; freeze train/validation/test manifests; test group separation | Lior: provenance and ingestion. Sharon: labels, deduplication and split validator. W03 | Planned |
 | 3. Classical baseline | Train TF-IDF plus logistic regression using training data only; save/load artifacts; select threshold on validation data; report held-out metrics and counts; test leakage and reproducibility | Lior: training and artifacts. Sharon: evaluation and leakage checks. W04 | Planned |
 | 4. Pretrained comparison | Select a task-compatible Hugging Face classifier; pin revision and verify label mapping; evaluate on the same dataset protocol and document resource conditions | Lior: model review and inference adapter. Sharon: label checks and comparative evaluation. W05 | Planned |

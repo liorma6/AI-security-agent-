@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "example_id": "fixture-legitimate-01",
+  "email": {"subject": "Workshop notes", "body": "The notes from our fictional workshop are ready for review."},
+  "label": "legitimate",
+  "source_id": "phishguard-synthetic-fixtures",
+  "source_revision": "foundation-1",
+  "license": "CC0-1.0",
+  "group_id": "fixture-workshop",
+  "split": "unassigned"
+}

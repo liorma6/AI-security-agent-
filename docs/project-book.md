@@ -1,10 +1,10 @@
 # PhishGuard - Initial Project Book
 
-Revision 1.0 - November 13, 2026
+Revision 1.1 - November 13, 2026 - Python foundation
 
 Team: Lior and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
 
-Status: INITIAL PROJECT SPECIFICATION. The PhishGuard scope, requirements, threat model, architecture and work plan are documented. Dataset preparation, classification, training, adversarial evaluation and the demo are planned and not implemented. This book is the canonical specification; it will acquire implementation evidence and experimental results as each stage is completed.
+Status: STAGE 1 FOUNDATION IMPLEMENTED. The specification and Python foundation are available: versioned contracts, offline input validation, synthetic fixtures and automated tests. Dataset preparation, classification, training, adversarial evaluation and the demo are planned and not implemented. This book is the canonical specification; implementation evidence and experimental results are added as each stage is completed.
 
 ## 1. Background
 
@@ -67,7 +67,7 @@ For the defense comparison, report results on fixed saved variants and the same 
 
 ### 3.1 Requirements from the supplied brief
 
-All PG requirements below are planned and not yet implemented.
+The PG requirements describe the complete assignment. Stage 1 supplies the environment and contract-validation foundation for them; no dataset, trained detector or completed robustness experiment is claimed. PG01's task-specific learning continues alongside implementation. The remaining end-to-end acceptance evidence is planned.
 
 | ID | Requirement | Verification |
 | --- | --- | --- |
@@ -88,7 +88,7 @@ The brief lists Python, Hugging Face Transformers/Datasets, scikit-learn, Google
 
 Use a modular Python pipeline with a Gradio demo. Keep dataset preparation, feature extraction, training, perturbation, evaluation and inference separate. Use local versioned files for manifests and aggregate results. The offline experiment pipeline prepares reviewed artifacts; the demo loads a selected artifact for inference. Container packaging may be added when it makes the completed demo easier to reproduce.
 
-Start with English plain-text subject/body inputs, subject to dataset review. Raw MIME parsing, attachments, sender authentication, mailbox integration and multilingual claims are outside the first version. Choose and pin a Python/training-library combination after checking the selected model's requirements. Keep large checkpoints and datasets outside Git and record their provenance and digests in small manifests.
+Start with English plain-text subject/body inputs, subject to dataset review. Raw MIME parsing, attachments, sender authentication, mailbox integration and multilingual claims are outside the first version. The foundation supports Python 3.11-3.13; local development uses Python 3.13.16, uv 0.13.1 and a locked dependency environment. It uses Pydantic for strict record validation, pytest for tests and Ruff for code checks. Training-library compatibility will be checked when models are selected. Keep large checkpoints and datasets outside Git and record provenance and digests in small manifests.
 
 Select a public dataset after checking license, privacy, label semantics and overlap with evaluation sources. Select a pretrained classifier with relevant phishing/legitimate labels. A generic sentiment model cannot be evaluated by relabeling positive/negative sentiment as safe/phishing. A base encoder without a trained classification head also does not provide a ready phishing detector.
 
@@ -99,7 +99,7 @@ Select a public dataset after checking license, privacy, label semantics and ove
 | Q01 | Trace every dataset/model/experiment revision | Manifest with source revision, digest, seed, configuration and split IDs |
 | Q02 | Prevent leakage | No group or derived variant crosses splits; training alone fits transformations |
 | Q03 | Preserve email privacy | No raw pasted email logging or storage by default; licensed/redacted fixtures only |
-| Q04 | Bound resource use | Proposed 20,000-character and 512-token limits, visible truncation, bounded concurrency and explicit failures; tune after profiling |
+| Q04 | Bound resource use | Implemented 20,000-code-point combined email and 262,144-byte JSON limits, with rejection and no truncation; proposed 512-token/concurrency limits remain for model integration |
 | Q05 | Treat email content as inert data | Render escaped text; do not open links, send mail or execute attachments/instructions |
 | Q06 | Load reviewed model artifacts | Pin revisions, verify manifests and disable unreviewed remote code; avoid untrusted serialized executables |
 | Q07 | Explain uncertainty | Display a model score, threshold and model identity; do not claim a calibrated probability without calibration evidence |
@@ -118,9 +118,11 @@ Select a public dataset after checking license, privacy, label semantics and ove
 
 Separate model indicators from factual claims about the sender. A baseline explanation can show influential TF-IDF features; a transformer explanation needs a declared attribution or indicator method and limitations. Generated prose is optional and cannot replace measurement.
 
+Stage 1 implements EmailInput, EmailExample, ModelArtifact, Prediction and UnavailablePrediction. [Contract details](contracts.md) define required fields, strict types, preserved text, explicit label mapping, finite scores and threshold/label consistency. The prediction contract has no inference implementation; manifest validation checks metadata/digest syntax without loading or hashing a model file. Perturbation and ExperimentRun remain future designs. Synthetic fixtures document provenance and use unassigned splits; they are not a selected research dataset.
+
 ## 4. STRIDE threat analysis
 
-This is a proposed threat model for PhishGuard. The controls and checks below are not implemented merely because they are described here. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
+This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public error responses. The broader controls below remain planned unless linked to implemented evidence in the stage log. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
 
 ### 4.1 Assets, actors and trust boundaries
 
@@ -147,18 +149,18 @@ Residual risks include dataset bias, incomplete campaign grouping, novel attack 
 
 ### 5.1 Current verification status
 
-The repository currently contains the PhishGuard specification and implementation plan. Documentation verification checks the required chapter structure, local links and project consistency. The [stage log](stage-log.md) records actual completed checks and their scope.
+The repository contains the specification and implemented Python contracts/CLI. Eighty automated tests passed locally on Python 3.13.16. They cover the synthetic examples, input length and Unicode preservation, malformed/oversized/deep JSON, provenance, label mapping, score/threshold consistency and private CLI errors. Documentation checks cover chapter structure, English text, links and tables. The [stage log](stage-log.md) records verification details and CI evidence.
 
-No phishing-classifier unit tests or model-quality measurements exist yet. Add tests alongside each implemented module. A documentation check is not an inference test, and a planned test is not a passing test.
+No trained-classifier tests or model-quality measurements exist yet. Contract/CLI tests verify data handling, not detection quality. Add module tests and measured experiments as implementation proceeds.
 
 ### 5.2 Planned PhishGuard unit-test matrix
 
-All tests below are planned. Use small offline fixtures with fixed seeds; expensive model training and full-corpus evaluation belong to separate integration/experiment checks.
+The matrix below describes the final test goals. Stage 1 implements the input-validation parts of U01/U02, text-preservation part of U03, metadata-mapping part of U06, record-level threshold checks in U07, unavailable-result shape in U11 and CLI privacy part of U12. Grouping, inference adapters, model loading, HTML output and all remaining model/experiment behaviors are pending. Use small offline fixtures; full-corpus evaluation belongs to separate experiment checks.
 
 | ID | Unit and input | Expected result | Owner |
 | --- | --- | --- | --- |
 | U01 | Empty, whitespace and malformed email input | A structured validation error; no inference call | Lior |
-| U02 | Exact length limit and one character above it | Accepted at the boundary; rejected above it; truncation is explicit | Sharon |
+| U02 | Exact length limit and one character above it | Accepted at the boundary; rejected above it without truncation | Sharon |
 | U03 | Unicode, punctuation and template duplicates | Stable preprocessing/group IDs; no silent label-changing cleanup | Lior |
 | U04 | Duplicate and derived variant across splits | Split validator rejects leakage | Sharon |
 | U05 | Validation-only token in a tiny corpus | Token absent from the training-fitted TF-IDF vocabulary | Lior |
@@ -186,17 +188,17 @@ The proposed solution is a modular Python experiment with a simple local Gradio 
 
 This initial book contains the required eight chapters, a STRIDE analysis, UML design, test plan and equal ownership allocation. It contains no claimed detector accuracy, trained-model result or completed defense. Those conclusions must follow measured experiments.
 
-Open implementation decisions are the licensed dataset, confirmed language coverage, pretrained checkpoint, compatible training environment and practical compute budget. The next stage establishes the Python development environment, email/result contracts and small reviewed fixtures; dataset preparation and the baseline then follow in the [implementation plan](implementation-plan.md).
+Stage 1 established the Python environment, strict contracts, privacy-conscious offline validation and synthetic fixtures. Validation results support those foundation behaviors only. Open decisions are the licensed dataset, confirmed language coverage, pretrained checkpoint, training environment and compute budget. Stage 2 selects and prepares research data; the baseline follows in stage 3 of the [implementation plan](implementation-plan.md).
 
 ## 7. Architecture - UML
 
-The following UML diagrams describe the proposed PhishGuard design. They specify intended modules and interactions; the application components have not been implemented.
+The UML diagrams distinguish the implemented CLI/contract foundation from the planned application and experiment modules. The complete inference interaction remains a target design; a validated prediction record is not a model-generated prediction.
 
 ### 7.1 UML component diagram
 
 ![Proposed PhishGuard UML component diagram](diagrams/phishguard-components.svg)
 
-Rectangles marked component are software components; rectangles marked artifact are files. Dashed open-arrow dependencies point from a component to the component/artifact it uses. The demo depends on shared inference and explanation modules. The offline runner depends on data preparation, trainers, the perturbation harness and evaluation. All use reviewed versioned artifacts. These are logical Python modules within the application.
+Rectangles marked component are software components; rectangles marked artifact are files. Dashed open-arrow dependencies point from a component to the component/artifact it uses. Green components are implemented in stage 1: the CLI calls the shared contract validator. Pale components are planned. The demo and offline runner will reuse the validator along with inference, explanation and experiment modules. These are logical Python modules within the application.
 
 The Gradio UI calls a Python inference function. Offline training can run on a workstation or Colab; exported reviewed artifacts feed local inference. Model/dataset downloads occur in the reviewed preparation workflow, not in response to pasted message instructions.
 
@@ -237,7 +239,7 @@ Both students participate in all topics. Each has five review-lead sessions. Pyt
 
 ### 8.3 Two-semester milestones and ownership
 
-Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification draft exists; its code contracts, fixtures and student review remain planned. Implementation in W03-W10 has not started.
+Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. Implementation in W03-W10 has not started.
 
 | Package / period | Lior - 5 units | Sharon Elimelech - 5 units | Completion evidence |
 | --- | --- | --- | --- |
@@ -256,7 +258,7 @@ Totals: Lior 10 x 5 = 50 units; Sharon Elimelech 10 x 5 = 50 units. The asymmetr
 
 ### 8.4 Contribution evidence and stage completion
 
-The specification, STRIDE table, proposed UML, planned tests and ownership schedule are present. These documents are AI-assisted drafts for both students to review. No dataset preparation, classifier, training pipeline, perturbation harness or demo implementation is claimed as complete.
+The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts, an offline validator, fixtures and automated validation tests. The documents and code were developed with AI assistance for both students to review. No dataset preparation, classifier, training pipeline, perturbation harness or demo implementation is claimed as complete.
 
 Lior owns the input/result contracts, dataset ingestion, baseline training, model adapters, fine-tuning runner, perturbation operations and demo integration listed in section 8.3. Sharon Elimelech owns validation fixtures, dataset quality and splits, evaluation and leakage checks, tokenization/reproducibility checks, perturbation validity, defense training and explanation/privacy checks. Each implementation package also includes tests and peer review; the weights in section 8.3 include that work.
 

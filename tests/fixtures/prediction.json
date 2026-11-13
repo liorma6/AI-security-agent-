@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "status": "ok",
+  "example_id": "fixture-phishing-01",
+  "model_id": "fixture-classifier",
+  "model_revision": "fixture-v1",
+  "score": 0.75,
+  "threshold": 0.5,
+  "label": "phishing",
+  "elapsed_ms": 1.0
+}
