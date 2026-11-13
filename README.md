@@ -1,10 +1,10 @@
 # PhishGuard
 
-PhishGuard is a course project on phishing-email classification and adversarial robustness. It compares a TF-IDF/logistic-regression baseline, a reviewed Hugging Face classifier and a locally fine-tuned small transformer. Planned extensions measure the effect of controlled text changes and evaluate a defense. A local web demo will accept pasted email text and show a risk score and explanation.
+PhishGuard is a course project on phishing-email classification and adversarial robustness. It compares a TF-IDF/logistic-regression baseline, a reviewed Hugging Face classifier and a locally fine-tuned small transformer. A bounded offline experiment measures the effect of controlled text changes. A robustness defense remains planned. A local web demo will accept pasted email text and show a risk score and explanation.
 
 ## Current status
 
-PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison, external generalization audit and separately trained real-mail baseline v2 are available. Stage 5 adds reproduced BERT-Tiny fine-tuning and a preserved-baseline comparison. Adversarial experiments and the web demo remain planned; stage 6 has not started.
+PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison, external generalization audit and separately trained real-mail baseline v2 are available. Stage 5 adds reproduced BERT-Tiny fine-tuning and a preserved-baseline comparison. Stage 6 adds fixed-bank controlled evasion with unchanged models, explicit budgets and bounded semantic review. Defense and the web demo remain planned; stage 7 has not started.
 
 ## Install
 
@@ -143,7 +143,24 @@ The verified download is about 18 MB. Training fine-tunes all weights of Google'
 
 Training uses 3,261 rows only; 745 validation rows select epoch 5 and threshold 0.69. It never reads benchmark/reserve text. Comparison uses the unchanged baseline v2 at 0.31 on identical inputs, excluding the entire earlier reviewed family. Historical accuracy is **98.82% baseline / 98.58% transformer** across 423 rows. On the mainly synthetic 2,000-row challenge, accuracy is **80.10% / 80.80%**, false-positive rate **37.20% / 29.80%**, and phishing recall **97.40% / 91.40%**. Fewer false alarms come with more missed phishing; this is not a general model-quality victory or production-ready filter. The previously scored cohorts are retrospective benchmarks, while 703 reserve messages remain unscored.
 
-Inference right-truncates to 256 tokens with explicit length metadata. It does not save or transmit pasted text. All raw data, model weights and per-example predictions stay local; text-free reports, source/protocol manifests and the selected identity are versioned. Stage 6 has not started.
+Inference right-truncates to 256 tokens with explicit length metadata. It does not save or transmit pasted text. All raw data, model weights and per-example predictions stay local; text-free reports, source/protocol manifests and the selected identity are versioned. Stage-6 measurements follow below.
+
+## Measure controlled evasion
+
+After completing stage-5 data/model preparation:
+
+```sh
+uv run --frozen phishguard evasion preview
+uv run --frozen phishguard evasion prepare
+uv run --frozen phishguard evasion verify
+uv run --frozen --extra pretrained phishguard evasion evaluate
+```
+
+The training-only preview scores no model. Preparation creates a deterministic local bank of bounded typos, letter swaps and lexical substitutions. Verification regenerates the bank and requires the committed manifest. Evaluation compares the unchanged baseline v2 and BERT-Tiny on the same variants, with at most 12 candidate predictions plus one clean prediction per original/model. Existing outputs are refused. See the [evasion guide](docs/controlled-evasion.md) for paths, reproduction and the fixed threat model. There is no new download, API key or model training.
+
+The measured bank contains 19,969 variants for 2,423 benchmark originals. On the mainly synthetic challenge, constraint-pass candidates evade **8/974 (0.82%)** initially detected phishing messages for baseline v2 and **95/914 (10.39%)** for BERT. On the common 909 initially detected originals, counts are **4/909 versus 91/909**. These are candidate-ASR measurements under automatic constraints; only a bounded semantic sample was reviewed. They are not percentages of all email or guarantees against other attacks. The historical benchmark yields zero/one new misses. Known-cohort, source, template and truncation limitations remain; baseline's clean challenge false-positive rate is still 37.20%.
+
+Models, thresholds and earlier data are preserved. The 703-message reserve remains unscored. Variants, original text and detailed predictions stay in ignored local artifact folders; only text-free manifests, reviews and aggregate reports enter Git. Stage 7 has not started.
 
 ## Run checks and build
 
@@ -155,7 +172,7 @@ uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The 267 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Fine-tuning checks add actual encoder updates, deterministic selection/reload, reviewed-family exclusion and separate fitting/evaluation read boundaries. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
+The 292 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Fine-tuning checks add actual encoder updates, deterministic selection/reload, reviewed-family exclusion and separate fitting/evaluation read boundaries. Evasion tests add protected edit spans, lineage/replay, query caps, zero/empty cases, ASR denominators and scoring without training files or updates. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
 
 ## Documentation
 
@@ -172,12 +189,13 @@ The 267 offline tests cover contracts, malformed JSON, input limits, mappings, t
 - [External pre-score label review](docs/external-label-audit.md)
 - [Data refresh, baseline v2 and remaining limits](docs/baseline-refresh.md)
 - [Fine-tuned transformer, reproduction and measured trade-offs](docs/finetuned.md)
+- [Controlled evasion, budgets and measured limits](docs/controlled-evasion.md)
 
-The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit, data refresh, fine-tuning and local inference. Web-demo commands will be added when the UI is implemented.
+The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit, data refresh, fine-tuning, controlled evasion and local inference. Web-demo commands will be added when the UI is implemented.
 
 ## Planned deliverables
 
-- A controlled text-perturbation runner and a robustness improvement experiment.
+- A robustness defense experiment with clean, fixed-variant and fresh-search comparisons.
 - A local pasted-email demo with model identity, score and explanation.
 - A comparative report and final presentation.
 

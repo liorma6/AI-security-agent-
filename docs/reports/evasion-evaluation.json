@@ -1,0 +1,838 @@
+{
+  "bank_manifest_sha256": "5b1f9ca1cd803588cb86c60fa8f465205bba67bc13b199dccaa5187512bf02da",
+  "code": {
+    "commit": "427685b9d74444142d09b011a8cb2d09df2abf0d",
+    "working_tree_dirty": false
+  },
+  "cohorts": {
+    "challenge": {
+      "batch_scoring_seconds": {
+        "baseline_v2": 1.5815322000999004,
+        "finetuned": 17.407090799941216
+      },
+      "common_clean_detected_phishing": {
+        "models": {
+          "baseline_v2": {
+            "candidate_asr": 0.0044004400440044,
+            "candidate_asr_among_covered": 0.004424778761061947,
+            "candidate_queries_on_eligible": 7559,
+            "constraint_pass_successes": 4,
+            "coverage": 0.9944994499449945,
+            "eligible_clean_detected_phishing": 909,
+            "eligible_with_candidates": 904,
+            "eligible_without_candidates": 5,
+            "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+          },
+          "finetuned": {
+            "candidate_asr": 0.1001100110011001,
+            "candidate_asr_among_covered": 0.1006637168141593,
+            "candidate_queries_on_eligible": 7559,
+            "constraint_pass_successes": 91,
+            "coverage": 0.9944994499449945,
+            "eligible_clean_detected_phishing": 909,
+            "eligible_with_candidates": 904,
+            "eligible_without_candidates": 5,
+            "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+          }
+        },
+        "rows": 909
+      },
+      "finetuned_identical_effective_inputs": 0,
+      "groups": 91,
+      "models": {
+        "baseline_v2": {
+          "actual_queries": 18292,
+          "candidate_asr_group_interval": {
+            "groups": 91,
+            "limitation": "Conditional on groups, corpus, constraints and this finite search budget.",
+            "lower": 0.0,
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42,
+            "upper": 0.024165899721982544,
+            "valid_resamples": 1000
+          },
+          "candidate_queries": 16292,
+          "clean": {
+            "accuracy": 0.801,
+            "confusion": {
+              "fn": 26,
+              "fp": 372,
+              "tn": 628,
+              "tp": 974
+            },
+            "f1": 0.8303495311167945,
+            "false_positive_rate": 0.372,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7236255572065379,
+            "recall": 0.974,
+            "rows": 2000,
+            "threshold": 0.31
+          },
+          "clean_queries": 2000,
+          "evasion": {
+            "candidate_asr": 0.008213552361396304,
+            "candidate_asr_among_covered": 0.008255933952528379,
+            "candidate_queries_on_eligible": 8080,
+            "constraint_pass_successes": 8,
+            "coverage": 0.9948665297741273,
+            "eligible_clean_detected_phishing": 974,
+            "eligible_with_candidates": 969,
+            "eligible_without_candidates": 5,
+            "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+          },
+          "evasion_by_operation": {
+            "duplicate_letter": {
+              "candidate_asr": 0.007186858316221766,
+              "candidate_asr_among_covered": 0.007223942208462332,
+              "candidate_queries_on_eligible": 3868,
+              "constraint_pass_successes": 7,
+              "coverage": 0.9948665297741273,
+              "eligible_clean_detected_phishing": 974,
+              "eligible_with_candidates": 969,
+              "eligible_without_candidates": 5,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "substitute_word": {
+              "candidate_asr": 0.0,
+              "candidate_asr_among_covered": 0.0,
+              "candidate_queries_on_eligible": 353,
+              "constraint_pass_successes": 0,
+              "coverage": 0.3613963039014374,
+              "eligible_clean_detected_phishing": 974,
+              "eligible_with_candidates": 352,
+              "eligible_without_candidates": 622,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "swap_letters": {
+              "candidate_asr": 0.00513347022587269,
+              "candidate_asr_among_covered": 0.005159958720330237,
+              "candidate_queries_on_eligible": 3859,
+              "constraint_pass_successes": 5,
+              "coverage": 0.9948665297741273,
+              "eligible_clean_detected_phishing": 974,
+              "eligible_with_candidates": 969,
+              "eligible_without_candidates": 5,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            }
+          },
+          "fixed_paired_correctness": {
+            "both_correct": 1583,
+            "both_wrong": 377,
+            "clean_only_correct": 19,
+            "fixed_only_correct": 21
+          },
+          "fixed_perturbation": {
+            "accuracy": 0.802,
+            "confusion": {
+              "fn": 30,
+              "fp": 366,
+              "tn": 634,
+              "tp": 970
+            },
+            "f1": 0.8304794520547946,
+            "false_positive_rate": 0.366,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7260479041916168,
+            "recall": 0.97,
+            "rows": 2000,
+            "threshold": 0.31
+          },
+          "maximum_queries_per_original": 11,
+          "per_source": {
+            "zenodo-v3-generated_v3": {
+              "candidate_asr": 0.008412197686645636,
+              "candidate_asr_among_covered": 0.008412197686645636,
+              "candidate_queries_on_eligible": 7931,
+              "constraint_pass_successes": 8,
+              "coverage": 1.0,
+              "eligible_clean_detected_phishing": 951,
+              "eligible_with_candidates": 951,
+              "eligible_without_candidates": 0,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "zenodo-v3-original_v1": {
+              "candidate_asr": 0.0,
+              "candidate_asr_among_covered": 0.0,
+              "candidate_queries_on_eligible": 149,
+              "constraint_pass_successes": 0,
+              "coverage": 0.782608695652174,
+              "eligible_clean_detected_phishing": 23,
+              "eligible_with_candidates": 18,
+              "eligible_without_candidates": 5,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            }
+          },
+          "phishing_only_worst_of_budget": {
+            "accuracy": 0.797,
+            "confusion": {
+              "fn": 34,
+              "fp": 372,
+              "tn": 628,
+              "tp": 966
+            },
+            "f1": 0.8263473053892215,
+            "false_positive_rate": 0.372,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7219730941704036,
+            "recall": 0.966,
+            "rows": 2000,
+            "threshold": 0.31
+          }
+        },
+        "finetuned": {
+          "actual_queries": 18292,
+          "candidate_asr_group_interval": {
+            "groups": 91,
+            "limitation": "Conditional on groups, corpus, constraints and this finite search budget.",
+            "lower": 0.045078298329569305,
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42,
+            "upper": 0.17671990171990173,
+            "valid_resamples": 1000
+          },
+          "candidate_queries": 16292,
+          "clean": {
+            "accuracy": 0.808,
+            "confusion": {
+              "fn": 86,
+              "fp": 298,
+              "tn": 702,
+              "tp": 914
+            },
+            "f1": 0.8264014466546112,
+            "false_positive_rate": 0.298,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7541254125412541,
+            "recall": 0.914,
+            "rows": 2000,
+            "threshold": 0.69
+          },
+          "clean_queries": 2000,
+          "evasion": {
+            "candidate_asr": 0.10393873085339168,
+            "candidate_asr_among_covered": 0.10451045104510451,
+            "candidate_queries_on_eligible": 7599,
+            "constraint_pass_successes": 95,
+            "coverage": 0.9945295404814004,
+            "eligible_clean_detected_phishing": 914,
+            "eligible_with_candidates": 909,
+            "eligible_without_candidates": 5,
+            "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+          },
+          "evasion_by_operation": {
+            "duplicate_letter": {
+              "candidate_asr": 0.07549234135667396,
+              "candidate_asr_among_covered": 0.07590759075907591,
+              "candidate_queries_on_eligible": 3629,
+              "constraint_pass_successes": 69,
+              "coverage": 0.9945295404814004,
+              "eligible_clean_detected_phishing": 914,
+              "eligible_with_candidates": 909,
+              "eligible_without_candidates": 5,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "substitute_word": {
+              "candidate_asr": 0.0010940919037199124,
+              "candidate_asr_among_covered": 0.0028653295128939827,
+              "candidate_queries_on_eligible": 350,
+              "constraint_pass_successes": 1,
+              "coverage": 0.38183807439824946,
+              "eligible_clean_detected_phishing": 914,
+              "eligible_with_candidates": 349,
+              "eligible_without_candidates": 565,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "swap_letters": {
+              "candidate_asr": 0.09080962800875274,
+              "candidate_asr_among_covered": 0.09130913091309131,
+              "candidate_queries_on_eligible": 3620,
+              "constraint_pass_successes": 83,
+              "coverage": 0.9945295404814004,
+              "eligible_clean_detected_phishing": 914,
+              "eligible_with_candidates": 909,
+              "eligible_without_candidates": 5,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            }
+          },
+          "fixed_paired_correctness": {
+            "both_correct": 1582,
+            "both_wrong": 361,
+            "clean_only_correct": 34,
+            "fixed_only_correct": 23
+          },
+          "fixed_perturbation": {
+            "accuracy": 0.8025,
+            "confusion": {
+              "fn": 99,
+              "fp": 296,
+              "tn": 704,
+              "tp": 901
+            },
+            "f1": 0.8202093764223942,
+            "false_positive_rate": 0.296,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7527151211361738,
+            "recall": 0.901,
+            "rows": 2000,
+            "threshold": 0.69
+          },
+          "maximum_queries_per_original": 11,
+          "per_source": {
+            "zenodo-v3-generated_v3": {
+              "candidate_asr": 0.10325476992143659,
+              "candidate_asr_among_covered": 0.10325476992143659,
+              "candidate_queries_on_eligible": 7450,
+              "constraint_pass_successes": 92,
+              "coverage": 1.0,
+              "eligible_clean_detected_phishing": 891,
+              "eligible_with_candidates": 891,
+              "eligible_without_candidates": 0,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "zenodo-v3-original_v1": {
+              "candidate_asr": 0.13043478260869565,
+              "candidate_asr_among_covered": 0.16666666666666666,
+              "candidate_queries_on_eligible": 149,
+              "constraint_pass_successes": 3,
+              "coverage": 0.782608695652174,
+              "eligible_clean_detected_phishing": 23,
+              "eligible_with_candidates": 18,
+              "eligible_without_candidates": 5,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            }
+          },
+          "phishing_only_worst_of_budget": {
+            "accuracy": 0.7605,
+            "confusion": {
+              "fn": 181,
+              "fp": 298,
+              "tn": 702,
+              "tp": 819
+            },
+            "f1": 0.7737364194615022,
+            "false_positive_rate": 0.298,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7332139659803044,
+            "recall": 0.819,
+            "rows": 2000,
+            "threshold": 0.69
+          }
+        }
+      },
+      "originals_with_candidates": 1995,
+      "rows": 2000
+    },
+    "test": {
+      "batch_scoring_seconds": {
+        "baseline_v2": 1.5371328999754041,
+        "finetuned": 17.19368580018636
+      },
+      "common_clean_detected_phishing": {
+        "models": {
+          "baseline_v2": {
+            "candidate_asr": 0.0,
+            "candidate_asr_among_covered": 0.0,
+            "candidate_queries_on_eligible": 1540,
+            "constraint_pass_successes": 0,
+            "coverage": 0.9808917197452229,
+            "eligible_clean_detected_phishing": 157,
+            "eligible_with_candidates": 154,
+            "eligible_without_candidates": 3,
+            "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+          },
+          "finetuned": {
+            "candidate_asr": 0.006369426751592357,
+            "candidate_asr_among_covered": 0.006493506493506494,
+            "candidate_queries_on_eligible": 1540,
+            "constraint_pass_successes": 1,
+            "coverage": 0.9808917197452229,
+            "eligible_clean_detected_phishing": 157,
+            "eligible_with_candidates": 154,
+            "eligible_without_candidates": 3,
+            "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+          }
+        },
+        "rows": 157
+      },
+      "finetuned_identical_effective_inputs": 196,
+      "groups": 339,
+      "models": {
+        "baseline_v2": {
+          "actual_queries": 4100,
+          "candidate_asr_group_interval": {
+            "groups": 339,
+            "limitation": "Conditional on groups, corpus, constraints and this finite search budget.",
+            "lower": 0.0,
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42,
+            "upper": 0.0,
+            "valid_resamples": 1000
+          },
+          "candidate_queries": 3677,
+          "clean": {
+            "accuracy": 0.9881796690307328,
+            "confusion": {
+              "fn": 1,
+              "fp": 4,
+              "tn": 257,
+              "tp": 161
+            },
+            "f1": 0.9847094801223242,
+            "false_positive_rate": 0.01532567049808429,
+            "labels": {
+              "legitimate": 261,
+              "phishing": 162
+            },
+            "precision": 0.9757575757575757,
+            "recall": 0.9938271604938271,
+            "rows": 423,
+            "threshold": 0.31
+          },
+          "clean_queries": 423,
+          "evasion": {
+            "candidate_asr": 0.0,
+            "candidate_asr_among_covered": 0.0,
+            "candidate_queries_on_eligible": 1572,
+            "constraint_pass_successes": 0,
+            "coverage": 0.9813664596273292,
+            "eligible_clean_detected_phishing": 161,
+            "eligible_with_candidates": 158,
+            "eligible_without_candidates": 3,
+            "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+          },
+          "evasion_by_operation": {
+            "duplicate_letter": {
+              "candidate_asr": 0.0,
+              "candidate_asr_among_covered": 0.0,
+              "candidate_queries_on_eligible": 630,
+              "constraint_pass_successes": 0,
+              "coverage": 0.9813664596273292,
+              "eligible_clean_detected_phishing": 161,
+              "eligible_with_candidates": 158,
+              "eligible_without_candidates": 3,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "substitute_word": {
+              "candidate_asr": 0.0,
+              "candidate_asr_among_covered": 0.0,
+              "candidate_queries_on_eligible": 313,
+              "constraint_pass_successes": 0,
+              "coverage": 0.7142857142857143,
+              "eligible_clean_detected_phishing": 161,
+              "eligible_with_candidates": 115,
+              "eligible_without_candidates": 46,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "swap_letters": {
+              "candidate_asr": 0.0,
+              "candidate_asr_among_covered": 0.0,
+              "candidate_queries_on_eligible": 629,
+              "constraint_pass_successes": 0,
+              "coverage": 0.9813664596273292,
+              "eligible_clean_detected_phishing": 161,
+              "eligible_with_candidates": 158,
+              "eligible_without_candidates": 3,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            }
+          },
+          "fixed_paired_correctness": {
+            "both_correct": 418,
+            "both_wrong": 5
+          },
+          "fixed_perturbation": {
+            "accuracy": 0.9881796690307328,
+            "confusion": {
+              "fn": 1,
+              "fp": 4,
+              "tn": 257,
+              "tp": 161
+            },
+            "f1": 0.9847094801223242,
+            "false_positive_rate": 0.01532567049808429,
+            "labels": {
+              "legitimate": 261,
+              "phishing": 162
+            },
+            "precision": 0.9757575757575757,
+            "recall": 0.9938271604938271,
+            "rows": 423,
+            "threshold": 0.31
+          },
+          "maximum_queries_per_original": 13,
+          "per_source": {
+            "meajor-trec5": {
+              "candidate_asr": null,
+              "candidate_asr_among_covered": null,
+              "candidate_queries_on_eligible": 0,
+              "constraint_pass_successes": 0,
+              "coverage": null,
+              "eligible_clean_detected_phishing": 0,
+              "eligible_with_candidates": 0,
+              "eligible_without_candidates": 0,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "meajor-trec6": {
+              "candidate_asr": null,
+              "candidate_asr_among_covered": null,
+              "candidate_queries_on_eligible": 0,
+              "constraint_pass_successes": 0,
+              "coverage": null,
+              "eligible_clean_detected_phishing": 0,
+              "eligible_with_candidates": 0,
+              "eligible_without_candidates": 0,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "meajor-trec7": {
+              "candidate_asr": null,
+              "candidate_asr_among_covered": null,
+              "candidate_queries_on_eligible": 0,
+              "constraint_pass_successes": 0,
+              "coverage": null,
+              "eligible_clean_detected_phishing": 0,
+              "eligible_with_candidates": 0,
+              "eligible_without_candidates": 0,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "nazario-2007": {
+              "candidate_asr": 0.0,
+              "candidate_asr_among_covered": 0.0,
+              "candidate_queries_on_eligible": 1572,
+              "constraint_pass_successes": 0,
+              "coverage": 0.9813664596273292,
+              "eligible_clean_detected_phishing": 161,
+              "eligible_with_candidates": 158,
+              "eligible_without_candidates": 3,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            }
+          },
+          "phishing_only_worst_of_budget": {
+            "accuracy": 0.9881796690307328,
+            "confusion": {
+              "fn": 1,
+              "fp": 4,
+              "tn": 257,
+              "tp": 161
+            },
+            "f1": 0.9847094801223242,
+            "false_positive_rate": 0.01532567049808429,
+            "labels": {
+              "legitimate": 261,
+              "phishing": 162
+            },
+            "precision": 0.9757575757575757,
+            "recall": 0.9938271604938271,
+            "rows": 423,
+            "threshold": 0.31
+          }
+        },
+        "finetuned": {
+          "actual_queries": 4100,
+          "candidate_asr_group_interval": {
+            "groups": 339,
+            "limitation": "Conditional on groups, corpus, constraints and this finite search budget.",
+            "lower": 0.0,
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42,
+            "upper": 0.022727272727272728,
+            "valid_resamples": 1000
+          },
+          "candidate_queries": 3677,
+          "clean": {
+            "accuracy": 0.9858156028368794,
+            "confusion": {
+              "fn": 4,
+              "fp": 2,
+              "tn": 259,
+              "tp": 158
+            },
+            "f1": 0.9813664596273292,
+            "false_positive_rate": 0.007662835249042145,
+            "labels": {
+              "legitimate": 261,
+              "phishing": 162
+            },
+            "precision": 0.9875,
+            "recall": 0.9753086419753086,
+            "rows": 423,
+            "threshold": 0.69
+          },
+          "clean_queries": 423,
+          "evasion": {
+            "candidate_asr": 0.006329113924050633,
+            "candidate_asr_among_covered": 0.0064516129032258064,
+            "candidate_queries_on_eligible": 1548,
+            "constraint_pass_successes": 1,
+            "coverage": 0.9810126582278481,
+            "eligible_clean_detected_phishing": 158,
+            "eligible_with_candidates": 155,
+            "eligible_without_candidates": 3,
+            "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+          },
+          "evasion_by_operation": {
+            "duplicate_letter": {
+              "candidate_asr": 0.006329113924050633,
+              "candidate_asr_among_covered": 0.0064516129032258064,
+              "candidate_queries_on_eligible": 619,
+              "constraint_pass_successes": 1,
+              "coverage": 0.9810126582278481,
+              "eligible_clean_detected_phishing": 158,
+              "eligible_with_candidates": 155,
+              "eligible_without_candidates": 3,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "substitute_word": {
+              "candidate_asr": 0.0,
+              "candidate_asr_among_covered": 0.0,
+              "candidate_queries_on_eligible": 311,
+              "constraint_pass_successes": 0,
+              "coverage": 0.7151898734177216,
+              "eligible_clean_detected_phishing": 158,
+              "eligible_with_candidates": 113,
+              "eligible_without_candidates": 45,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "swap_letters": {
+              "candidate_asr": 0.0,
+              "candidate_asr_among_covered": 0.0,
+              "candidate_queries_on_eligible": 618,
+              "constraint_pass_successes": 0,
+              "coverage": 0.9810126582278481,
+              "eligible_clean_detected_phishing": 158,
+              "eligible_with_candidates": 155,
+              "eligible_without_candidates": 3,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            }
+          },
+          "fixed_paired_correctness": {
+            "both_correct": 417,
+            "both_wrong": 6
+          },
+          "fixed_perturbation": {
+            "accuracy": 0.9858156028368794,
+            "confusion": {
+              "fn": 4,
+              "fp": 2,
+              "tn": 259,
+              "tp": 158
+            },
+            "f1": 0.9813664596273292,
+            "false_positive_rate": 0.007662835249042145,
+            "labels": {
+              "legitimate": 261,
+              "phishing": 162
+            },
+            "precision": 0.9875,
+            "recall": 0.9753086419753086,
+            "rows": 423,
+            "threshold": 0.69
+          },
+          "maximum_queries_per_original": 13,
+          "per_source": {
+            "meajor-trec5": {
+              "candidate_asr": null,
+              "candidate_asr_among_covered": null,
+              "candidate_queries_on_eligible": 0,
+              "constraint_pass_successes": 0,
+              "coverage": null,
+              "eligible_clean_detected_phishing": 0,
+              "eligible_with_candidates": 0,
+              "eligible_without_candidates": 0,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "meajor-trec6": {
+              "candidate_asr": null,
+              "candidate_asr_among_covered": null,
+              "candidate_queries_on_eligible": 0,
+              "constraint_pass_successes": 0,
+              "coverage": null,
+              "eligible_clean_detected_phishing": 0,
+              "eligible_with_candidates": 0,
+              "eligible_without_candidates": 0,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "meajor-trec7": {
+              "candidate_asr": null,
+              "candidate_asr_among_covered": null,
+              "candidate_queries_on_eligible": 0,
+              "constraint_pass_successes": 0,
+              "coverage": null,
+              "eligible_clean_detected_phishing": 0,
+              "eligible_with_candidates": 0,
+              "eligible_without_candidates": 0,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            },
+            "nazario-2007": {
+              "candidate_asr": 0.006329113924050633,
+              "candidate_asr_among_covered": 0.0064516129032258064,
+              "candidate_queries_on_eligible": 1548,
+              "constraint_pass_successes": 1,
+              "coverage": 0.9810126582278481,
+              "eligible_clean_detected_phishing": 158,
+              "eligible_with_candidates": 155,
+              "eligible_without_candidates": 3,
+              "semantic_status": "Automatic constraints only; separate bounded review, not exhaustive validation."
+            }
+          },
+          "phishing_only_worst_of_budget": {
+            "accuracy": 0.983451536643026,
+            "confusion": {
+              "fn": 5,
+              "fp": 2,
+              "tn": 259,
+              "tp": 157
+            },
+            "f1": 0.9781931464174455,
+            "false_positive_rate": 0.007662835249042145,
+            "labels": {
+              "legitimate": 261,
+              "phishing": 162
+            },
+            "precision": 0.9874213836477987,
+            "recall": 0.9691358024691358,
+            "rows": 423,
+            "threshold": 0.69
+          }
+        }
+      },
+      "originals_with_candidates": 412,
+      "rows": 423
+    }
+  },
+  "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+  "environment": {
+    "architecture": "AMD64",
+    "logical_cpus": 12,
+    "os": "Windows",
+    "packages": {
+      "numpy": "2.5.4",
+      "phishguard": "0.6.0",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.8.0"
+    },
+    "processor": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD",
+    "python": "3.13.16",
+    "requested_numeric_threads": 1
+  },
+  "limitations": [
+    "Candidate ASR assumes label preservation under constraints; review is partial.",
+    "Finite model-independent search is not a robustness guarantee or strongest attack.",
+    "Historical and challenge cohorts were already scored/reviewed in earlier stages.",
+    "Source/era bias, synthetic templates and uncertain publisher labels persist.",
+    "Directed-evasion full-cohort metrics leave legitimate originals clean by definition.",
+    "Fixed-corruption metrics perturb both classes with the same first candidate."
+  ],
+  "model_file_digests_before": {
+    "baseline/manifest.json": "dfc443ac52db58c0e09e6b917f5d53df638384eb1ba95e0dd5ef16be19a03f1d",
+    "baseline/model.json": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480",
+    "finetuned/config.json": "81e1b4a23093843497bb1831370f6ee506d86494061c926dd556bc06fda47e41",
+    "finetuned/manifest.json": "c308d3672a5ae218d4515435dbae0f674957e41d2a2bf04de91717c83a6b064f",
+    "finetuned/model.safetensors": "9869894af19831a1a3fcf62afe4b7b4c27f20a6b8971ea0c4184fd88c45af835",
+    "finetuned/selection.json": "5a0d7147a03b0fec43805521bd116ef7f1d378379552853240b504075fb1386d",
+    "finetuned/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  "model_files_and_neural_tensors_unchanged": true,
+  "neural_packages": {
+    "safetensors": "0.8.0",
+    "torch": "2.15.0+cpu",
+    "transformers": "4.57.6"
+  },
+  "phase": "retrospective-controlled-evasion",
+  "predictions_sha256": "c051b54265c8255ed6aee66daeda7c7ef7f8ada265f807590d6ad19080327fb6",
+  "protocol": {
+    "asr_policy": "Numerator: clean-detected phishing originals with any constraint-pass candidate below the frozen threshold. Denominator: all clean-detected phishing originals, including those with no candidate. Report coverage, common-eligible comparison, exact queries and undefined zero denominators.",
+    "baseline_revision": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480",
+    "baseline_threshold": 0.31,
+    "benchmark_policy": "Reuse the stage-5 423 historical/2000 challenge rows and original reviewed-family exclusion. Stage-5 post-score review is known development evidence; these cohorts are retrospective benchmarks, never fresh final tests. Do not resplit or retune. Original 703 reserve rows remain unscored/unreviewed.",
+    "bootstrap": {
+      "repetitions": 1000,
+      "seed": 42
+    },
+    "candidate_edit_counts": [
+      1,
+      2,
+      3,
+      3
+    ],
+    "editable_body_prefix_characters": 1500,
+    "finetuned_revision": "2a49e59947fd081463a300c9b99d34e9ea609d6a671593c8f204cea02435d3d5",
+    "finetuned_threshold": 0.69,
+    "max_candidates": 12,
+    "max_changed_word_fraction": 0.1,
+    "max_edits": 3,
+    "maximum_model_queries_per_parent": 13,
+    "maximum_word_length": 20,
+    "minimum_typo_word_length": 6,
+    "operations": [
+      "duplicate_letter",
+      "swap_letters",
+      "substitute_word"
+    ],
+    "proposals_per_operation": 4,
+    "protected_words": [
+      "not",
+      "never",
+      "without",
+      "neither",
+      "unless",
+      "cannot",
+      "nothing",
+      "nobody",
+      "nowhere",
+      "except",
+      "refuse",
+      "decline",
+      "ignore",
+      "avoid"
+    ],
+    "score_parent_batch_size": 32,
+    "search_policy": "Four deterministic hash-ranked proposals per family, interleaved by proposal then family; no gradients, importance probing, model-guided generation, tuning or early stopping. Score the same unique candidate bank for both fixed models. At most one clean plus twelve candidate predictions per original/model.",
+    "seed": 42,
+    "selection_policy": "Fixed corruption uses first available candidate for both classes/models. Directed evasion selects minimum phishing score among original and candidates for phishing originals only; legitimate originals stay clean. Earliest exact ties. Per-family analysis reuses scores without extra queries.",
+    "stage7_status": "Not started: no augmentation training, defenses or model updates.",
+    "substitutions": {
+      "assistance": "help",
+      "confirm": "verify",
+      "immediately": "promptly",
+      "information": "details",
+      "kindly": "please",
+      "please": "kindly",
+      "promptly": "immediately",
+      "quickly": "rapidly",
+      "rapidly": "quickly",
+      "verify": "confirm"
+    },
+    "transformation_policy": "Body only; lowercase ASCII words with unchanged surrounding text. Preserve subject, URL/email/domain spans, numeric tokens, markup/entities, capitalization, protected words and first/last letters of typos. Each candidate starts from the original; deduplicate and reject contract or cleaned-text no-ops.",
+    "validity_policy": "Automatic constraints do not prove semantic equivalence. Review deterministic training-only examples before benchmark scoring and a bounded deterministic success sample after scoring. Report constraint-pass candidate ASR separately from manually reviewed evidence; never call all generated candidates human-validated.",
+    "version": "stage6-controlled-evasion-v1"
+  },
+  "protocol_sha256": "f9b2647716902316a37e708242b2d8324edf4b956cba2d38b591985fbf40151a",
+  "report_version": "1.0",
+  "reserve_rows_scored": 0,
+  "stage5_study_sha256": "62cb5eb33819328180643793d71ceae7b3f3365cd0a9240704cb8d9df73c8b02",
+  "thresholds_updated": false,
+  "training_validation_or_reserve_files_opened": false,
+  "weights_updated": false
+}

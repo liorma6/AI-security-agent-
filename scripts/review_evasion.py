@@ -101,7 +101,9 @@ def main():
                 "distinct_supported_phishing_originals": len(supported),
                 "eligible_clean_detected_phishing": eligible,
                 "review_supported_asr_lower_bound": len(supported) / eligible if eligible else None,
-                "status": "Bounded AI-assisted contextual review; not exhaustive human certification",
+                "status": (
+                    "Bounded AI-assisted contextual review; not exhaustive human certification"
+                ),
             }
     output = {
         "status": "verified",

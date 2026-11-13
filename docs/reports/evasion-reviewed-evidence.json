@@ -1,0 +1,54 @@
+{
+  "cases": 10,
+  "counts": {
+    "challenge": {
+      "baseline_v2": {
+        "ambiguous_cases": 0,
+        "distinct_supported_phishing_originals": 2,
+        "eligible_clean_detected_phishing": 974,
+        "invalid_cases": 0,
+        "review_cases": 4,
+        "review_supported_asr_lower_bound": 0.002053388090349076,
+        "status": "Bounded AI-assisted contextual review; not exhaustive human certification",
+        "supported_cases": 4
+      },
+      "finetuned": {
+        "ambiguous_cases": 0,
+        "distinct_supported_phishing_originals": 5,
+        "eligible_clean_detected_phishing": 914,
+        "invalid_cases": 0,
+        "review_cases": 5,
+        "review_supported_asr_lower_bound": 0.005470459518599562,
+        "status": "Bounded AI-assisted contextual review; not exhaustive human certification",
+        "supported_cases": 5
+      }
+    },
+    "test": {
+      "baseline_v2": {
+        "ambiguous_cases": 0,
+        "distinct_supported_phishing_originals": 0,
+        "eligible_clean_detected_phishing": 161,
+        "invalid_cases": 0,
+        "review_cases": 0,
+        "review_supported_asr_lower_bound": 0.0,
+        "status": "Bounded AI-assisted contextual review; not exhaustive human certification",
+        "supported_cases": 0
+      },
+      "finetuned": {
+        "ambiguous_cases": 0,
+        "distinct_supported_phishing_originals": 1,
+        "eligible_clean_detected_phishing": 158,
+        "invalid_cases": 0,
+        "review_cases": 1,
+        "review_supported_asr_lower_bound": 0.006329113924050633,
+        "status": "Bounded AI-assisted contextual review; not exhaustive human certification",
+        "supported_cases": 1
+      }
+    }
+  },
+  "labels_models_thresholds_or_protocol_changed": false,
+  "predictions_sha256": "c051b54265c8255ed6aee66daeda7c7ef7f8ada265f807590d6ad19080327fb6",
+  "reserve_rows_reviewed_or_scored": 0,
+  "selection_policy": "First two SHA256-ranked successes per cohort/model/operation",
+  "status": "verified"
+}

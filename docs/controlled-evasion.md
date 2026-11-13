@@ -1,6 +1,6 @@
 # Stage 6 - Controlled offline evasion
 
-This stage measures the preserved baseline v2 and fine-tuned BERT-Tiny under bounded text changes. The protocol is declared before benchmark variant generation/scoring. It includes no model fitting, threshold changes, augmentation, defense, live mailbox integration or stage-7 work. Measured results will be added after execution.
+This stage measures the preserved baseline v2 and fine-tuned BERT-Tiny under bounded text changes. The protocol is declared before benchmark variant generation/scoring. It includes no model fitting, threshold changes, augmentation, defense, live mailbox integration or stage-7 work. Execution, full repetition and independent verification are complete; measured results follow below.
 
 ## Threat model and limits
 
@@ -51,7 +51,7 @@ uv run --frozen phishguard evasion verify
 uv run --frozen --extra pretrained phishguard evasion evaluate
 ```
 
-`preview` writes local training-only review pairs to `artifacts/evasion-preflight-v1/`. `prepare` writes local changed texts and a text-free manifest to `artifacts/evasion-variants-v1/`. The committed `data/manifests/evasion-variants-v1.json` will freeze that manifest before scoring; `verify` and `evaluate` require an exact reference match and regenerate all candidates to validate constraints/lineage. Evaluation writes text-free per-original/per-candidate scores and an aggregate report to `artifacts/evasion-evaluation-v1/`. Existing output directories are refused. Raw texts and large artifacts remain ignored by Git.
+`preview` writes local training-only review pairs to `artifacts/evasion-preflight-v1/`. `prepare` writes local changed texts and a text-free manifest to `artifacts/evasion-variants-v1/`. The committed `data/manifests/evasion-variants-v1.json` freezes that manifest before scoring; `verify` and `evaluate` require an exact reference match and regenerate all candidates to validate constraints/lineage. Evaluation writes text-free per-original/per-candidate scores and an aggregate report to `artifacts/evasion-evaluation-v1/`. Existing output directories are refused. Raw texts and large artifacts remain ignored by Git.
 
 For a separate technical repetition use new paths, keeping the same frozen bank reference:
 
@@ -63,3 +63,48 @@ uv run --frozen --extra pretrained phishguard evasion evaluate --bank artifacts/
 Repeat generation and complete scoring, compare candidate/prediction bytes, independently recount results and verify preserved model/data digests. Reproduction is not another independent evaluation cohort. Any later change to the threat model or budget requires a separately declared study, not overwriting these results.
 
 W07 retains five planning units each: Lior leads transformations, lineage and budgeted runner; Sharon Elimelech leads validity review, paired metrics, fixtures and reproduction. Both review limitations. Initial implementation and experimental review are AI-assisted; actual personal review remains to be recorded.
+
+## Executed verification and review commands
+
+```sh
+uv run --frozen python scripts/verify_evasion.py
+uv run --frozen python scripts/review_evasion.py select
+uv run --frozen python scripts/review_evasion.py verify
+```
+
+The independent verifier expects both complete runs, the stage-5 saved predictions and the unchanged historical files listed in the preservation manifest. It confirms this recorded local experiment; a fresh installation will not reproduce historical report timestamps byte-for-byte. The review selector writes text-free candidate IDs to a new local folder and refuses an existing folder. Review verification checks the committed contextual decisions against those deterministic IDs and computes distinct-original lower bounds. It does not automatically certify semantic validity or expose email content.
+
+## Measured results and limitations
+
+The stage-6 code/protocol and preservation fingerprints were committed at `593c1af` before experimental scoring. Twelve deterministic training-only examples were inspected without querying either model; all supported label preservation in the inspected contexts. The bank and review were frozen at `427685b` before scoring. Both full runs record that clean revision. Model weights/thresholds and the 703-message reserve were not changed.
+
+The frozen bank contains 19,969 variants: 3,677 for 423 historical originals and 16,292 for 2,000 challenge originals. Eleven historical and five challenge originals have no candidate under the constraints; they remain in the metrics. Each model made 4,100 historical and 18,292 challenge predictions, including clean originals: 22,392 queries per model, 44,784 per complete comparison. The actual per-original maximum is 13. No extra model queries were used for per-family analysis or review.
+
+| Measure | Historical baseline v2 | Historical BERT-Tiny | Challenge baseline v2 | Challenge BERT-Tiny |
+| --- | --- | --- | --- | --- |
+| Clean accuracy | 98.82% | 98.58% | 80.10% | 80.80% |
+| Fixed-corruption accuracy | 98.82% | 98.58% | 80.20% | 80.25% |
+| Phishing-only attacked accuracy | 98.82% | 98.35% | 79.70% | 76.05% |
+| Clean phishing recall | 99.38% | 97.53% | 97.40% | 91.40% |
+| Attacked phishing recall | 99.38% | 96.91% | 96.60% | 81.90% |
+| Clean-detected phishing originals | 161 | 158 | 974 | 914 |
+| Additional misses within budget | 0 | 1 | 8 | 95 |
+| Constraint-pass candidate ASR | 0.00% | 0.63% | 0.82% | 10.39% |
+
+Candidate ASR is conditional on automatic edit constraints, not exhaustive semantic certification. Its denominator differs from all phishing messages and from all emails. Existing clean misses are not counted as new evasions. Three initially detected historical phishing messages and five challenge messages per model have no candidate; omitting them would inflate the denominator-conditioned result. Their coverage is disclosed rather than hidden.
+
+The same 909 challenge phishing originals are initially detected by both models. Within this common set, baseline evasion is 4/909 (0.44%) versus 91/909 (10.01%) for BERT-Tiny. Historical common eligibility is 157, with zero versus one evasion. Thus the observed challenge sensitivity difference persists when eligibility is aligned. It does not establish an architecture-wide ranking or general security superiority: the baseline still falsely flags 37.20% of legitimate clean challenge texts, versus 29.80% for BERT.
+
+On challenge data, letter duplication finds 7 baseline and 69 BERT evasions; swaps find 5 and 83; lexical substitution finds zero and one. These sets overlap and must not be summed. Family coverage and actual queries differ; the restricted substitution dictionary has much lower coverage. The fixed-corruption view changes both classes without searching scores: challenge false-positive rates are 36.60% and 29.60%, and paired outcomes improve 21/worsen 19 baseline decisions and improve 23/worsen 34 BERT decisions. Directed-evasion results instead keep legitimate originals clean, so their unchanged false-positive rate is not evidence of robustness.
+
+Whole-group 95% candidate-ASR intervals are 0.00-2.42% for the challenge baseline and 4.51-17.67% for BERT. Historical intervals are 0.00-0.00% and 0.00-2.27%. The baseline's zero-success bootstrap is degenerate: it is not a bound proving zero future failure probability. These intervals condition on this corpus, grouping, constraints and finite search; they do not address unseen attack families, semantic validity or source bias. No budget or threshold was increased after observing results.
+
+A predetermined post-score sample contains ten successful variants from eight originals. Contextual AI-assisted review supported preservation of the original request/intent in all ten; no labels or outcomes were edited. The reviewed evidence covers two distinct challenge originals for baseline, five for BERT, and the single historical BERT evasion. Corresponding review-supported lower bounds are 2/974 (0.21%), 5/914 (0.55%) and 1/158 (0.63%); the larger candidate-ASR figures are not fully manually validated. Student review remains open. Observations include unchanged gift-card, invoice, document-login, transaction-check and tax-refund requests with small readable edits; raw excerpts remain local.
+
+BERT's effective tokenized input is unchanged for 196 historical candidates, versus zero challenge candidates, under its preserved 256-token cap. Long-message truncation and the first-1,500-character edit region limit the experiment. Scoring all clean originals and candidates took 1.54 seconds on historical mail and 1.58 on the challenge for baseline; BERT took 17.19 and 17.41 seconds, including tokenization but excluding bank verification, model loading and disk I/O. These are total batch times, not single-email latency. The existing CPU runtime and four neural threads were used.
+
+Repeated bank generation and full scoring produced byte-identical variants/manifests and predictions. An independent verifier recounted confusion, paired, ASR, coverage, source and query counts, replayed every edit and checked lineage. Clean scores match stage 5 exactly. All 67 preserved model/processed-data files remain byte-identical; reserve bytes were hashed without parsing. Software checks and research metrics are separate evidence.
+
+Stage 6 establishes measured sensitivity under a limited offline threat model, not production readiness or a guarantee against evasion. Low baseline ASR does not remove its false-alarm problem. Stage 7 has not started: no defense or augmentation training was performed. Future defense development must use training-only originals/variants, preserve these fixed baselines and evaluation artifacts, and keep the final reserve independent of all choices.
+
+Evidence: [protocol and commands](controlled-evasion.md), [training-only preflight review](reports/evasion-preflight-review.json), [evaluation](reports/evasion-evaluation.json), [independent verification](reports/evasion-verification.json), [post-score label review](reports/evasion-label-review.json), [reviewed lower bounds](reports/evasion-reviewed-evidence.json).
