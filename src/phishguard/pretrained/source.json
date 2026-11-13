@@ -1,0 +1,21 @@
+{
+  "model_id": "dima806/phishing-email-detection",
+  "revision": "310a5602280486e01dd60e37230980cfcc327b41",
+  "homepage": "https://huggingface.co/dima806/phishing-email-detection",
+  "license": "apache-2.0",
+  "license_evidence": "Publisher declaration in the pinned README.md; preserve the source card and attribution. No separate license file in this repository.",
+  "architecture": "DistilBertForSequenceClassification",
+  "base_model": "distilbert/distilbert-base-cased",
+  "tokenizer_reference": {"model_id": "distilbert/distilbert-base-cased", "revision": "6ea81172465e8b0ad3fddeed32b986cdcdcffcf0", "file": "tokenizer_config.json", "do_lower_case": false, "model_max_length": 512},
+  "id2label": {"0": "SAVE EMAIL", "1": "PHISHING EMAIL"},
+  "label_interpretation": "Publisher spelling SAVE EMAIL denotes the non-phishing email class; PHISHING EMAIL denotes phishing. Unknown/generic/extra labels are rejected.",
+  "label_mapping": {"legitimate": 0, "phishing": 1},
+  "files": {
+    "README.md": {"bytes": 295, "sha256": "2b70ad8c07d2f1b94e8a3d711d4feb4b44414c28decde09e52c2b95892e2262b"},
+    "config.json": {"bytes": 706, "sha256": "bfe567884c49794f4a6f5c600815a02355e00eabaee29f8b08960ed10a79ce39"},
+    "vocab.txt": {"bytes": 213450, "sha256": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"},
+    "model.safetensors": {"bytes": 263144680, "sha256": "45bb5e5608370c51e63ef9120627515093b1ef4d7cd6693e54301a894a2d910c"}
+  },
+  "excluded_files": ["pytorch_model.bin", "training_args.bin"],
+  "provenance_limits": "The model card links an author Kaggle notebook but does not provide a complete auditable training-membership manifest. The 2023 weight publication predates the 2025 E-PhishGen paper; this is not proof of no training overlap. No independent provenance or label-quality guarantee is claimed."
+}

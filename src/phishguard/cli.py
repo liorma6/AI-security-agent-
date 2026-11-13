@@ -50,7 +50,42 @@ def main(argv: list[str] | None = None) -> int:
     )
     predict.add_argument("--model", type=Path, default=Path("models/baseline-v1"))
     predict.add_argument("--file", required=True, help="UTF-8 JSON email, or - for standard input")
+    from phishguard.pretrained.source import DEFAULT_MODEL
+
+    pretrained = commands.add_parser("pretrained", help="Compare the pinned external classifier")
+    pretrained_actions = pretrained.add_subparsers(dest="action", required=True)
+    for action in ("fetch", "verify", "select", "evaluate", "predict"):
+        command = pretrained_actions.add_parser(action)
+        command.add_argument("--model", type=Path, default=DEFAULT_MODEL)
+        if action in ("select", "evaluate"):
+            command.add_argument(
+                "--dataset", type=Path, default=Path("data/processed/ephishllm-v1")
+            )
+            command.add_argument(
+                "--reference", type=Path, default=Path("data/manifests/ephishllm-v1.json")
+            )
+            command.add_argument("--baseline-model", type=Path, default=Path("models/baseline-v1"))
+            destination = (
+                "artifacts/pretrained-selection-v1"
+                if action == "select"
+                else "artifacts/pretrained-test-v1"
+            )
+            command.add_argument("--output", type=Path, default=Path(destination))
+        if action == "evaluate":
+            command.add_argument(
+                "--selection", type=Path, default=Path("artifacts/pretrained-selection-v1")
+            )
+            command.add_argument(
+                "--baseline-report", type=Path, default=Path("docs/reports/baseline-test.json")
+            )
+        if action == "predict":
+            command.add_argument("--selection", type=Path, help="Use a frozen validation threshold")
+            command.add_argument("--file", required=True, help="UTF-8 JSON email, or - for stdin")
     args = parser.parse_args(argv)
+    if args.command == "pretrained":
+        from phishguard.pretrained.cli import run
+
+        return run(args)
     if args.command == "baseline":
         from phishguard.baseline.cli import run
 

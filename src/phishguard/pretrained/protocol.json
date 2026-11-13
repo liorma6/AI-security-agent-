@@ -1,0 +1,18 @@
+{
+  "version": "pretrained-comparison-v1",
+  "runtime": {"torch": "2.15.0", "transformers": "4.57.6", "safetensors": "0.8.0"},
+  "preprocessing_version": "remove-synthetic-markers-v1",
+  "text": "Use the same preserved subject/body combination and label-independent marker removal as the classical baseline.",
+  "tokenizer": {"class": "BertTokenizerFast", "do_lower_case": false, "strip_accents": null, "padding_side": "right", "truncation_side": "right"},
+  "max_tokens": 512,
+  "truncation": "Right-truncate including special tokens; count original token lengths and report every truncated input. No record is dropped.",
+  "device": "cpu",
+  "dtype": "float32",
+  "batch_size": 8,
+  "numeric_threads": 1,
+  "attention": "eager",
+  "weights": "Load only reviewed local safetensors, disable remote code, require all expected weights, use eval and inference_mode; no training or weight updates.",
+  "threshold_policy": "Report fixed threshold 0.50 and a separate validation-selected threshold using the identical baseline F1 grid/tie policy. Freeze that threshold before final-test evaluation. No checkpoint selection or protocol changes based on final-test outcomes.",
+  "comparison": "Use all 1725 frozen test examples and the existing baseline's frozen 0.44 threshold. Recompute baseline metrics on exactly the same IDs and check reproduction of its published test counts. Report paired correctness, confusion counts, metrics and explicit resource/timing conditions.",
+  "fairness_limit": "The baseline learned on this corpus; the external model did not. This measures target-domain transfer and is not an architecture-controlled training experiment. Upstream training overlap cannot be ruled out."
+}

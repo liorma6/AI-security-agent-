@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "phishguard"
-version = "0.3.0"
+version = "0.4.0"
 description = "Phishing-email detection research: reproducible data and a classical baseline detector."
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
@@ -18,6 +18,17 @@ dependencies = [
 
 [project.scripts]
 phishguard = "phishguard.cli:main"
+
+[project.optional-dependencies]
+pretrained = ["torch==2.15.0", "transformers==4.57.6", "safetensors==0.8.0"]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'win32' or sys_platform == 'linux'" }]
 
 [dependency-groups]
 dev = ["pytest>=9,<10", "ruff>=0.14,<1"]

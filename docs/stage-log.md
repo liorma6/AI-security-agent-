@@ -83,3 +83,7 @@ Next functional stage: stage 4, reviewed pretrained Hugging Face classifier comp
 ## Contribution record format
 
 For each completed activity record the package ID, student, date, actual work, artifact or commit, peer review status and verification results. Reference the ownership plan without treating assigned responsibility as evidence of historical authorship.
+
+## Stage 4 - protocol frozen before corpus evaluation
+
+Date: November 13, 2026. Selected the pinned two-class external DistilBERT, reviewed its card/configuration and recorded tokenizer reconstruction and unknown upstream membership. Implemented verified public downloads, local safetensors inference, validation-only threshold selection, paired final-test comparison and private CLI output. Added 26 offline checks (201 total passed locally), including an actual tiny random transformer, tokenizer truncation, label direction, digest failures, unchanged weights and selection/test boundaries. The full reviewed checkpoint loaded and scored the invented email fixture locally. These checks are software evidence, not model-quality results. Full-corpus validation and final-test comparison are pending at this protocol checkpoint. AI-assisted code and documentation; W05 assigns Lior the source/model adapter and Sharon the mapping/comparison checks. Individual student review has not been asserted.
