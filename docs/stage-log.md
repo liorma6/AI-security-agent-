@@ -26,7 +26,11 @@ Local verification used Windows, Python 3.13.16, uv 0.13.1, Pydantic 2.14.3, pyt
 
 The JSON regression tests identified a difference between parser recursion limits and contract rejection. An explicit 16-level container limit now provides a stable `json_too_deep` response. Public CLI errors were checked for input leakage, and exact email-length boundaries include the subject/body separator and Unicode code points.
 
-Documentation verification checks 31 English UTF-8 files, including source and fixtures, along with local links, tables, eight course chapters and UML. Updated the README, canonical book revision 1.1, contract reference and implementation status. The component diagram marks the implemented CLI/validator separately from planned modules. GitHub Actions is configured for Windows/Linux and Python 3.11/3.13; actual remote results are recorded after execution.
+Documentation verification checked 31 English UTF-8 files, including source and fixtures, along with local links, tables, eight course chapters and UML. Updated the README, canonical book revision 1.1, contract reference and implementation status. The component diagram marks the implemented CLI/validator separately from planned modules.
+
+All four GitHub Actions combinations passed: Windows/Linux with Python 3.11/3.13. Each ran locked installation, lint/format checks, the 80 tests, documentation validation, distribution build and a CLI fixture check. [Verified implementation](https://github.com/liorma6/AI-security-agent-/commit/70f280fce5664b30377c0f9f17382bf15a90eb0a) and [verification run](https://github.com/liorma6/AI-security-agent-/actions/runs/43419224477).
+
+Regenerated the local English Word and PDF book from revision 1.1. The PDF contains 17 pages; the Word document contains eight chapter headings, nine tables and two diagrams. PDF text bounds and language were checked, and the test-matrix and architecture pages were visually reviewed. These export checks do not imply model-quality verification.
 
 No training, model downloads, dataset acquisition, mailbox connection or network access occurs during validation. Stage 2 is next: licensed dataset selection, ingestion, deduplication and grouped splits. Stages 2-9 remain planned.
 

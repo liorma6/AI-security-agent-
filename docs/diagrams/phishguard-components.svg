@@ -57,6 +57,6 @@
 <polyline points="600,720 600,675 975,675 975,650" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
 <text x="765" y="664" text-anchor="middle" font-size="14">produces / evaluates</text>
 <polyline points="400,750 365,750 365,230 510,230 510,200" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="480" y="218" text-anchor="middle" font-size="14">validates records</text>
+<text x="245" y="630" text-anchor="middle" font-size="14">validates records</text>
 <text x="570" y="890" text-anchor="middle" font-size="17">Dashed open arrows show dependencies. Components are logical Python modules.</text>
 </g></svg>
