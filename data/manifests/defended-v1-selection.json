@@ -1,0 +1,11 @@
+{
+  "augmentation_manifest_sha256": "03e5165c555c2fc0207b69dbb97d85df787ccafb61d1ed11ef246ea039e43b0a",
+  "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+  "manifest_sha256": "a72e94c60a11c46949b06b6b55ab59cd1d9e3c4255830632009645542d877cda",
+  "model_revision": "4a682e807a00ed26860c8e9e282fceac13fafd69bec0ae7435a3538f8a2055ae",
+  "parent_revision": "2a49e59947fd081463a300c9b99d34e9ea609d6a671593c8f204cea02435d3d5",
+  "preflight_review_sha256": "54992bf72cee5b690e887165dc374ca2ac24fe99fba17a6bf3fb57b3fb9e0ed6",
+  "protocol_sha256": "bf6605f71361d8c16d9e07329a1b69ae427aaa1eb1910fc0c9dd29a1bbde5f6a",
+  "selected_epoch": 1,
+  "threshold": 0.07
+}
