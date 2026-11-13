@@ -1,0 +1,77 @@
+{
+  "final_partitions": {
+    "challenge": [],
+    "test": [
+      "meajor-trec7-081259"
+    ],
+    "train": [
+      "external-easy-ham-2-000161",
+      "external-easy-ham-2-001007",
+      "external-hard-ham-000037",
+      "external-hard-ham-000057",
+      "external-nazario-2024-000307",
+      "external-nazario-2024-000394",
+      "external-nazario-2025-000102",
+      "external-nazario-2025-000136",
+      "meajor-trec5-010689",
+      "meajor-trec5-014503",
+      "meajor-trec6-056426",
+      "meajor-trec6-061001",
+      "meajor-trec7-101200",
+      "nazario-2007-000026",
+      "nazario-2007-000141"
+    ],
+    "validation": []
+  },
+  "interpretation": "Primary frozen 425-row results are retained transparently. One row had development inspection; do not call the whole cohort untouched. The 424-row exclusion is post-hoc sensitivity, not a new independent final test. No model or threshold changed. Challenge has zero inspected cohort rows and reserve remains unscored.",
+  "posthoc_sensitivity": {
+    "baseline_v1": {
+      "accuracy": 0.8254716981132075,
+      "balanced_accuracy": 0.8434643294694186,
+      "confusion": {
+        "fn": 13,
+        "fp": 61,
+        "tn": 201,
+        "tp": 149
+      },
+      "f1": 0.8010752688172043,
+      "false_positive_rate": 0.23282442748091603,
+      "precision": 0.7095238095238096,
+      "recall": 0.9197530864197531
+    },
+    "baseline_v2": {
+      "accuracy": 0.9882075471698113,
+      "balanced_accuracy": 0.989279992460654,
+      "confusion": {
+        "fn": 1,
+        "fp": 4,
+        "tn": 258,
+        "tp": 161
+      },
+      "f1": 0.9847094801223242,
+      "false_positive_rate": 0.015267175572519083,
+      "precision": 0.9757575757575757,
+      "recall": 0.9938271604938271
+    }
+  },
+  "review_scope": "Sixteen subject/body excerpts from the provisional training partition, two per source, before any successful fitting or scoring. Later regrouping moved one inspected message into the frozen historical test.",
+  "reviewed_ids": [
+    "external-easy-ham-2-000161",
+    "external-easy-ham-2-001007",
+    "external-hard-ham-000037",
+    "external-hard-ham-000057",
+    "external-nazario-2024-000307",
+    "external-nazario-2024-000394",
+    "external-nazario-2025-000102",
+    "external-nazario-2025-000136",
+    "meajor-trec5-010689",
+    "meajor-trec5-014503",
+    "meajor-trec6-056426",
+    "meajor-trec6-061001",
+    "meajor-trec7-081259",
+    "meajor-trec7-101200",
+    "nazario-2007-000026",
+    "nazario-2007-000141"
+  ],
+  "sensitivity_rows": 424
+}

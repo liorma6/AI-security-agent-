@@ -1,0 +1,531 @@
+{
+  "code": {
+    "commit": "8d519e97e631fbd50dc748fece10267d5835895a",
+    "working_tree_dirty": false
+  },
+  "cohorts": {
+    "challenge": {
+      "groups": 91,
+      "paired_correctness": {
+        "both_correct": 1276,
+        "both_wrong": 354,
+        "v1_only_correct": 44,
+        "v2_only_correct": 326
+      },
+      "results": {
+        "baseline_v1": {
+          "batch_inference_seconds": 0.06868669998948462,
+          "group_bootstrap": {
+            "groups": 91,
+            "intervals": {
+              "accuracy": {
+                "lower": 0.5368115741249421,
+                "upper": 0.7645861475674788,
+                "valid_resamples": 1000
+              },
+              "balanced_accuracy": {
+                "lower": 0.583333151287318,
+                "upper": 0.740205840769615,
+                "valid_resamples": 1000
+              },
+              "false_positive_rate": {
+                "lower": 0.4969505632556325,
+                "upper": 0.8006541467938527,
+                "valid_resamples": 1000
+              },
+              "recall": {
+                "lower": 0.9284917727265487,
+                "upper": 0.9987084507196479,
+                "valid_resamples": 1000
+              }
+            },
+            "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42
+          },
+          "metrics": {
+            "accuracy": 0.66,
+            "balanced_accuracy": 0.6599999999999999,
+            "confusion": {
+              "fn": 27,
+              "fp": 653,
+              "tn": 347,
+              "tp": 973
+            },
+            "f1": 0.741051028179741,
+            "false_positive_rate": 0.653,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.5984009840098401,
+            "recall": 0.973,
+            "rows": 2000,
+            "threshold": 0.44
+          },
+          "per_source": {
+            "zenodo-v3-generated_v3": {
+              "accuracy": 0.6631578947368421,
+              "balanced_accuracy": 0.6541128512671177,
+              "confusion": {
+                "fn": 27,
+                "fp": 613,
+                "tn": 310,
+                "tp": 950
+              },
+              "f1": 0.7480314960629921,
+              "false_positive_rate": 0.6641386782231853,
+              "labels": {
+                "legitimate": 923,
+                "phishing": 977
+              },
+              "precision": 0.6078055022392834,
+              "recall": 0.9723643807574207,
+              "rows": 1900,
+              "threshold": 0.44
+            },
+            "zenodo-v3-original_v1": {
+              "accuracy": 0.6,
+              "balanced_accuracy": 0.7402597402597403,
+              "confusion": {
+                "fn": 0,
+                "fp": 40,
+                "tn": 37,
+                "tp": 23
+              },
+              "f1": 0.5348837209302325,
+              "false_positive_rate": 0.5194805194805194,
+              "labels": {
+                "legitimate": 77,
+                "phishing": 23
+              },
+              "precision": 0.36507936507936506,
+              "recall": 1.0,
+              "rows": 100,
+              "threshold": 0.44
+            }
+          },
+          "threshold": 0.44
+        },
+        "baseline_v2": {
+          "batch_inference_seconds": 0.07091879998915829,
+          "group_bootstrap": {
+            "groups": 91,
+            "intervals": {
+              "accuracy": {
+                "lower": 0.7050839906440017,
+                "upper": 0.8817579936538931,
+                "valid_resamples": 1000
+              },
+              "balanced_accuracy": {
+                "lower": 0.7220241247598235,
+                "upper": 0.874260752684692,
+                "valid_resamples": 1000
+              },
+              "false_positive_rate": {
+                "lower": 0.22821447254112526,
+                "upper": 0.5260518733688945,
+                "valid_resamples": 1000
+              },
+              "recall": {
+                "lower": 0.9242405092379814,
+                "upper": 1.0,
+                "valid_resamples": 1000
+              }
+            },
+            "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42
+          },
+          "metrics": {
+            "accuracy": 0.801,
+            "balanced_accuracy": 0.8009999999999999,
+            "confusion": {
+              "fn": 26,
+              "fp": 372,
+              "tn": 628,
+              "tp": 974
+            },
+            "f1": 0.8303495311167945,
+            "false_positive_rate": 0.372,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7236255572065379,
+            "recall": 0.974,
+            "rows": 2000,
+            "threshold": 0.31
+          },
+          "per_source": {
+            "zenodo-v3-generated_v3": {
+              "accuracy": 0.8105263157894737,
+              "balanced_accuracy": 0.8057622167933988,
+              "confusion": {
+                "fn": 26,
+                "fp": 334,
+                "tn": 589,
+                "tp": 951
+              },
+              "f1": 0.8408488063660478,
+              "false_positive_rate": 0.361863488624052,
+              "labels": {
+                "legitimate": 923,
+                "phishing": 977
+              },
+              "precision": 0.7400778210116732,
+              "recall": 0.9733879222108496,
+              "rows": 1900,
+              "threshold": 0.31
+            },
+            "zenodo-v3-original_v1": {
+              "accuracy": 0.62,
+              "balanced_accuracy": 0.7532467532467533,
+              "confusion": {
+                "fn": 0,
+                "fp": 38,
+                "tn": 39,
+                "tp": 23
+              },
+              "f1": 0.5476190476190477,
+              "false_positive_rate": 0.4935064935064935,
+              "labels": {
+                "legitimate": 77,
+                "phishing": 23
+              },
+              "precision": 0.3770491803278688,
+              "recall": 1.0,
+              "rows": 100,
+              "threshold": 0.31
+            }
+          },
+          "threshold": 0.31
+        }
+      },
+      "rows": 2000
+    },
+    "test": {
+      "groups": 340,
+      "paired_correctness": {
+        "both_correct": 348,
+        "both_wrong": 2,
+        "v1_only_correct": 3,
+        "v2_only_correct": 72
+      },
+      "results": {
+        "baseline_v1": {
+          "batch_inference_seconds": 0.1225894000090193,
+          "group_bootstrap": {
+            "groups": 340,
+            "intervals": {
+              "accuracy": {
+                "lower": 0.781723684044791,
+                "upper": 0.8632482993197279,
+                "valid_resamples": 1000
+              },
+              "balanced_accuracy": {
+                "lower": 0.8056802137958854,
+                "upper": 0.8763631815373049,
+                "valid_resamples": 1000
+              },
+              "false_positive_rate": {
+                "lower": 0.179384866891023,
+                "upper": 0.2857405462184874,
+                "valid_resamples": 1000
+              },
+              "recall": {
+                "lower": 0.8627361036157583,
+                "upper": 0.9600049751243781,
+                "valid_resamples": 1000
+              }
+            },
+            "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42
+          },
+          "metrics": {
+            "accuracy": 0.8258823529411765,
+            "balanced_accuracy": 0.8439069614608271,
+            "confusion": {
+              "fn": 13,
+              "fp": 61,
+              "tn": 202,
+              "tp": 149
+            },
+            "f1": 0.8010752688172043,
+            "false_positive_rate": 0.23193916349809887,
+            "labels": {
+              "legitimate": 263,
+              "phishing": 162
+            },
+            "precision": 0.7095238095238096,
+            "recall": 0.9197530864197531,
+            "rows": 425,
+            "threshold": 0.44
+          },
+          "per_source": {
+            "meajor-trec5": {
+              "accuracy": 0.7261904761904762,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 23,
+                "tn": 61,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.27380952380952384,
+              "labels": {
+                "legitimate": 84,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 84,
+              "threshold": 0.44
+            },
+            "meajor-trec6": {
+              "accuracy": 0.8,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 18,
+                "tn": 72,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.2,
+              "labels": {
+                "legitimate": 90,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 90,
+              "threshold": 0.44
+            },
+            "meajor-trec7": {
+              "accuracy": 0.7752808988764045,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 20,
+                "tn": 69,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.2247191011235955,
+              "labels": {
+                "legitimate": 89,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 89,
+              "threshold": 0.44
+            },
+            "nazario-2007": {
+              "accuracy": 0.9197530864197531,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 13,
+                "fp": 0,
+                "tn": 0,
+                "tp": 149
+              },
+              "f1": 0.9581993569131833,
+              "false_positive_rate": null,
+              "labels": {
+                "legitimate": 0,
+                "phishing": 162
+              },
+              "precision": 1.0,
+              "recall": 0.9197530864197531,
+              "rows": 162,
+              "threshold": 0.44
+            }
+          },
+          "threshold": 0.44
+        },
+        "baseline_v2": {
+          "batch_inference_seconds": 0.09449960000347346,
+          "group_bootstrap": {
+            "groups": 340,
+            "intervals": {
+              "accuracy": {
+                "lower": 0.976301782113355,
+                "upper": 0.9976022046324754,
+                "valid_resamples": 1000
+              },
+              "balanced_accuracy": {
+                "lower": 0.9776986662330351,
+                "upper": 0.9980694980694981,
+                "valid_resamples": 1000
+              },
+              "false_positive_rate": {
+                "lower": 0.003596162216134566,
+                "upper": 0.0311284046692607,
+                "valid_resamples": 1000
+              },
+              "recall": {
+                "lower": 0.976602431275038,
+                "upper": 1.0,
+                "valid_resamples": 1000
+              }
+            },
+            "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42
+          },
+          "metrics": {
+            "accuracy": 0.9882352941176471,
+            "balanced_accuracy": 0.9893090175092709,
+            "confusion": {
+              "fn": 1,
+              "fp": 4,
+              "tn": 259,
+              "tp": 161
+            },
+            "f1": 0.9847094801223242,
+            "false_positive_rate": 0.015209125475285171,
+            "labels": {
+              "legitimate": 263,
+              "phishing": 162
+            },
+            "precision": 0.9757575757575757,
+            "recall": 0.9938271604938271,
+            "rows": 425,
+            "threshold": 0.31
+          },
+          "per_source": {
+            "meajor-trec5": {
+              "accuracy": 0.9761904761904762,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 2,
+                "tn": 82,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.023809523809523808,
+              "labels": {
+                "legitimate": 84,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 84,
+              "threshold": 0.31
+            },
+            "meajor-trec6": {
+              "accuracy": 0.9888888888888889,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 1,
+                "tn": 89,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.011111111111111112,
+              "labels": {
+                "legitimate": 90,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 90,
+              "threshold": 0.31
+            },
+            "meajor-trec7": {
+              "accuracy": 0.9887640449438202,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 1,
+                "tn": 88,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.011235955056179775,
+              "labels": {
+                "legitimate": 89,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 89,
+              "threshold": 0.31
+            },
+            "nazario-2007": {
+              "accuracy": 0.9938271604938271,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 1,
+                "fp": 0,
+                "tn": 0,
+                "tp": 161
+              },
+              "f1": 0.9969040247678018,
+              "false_positive_rate": null,
+              "labels": {
+                "legitimate": 0,
+                "phishing": 162
+              },
+              "precision": 1.0,
+              "recall": 0.9938271604938271,
+              "rows": 162,
+              "threshold": 0.31
+            }
+          },
+          "threshold": 0.31
+        }
+      },
+      "rows": 425
+    }
+  },
+  "dataset_manifest_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+  "environment": {
+    "architecture": "AMD64",
+    "logical_cpus": 12,
+    "os": "Windows",
+    "packages": {
+      "numpy": "2.5.4",
+      "phishguard": "0.4.2",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.8.0"
+    },
+    "processor": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD",
+    "python": "3.13.16",
+    "requested_numeric_threads": 1
+  },
+  "limitations": [
+    "Historical sources remain confounded with class; no contemporary-inbox claim.",
+    "Publisher labels and heuristic groups are not independently verified truth.",
+    "Challenge is mainly templated synthetic text; original subset provenance is unverified.",
+    "Results are stage-4b benchmarks, not untouched final project evidence.",
+    "No transformer training, adversarial evaluation or calibrated probabilities."
+  ],
+  "model_weights_updated": false,
+  "old_model_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "old_threshold": 0.44,
+  "phase": "real-mail-heldout-comparison",
+  "predictions_sha256": "36eaa6592892ade25b86b212232c8ee4eeb46f311f1c3240240dd8f4d2654195",
+  "protocol_sha256": "aa7449ee98a0dd87012fa70682cb56f730e3510b7dce57e8fb100a896439b76e",
+  "report_version": "1.0",
+  "reserve_rows_scored": 0,
+  "selection": {
+    "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+    "model_revision": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480",
+    "protocol_sha256": "aa7449ee98a0dd87012fa70682cb56f730e3510b7dce57e8fb100a896439b76e",
+    "threshold": 0.31
+  },
+  "source_sha256": "6fc58c9acede7f755611813f36bc95edb8246c190e74205feaf5ae6624708def",
+  "thresholds_updated": false
+}

@@ -4,7 +4,7 @@ PhishGuard is a course project on phishing-email classification and adversarial 
 
 ## Current status
 
-PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison and external generalization audit are available. Transformer fine-tuning, adversarial experiments and the web demo remain planned; stage 5 has not started.
+PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison, external generalization audit and separately trained real-mail baseline v2 are available. Transformer fine-tuning, adversarial experiments and the web demo remain planned; stage 5 has not started.
 
 ## Install
 
@@ -109,6 +109,23 @@ The downloader verifies pinned Nazario phishing and SpamAssassin legitimate-mail
 
 Results go to ignored `artifacts/generalization-internal-v1/` and `artifacts/generalization-external-v1/`; existing outputs are refused. Aggregate published reports include confusion counts, balanced accuracy, per-source metrics and group-bootstrap uncertainty. See [reproduction commands and interpretation](docs/generalization-audit.md). The inspected audit cohort is development evidence for future decisions; the reserve remains unscored.
 
+## Re-evaluate the baseline with improved data
+
+After the original dataset, baseline and external audit are prepared:
+
+```sh
+uv run --frozen phishguard refresh diagnose
+uv run --frozen phishguard refresh fetch
+uv run --frozen phishguard refresh prepare
+uv run --frozen phishguard refresh train
+uv run --frozen phishguard refresh evaluate
+uv run --frozen phishguard baseline predict --model models/baseline-v2 --file tests/fixtures/email.json
+```
+
+Review the [source terms, protocol and reproduction guide](docs/baseline-refresh.md). New verified downloads total about 211.7 MB. Preparation adds reviewed historical legitimate/phishing mail, repairs specific extraction artifacts, removes declared publisher placeholders and protects earlier held-out groups. Training writes a separate model to `models/baseline-v2/`; results go to `artifacts/real-mail-v2-evaluation/`. Original data/model files are preserved. The 703-message reserve remains unscored. Existing outputs are refused; the guide provides separate reproduction paths.
+
+On the 425-row historical benchmark, v1/v2 accuracy is 82.59%/98.82%; on the separate 2,000-row, mainly synthetic challenge it is 66.00%/80.10%. V2 still falsely flags 37.20% of legitimate challenge texts. Historical source families also occur in v2 development, and one previously reviewed message is disclosed in that test; the 424-row post-hoc sensitivity remains 98.82%. The challenge's 100 original records have unverified provenance and only 62% v2 accuracy. These are bounded research benchmarks, not production or universal accuracy claims. No stage-5 fine-tuning has started.
+
 ## Run checks and build
 
 ```sh
@@ -119,7 +136,7 @@ uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The 227 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
+The 249 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
 
 ## Documentation
 
@@ -134,8 +151,9 @@ The 227 offline tests cover contracts, malformed JSON, input limits, mappings, t
 - [Pretrained classifier comparison](docs/pretrained.md)
 - [Generalization audit and external results](docs/generalization-audit.md)
 - [External pre-score label review](docs/external-label-audit.md)
+- [Data refresh, baseline v2 and remaining limits](docs/baseline-refresh.md)
 
-The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit and local inference. Web-demo commands will be added when the UI is implemented.
+The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit, data refresh and local inference. Web-demo commands will be added when the UI is implemented.
 
 ## Planned deliverables
 
@@ -146,7 +164,7 @@ The project book is the canonical specification. It distinguishes implemented be
 
 ## Data and models
 
-No raw research emails or model checkpoints are included in Git. The internal synthetic source is pinned in its [source manifest](src/phishguard/datasets/source.json), with a publisher MIT declaration. The [external source manifest](src/phishguard/audit/source.json) separately records Nazario CC BY 4.0 attribution and SpamAssassin's research-use terms retaining sender copyright. Downloaded data remains on your disk. [Fixture provenance](tests/fixtures/README.md) describes invented test examples. Keep credentials, private mail and large artifacts out of Git; keep detected relatives and derived variants together. Dataset checks do not establish classification quality.
+No raw research emails or model checkpoints are included in Git. The internal synthetic source is pinned in its [source manifest](src/phishguard/datasets/source.json), with a publisher MIT declaration. The [external source manifest](src/phishguard/audit/source.json) separately records Nazario CC BY 4.0 attribution and SpamAssassin's research-use terms retaining sender copyright. The [refresh source manifest](src/phishguard/refresh/source.json) pins MeAJOR ham, historical Nazario phishing and the separate Zenodo challenge with publisher CC BY 4.0 declarations. Downloaded data remains on your disk. [Fixture provenance](tests/fixtures/README.md) describes invented test examples. Keep credentials, private mail and large artifacts out of Git; keep detected relatives and derived variants together. Dataset checks do not establish classification quality.
 
 ## Team
 

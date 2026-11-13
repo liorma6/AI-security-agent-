@@ -1,10 +1,10 @@
 # PhishGuard - Initial Project Book
 
-Revision 1.4a - November 13, 2026 - Generalization audit
+Revision 1.4b - November 13, 2026 - Data refresh and baseline re-evaluation
 
 Team: Lior and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
 
-Status: STAGE 4a GENERALIZATION AUDIT COMPLETED. Stages 0-4 and the additional stage 4a checkpoint are implemented at their stated scope. The frozen baseline has been evaluated on external email, with 703 additional messages reserved without model scoring. Stage 5 has not started; transformer fine-tuning, adversarial experiments, defense and the web demo remain planned. This book is the canonical specification and records both completed evidence and future requirements.
+Status: STAGE 4b DATA REFRESH COMPLETED. Stages 0-4 and checkpoints 4a/4b are implemented at their stated scope. A separate real-mail-trained baseline v2 improves the historical benchmark but still raises many false alarms on a separate challenge. The original model/data and 703 unscored reserved messages are preserved. Stage 5 has not started; transformer fine-tuning, adversarial experiments, defense and the web demo remain planned. This book is the canonical specification and records both completed evidence and future requirements.
 
 ## 1. Background
 
@@ -53,7 +53,7 @@ The main objective is to build a phishing-email detector and measure how control
 | Evaluate a defense | Training-only augmentation or another declared defense, with clean and attacked evaluations |
 | Deliver an understandable demo and report | Pasted-email workflow, bounded input, evidence-based explanation and comparative presentation |
 
-Stages 3-4 provide measured baseline/pretrained comparisons. Stage 4a adds an external generalization audit in chapter 6; it is a cross-source stress test, not a representative contemporary-inbox study. Adversarial robustness remains unmeasured. Thresholds are selected using validation data only; report trade-offs and unsuccessful experiments without choosing conclusions in advance.
+Stages 3-4 provide measured baseline/pretrained comparisons. Stage 4a adds an external generalization audit in chapter 6; it is a cross-source stress test, not a representative contemporary-inbox study. Stage 4b adds real-mail development data and a separately frozen baseline v2, with an independent challenge and explicit generalization limits. Adversarial robustness remains unmeasured. Thresholds are selected using validation data only; report trade-offs and unsuccessful experiments without choosing conclusions in advance.
 
 ### 2.1 Experimental questions and metrics
 
@@ -156,11 +156,23 @@ The separate audit runner loads the exact stage-3 model and threshold 0.44. It n
 
 Preparation deduplicates inputs, groups detected relatives transitively and excludes external components related to any internal split. A fixed 70/30 whole-group allocation creates an audit partition and an unscored reserve. The text-free manifest and deterministic audit-only label sample were frozen before predictions. The reserve is read during automated preparation and hashed for integrity, but not manually reviewed or scored. Internal diagnostics report training/test gaps, broader relatives and feature associations without changing the model. External evaluation reports class metrics, balanced accuracy, group-bootstrap uncertainty and per-source results. See the [audit guide](generalization-audit.md) and [label review](external-label-audit.md).
 
+### 3.9 Implemented data refresh and baseline v2
+
+Stage 4b reuses the classical algorithm with a separate training corpus and artifact. The inspected external audit becomes development-only data. Additional legitimate mail comes from the publisher-ham portion of MeAJOR v2.0 (TREC 2005/2006/2007); additional phishing comes from Nazario's historical `phishing3.mbox`. Generic spam is excluded, not relabeled as phishing. These archives provide real-mail-derived examples but remain historical, source-dependent and publisher-processed. New source licenses are publisher CC BY 4.0; original SpamAssassin terms remain attached to its records. [R18, R16]
+
+Before fitting, an excerpt review and integrity guards led to two corrections: narrow plain/HTML extraction repairs and removal of declared publisher entity placeholders, applied independently of class. Preparation unions both original and broader relatedness rules, known families and challenge templates. It excludes groups connected to every original synthetic row or any reserved row. Reserve access is limited to automated overlap checking; its saved bytes are unchanged. Original files and v1 behavior are preserved.
+
+The real-mail-v2 manifest binds 3,261 training, 745 validation, 425 historical test and 2,000 challenge rows. V2 training fits vocabulary/IDF/weights only on training data; validation selects threshold 0.31 under the unchanged F1 policy. It uses no synthetic training examples. The separate challenge source is 95% template-generated, while its 100 original records have unverified provenance. Its metadata templates are grouped and it is never used for fitting or threshold selection. [R19]
+
+A committed model-selection reference anchors weights, threshold, dataset and protocol before evaluation. Both models receive identical prepared inputs. Evaluation opens only test/challenge files and reports each separately with source subgroups, paired outcomes and group intervals. Baseline prediction selects v2 explicitly; v1 remains available. See the [refresh guide](baseline-refresh.md). Chapter 6 discloses a one-row inspection-boundary deviation and its sensitivity check; held-out-from-fitting is not synonymous with never inspected.
+
 ## 4. STRIDE threat analysis
 
 This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public errors. Stage 2 adds pinned source/file integrity, frozen splits, lineage checks and controlled source-only downloading. Stage 3 adds train-only fitting, held-out threshold selection, numerical JSON model validation, artifact digest checks and input-private prediction. Stage 4 adds reviewed safetensors-only loading, explicit model labels, checked tokenizer reconstruction, token/batch limits and digest-bound validation decisions. The broader controls below remain planned unless linked to implemented evidence in the stage log. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
 
 Stage 4a additionally bounds raw messages and expanded archives, rejects unsafe archive members without extracting files, keeps HTML inert, verifies external membership and refuses a different model/threshold. Its evaluation loader does not open the reserve file. These controls address integrity, disclosure, resource exhaustion and unintended execution; they do not establish that publisher labels are correct.
+
+Stage 4b adds bounded streaming source verification, protected-corpus overlap exclusion, separate model/selection references and tests proving that fitting does not open test/challenge and evaluation does not open development/reserve files. Its pre-fit leakage guard stopped an inconsistent split; the documented review-boundary deviation motivates a reviewed-ID registry for future regeneration.
 
 ### 4.1 Assets, actors and trust boundaries
 
@@ -187,9 +199,11 @@ Residual risks include dataset bias, incomplete campaign grouping, novel attack 
 
 ### 5.1 Current verification status
 
-The repository contains the specification, contracts, dataset pipeline, classical baseline, pretrained comparison and generalization audit. The 227 automated tests passed locally on Python 3.13.16: 80 foundation, 44 dataset, 51 baseline, 26 pretrained and 26 audit checks. They cover synthetic fixtures, input limits, malformed JSON, provenance, mappings, score/threshold consistency, grouping, leakage, artifact integrity and private errors. Audit tests add MIME/HTML extraction, unsafe archives, deterministic English filtering, broader similarity checked against brute force, exclusion of relatives of every internal split, fixed model/threshold enforcement and evaluation with the reserve file absent and model fitting disabled. Documentation checks cover English content, links, tables, chapters and diagrams. The [stage log](stage-log.md) records verification and CI evidence.
+The repository contains the specification, contracts, dataset pipeline, classical baseline, pretrained comparison and generalization audit. The automated suite contains 249 tests: 80 foundation, 44 dataset, 51 baseline, 26 pretrained, 26 audit and 22 refresh checks. The stage log records the executed local, installed-package and CI outcomes. They cover synthetic fixtures, input limits, malformed JSON, provenance, mappings, score/threshold consistency, grouping, leakage, artifact integrity and private errors. Audit tests add MIME/HTML extraction, unsafe archives, deterministic English filtering, broader similarity checked against brute force, exclusion of relatives of every internal split, fixed model/threshold enforcement and evaluation with the reserve file absent and model fitting disabled. Documentation checks cover English content, links, tables, chapters and diagrams. The [stage log](stage-log.md) records verification and CI evidence.
 
 Baseline tests cover train-only vocabulary/IDF fitting, threshold selection, exact metric counts, non-convergence, leakage, JSON model integrity, save/load numerical agreement and private predictions. Measured research-corpus results appear in chapter 6 and the linked reports. Passing tests and measured benchmark accuracy are distinct evidence.
+
+Refresh tests cover inert extraction repairs, preserved ordinary text/attachments, strict ham-only ingestion, source integrity, partial-file preservation, transitive known families, the literal-subject grouping boundary, publisher marker removal, protected-corpus exclusion, audit/challenge separation, partition tampering, train/evaluation read boundaries, frozen-selection mismatch and private CLI errors.
 
 ### 5.2 Planned PhishGuard unit-test matrix
 
@@ -299,9 +313,49 @@ The generalization concern is supported: the same model performs worse under thi
 
 Evidence: [audit protocol and interpretation](generalization-audit.md), [internal report](reports/generalization-internal.json), [external report](reports/generalization-external.json), [independent verification](reports/generalization-verification.json). The scored audit is now development evidence. Before stage 5, declare training sources, extraction/label policy, validation objective and a fresh final-evaluation protocol. The unscored reserve can support a precommitted future evaluation, but shares the same source limitations. More representative data with both classes is needed for stronger real-inbox claims. Stage 5 has not started.
 
+### 6.5 Data refresh: improvement and remaining generalization limits
+
+Stage 4b investigated all 117 earlier errors with automated full-text profiles and excerpt triage, plus 24 deterministic correctly classified controls. Technical/list discussions, routine account notices and newsletters appear among false alarms. Missed phishing includes account/delivery lures, unrelated padding, very short/context-dependent messages and plain-text placeholders hiding HTML content. These are associations, not established causes or verified label corrections. Publisher labels were retained.
+
+New source eligibility produced 1,784 MeAJOR legitimate and 1,404 historical Nazario phishing candidates. Together with 1,639 inspected audit rows and 2,000 separate challenge rows, 355 exact cleaned-input duplicates and 41 protected-corpus relatives were excluded. The old audit received 35 extraction repairs (four placeholder fallbacks, 31 rooted-HTML cleanups). Entity placeholders were removed from all candidate classes/sources under an explicit list, reducing a publisher shortcut without eliminating source-specific style. Raw originals stayed unchanged.
+
+| Partition | Rows | Legitimate / phishing | Groups |
+| --- | --- | --- | --- |
+| V2 training | 3,261 | 2,091 / 1,170 | 2,339 |
+| V2 validation | 745 | 479 / 266 | 533 |
+| Historical test | 425 | 263 / 162 | 340 |
+| Separate challenge | 2,000 | 1,000 / 1,000 | 91 |
+| Original reserve, unscored | 703 | 479 / 224 | 432 |
+
+The first training attempt stopped before fitting because eight development components violated the original literal-subject grouping guard. Both relation systems were then united and the dataset regenerated before successful fitting/scoring. Final protocol correction was committed at `941a4b7`, corrected data at `818372e`, and v2 model identity/threshold at `8d519e9` before held-out inference. The original baseline artifact and source histories were not rewritten.
+
+V2 uses the same TF-IDF/logistic-regression hyperparameters as v1 and 30,000 features, converging in eight solver iterations. Training accuracy is 99.57%; validation accuracy 97.85%, with eight false positives and eight false negatives. Validation alone selects threshold 0.31; v1 keeps 0.44. This is our locally trained classical baseline, not a downloaded Hugging Face model. No transformer fine-tuning or stage-5 work occurred.
+
+| Measure | Historical v1 | Historical v2 | Challenge v1 | Challenge v2 |
+| --- | --- | --- | --- | --- |
+| Accuracy | 82.59% | 98.82% | 66.00% | 80.10% |
+| Balanced accuracy | 84.39% | 98.93% | 66.00% | 80.10% |
+| Phishing precision | 70.95% | 97.58% | 59.84% | 72.36% |
+| Phishing recall | 91.98% | 99.38% | 97.30% | 97.40% |
+| Phishing F1 | 80.11% | 98.47% | 74.11% | 83.03% |
+| Legitimate false-positive rate | 23.19% | 1.52% | 65.30% | 37.20% |
+| TP / FP / TN / FN | 149 / 61 / 202 / 13 | 161 / 4 / 259 / 1 | 973 / 653 / 347 / 27 | 974 / 372 / 628 / 26 |
+
+Both models were compared on identical prepared inputs in each cohort. Historical paired outcomes favor v2 alone on 72 rows and v1 alone on three; challenge outcomes favor v2 alone on 326 and v1 alone on 44. V2 whole-group 95% accuracy intervals are 97.63-99.76% and 70.51-88.18%, respectively. The challenge has only 91 transitive/template groups; 2,000 rows are not 2,000 independent templates. Intervals remain conditional on the selected corpora.
+
+Generated challenge accuracy improves from 66.32% to 81.05% across 1,900 rows, but the 100 original records of unverified provenance improve only from 60% to 62%. Among their 77 legitimate records, false alarms fall only from 40 to 38; both models flag all 23 publisher-phishing records. The aggregate 80.10% must not hide this small-subset result. The challenge contains no training examples, but is mainly synthetic short text rather than representative contemporary inbox data.
+
+Inspection-boundary deviation: a 16-message review used the provisional training split before successful fitting. After regrouping, 15 reviewed rows remained in training, but one MeAJOR row entered the frozen historical test. The primary 425-row report is retained and is not claimed to be wholly untouched by inspection. Both models classify that row correctly. Removing it as a post-hoc sensitivity check leaves 424 rows: v1 accuracy 82.55%, v2 98.82%, with unchanged false-positive/false-negative counts. This is not a replacement independent test, and no model or threshold was changed. The [review trace](reports/refresh-review-boundary.json) preserves IDs; future splitting must carry an explicit reviewed-ID registry through every regeneration.
+
+The improvement is useful research evidence, with several limits. Historical test rows come from sources also represented in v2 development; publisher processing, class and era remain confounded. The challenge still falsely flags 372 of 1,000 legitimate texts. Data composition, extraction, marker cleanup and threshold changed together, so this is not an ablation isolating the reason for improvement. Neither the original 98.43% nor the new 98.82% estimates universal accuracy. The old 92.86% audit and this historical test use different cohorts and must not be compared as before/after scores.
+
+A complete repeated preparation, fit and scoring produced identical data, manifest, model and prediction bytes. Independent recounts matched all class/subgroup/paired counts and repeated group intervals. Baseline v1, original synthetic files and the 703 reserve messages remain byte-identical. The reserve was neither scored nor manually reviewed. Evidence: [protocol and source review](baseline-refresh.md), [training](reports/refresh-training.json), [comparison](reports/refresh-evaluation.json), [verification](reports/refresh-verification.json).
+
+Stage 4b is complete as a data/baseline experiment; generalization remains an open research problem. Stage 5 has not started. A requested fine-tuning stage must freeze its data/validation and reviewed-ID policies, use existing scored cohorts as benchmarks rather than untouched final evidence, and precommit final evaluation across later model/attack/defense choices. More representative contemporary data with both classes is needed for stronger deployment claims. Baseline v2 remains a separate research candidate, not an automatically deployed mail filter.
+
 ## 7. Architecture - UML
 
-The component UML marks implemented baseline training, pretrained comparison, frozen-baseline generalization audit, both inference adapters, reviewed artifacts, contracts and internal/external preparation. Frozen data includes internal train/validation/test and external audit/reserve cohorts; the external evaluator reads only audit rows. The sequence diagram remains the target web-demo interaction: both classifiers provide CLI prediction, while the UI and explanation are planned.
+The component UML marks implemented baseline v1/v2 training, pretrained comparison, generalization audit and data refresh, inference adapters, reviewed artifacts, contracts and internal/external preparation. Frozen data includes internal train/validation/test, external audit/reserve and real-mail-v2 development/test/challenge cohorts. Audit evaluation reads only audit rows; refresh evaluation reads only historical test/challenge. Both leave the reserve unscored. The sequence diagram remains the target web-demo interaction: both classifiers provide CLI prediction, while the UI and explanation are planned.
 
 ### 7.1 UML component diagram
 
@@ -348,7 +402,7 @@ Both students participate in all topics. Each has five review-lead sessions. Pyt
 
 ### 8.3 Two-semester milestones and ownership
 
-Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05 pretrained comparison and the additional stage 4a generalization audit are implemented and measured; individual student review remains open. W06-W10 implementation has not started. Stages 0-4 plus checkpoint 4a are complete (six of eleven milestones); stages 5-9 remain.
+Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05 pretrained comparison, stage 4a generalization audit and stage 4b data refresh/baseline re-evaluation are implemented and measured; individual student review remains open. W06-W10 implementation has not started. Stages 0-4 plus checkpoints 4a/4b are complete (seven of twelve milestones); stages 5-9 remain.
 
 | Package / period | Lior - 5 units | Sharon Elimelech - 5 units | Completion evidence |
 | --- | --- | --- | --- |
@@ -356,7 +410,7 @@ Relative milestones avoid inventing semester dates. Attach submission dates when
 | W02 / Semester A foundation | Maintain requirements and component UML; implement email/result contracts | Maintain STRIDE, sequence UML and test matrix; implement validation fixtures | Reviewed book, runnable contracts and tiny fixtures |
 | W03 / Semester A data | Source/license manifest and dataset ingestion | Label audit, deduplication and grouped split validator | Frozen dataset manifest; each reviews the other's output |
 | W04 / Semester A baseline | TF-IDF/logistic-regression training and save/load pipeline | Baseline metrics, threshold selection and leakage tests | Reproducible baseline and reviewed report |
-| W05 / Semester A comparison and audit | Pretrained adapter; external-source provenance, verified downloads and MIME extraction | Label compatibility; external overlap/group separation, metrics, uncertainty and label-review checks | Same-protocol comparison plus reproduced external audit; 703 messages reserved unscored |
+| W05 / Semester A comparison and data studies | Pretrained adapter; source review, downloads, MIME repairs, refresh ingestion and separate model artifacts | Label compatibility; relatedness/splits, marker/quality checks, metrics, uncertainty, review-boundary trace and reproduction | Pretrained comparison, external audit and reproduced baseline-v2 study; 703 messages reserved unscored |
 | W06 / Semester B detector | Fine-tuning script, environment and configuration | Tokenization/training-data checks, reproducibility and error analysis | Reviewed small-transformer checkpoint and model card |
 | W07 / Semester B evasion | Bounded perturbation operations and query-budget harness | Label-preservation review, paired metrics and attack test fixtures | Offline attack artifact set and baseline degradation report |
 | W08 / Semester B defense | Integrate defended inference and measure clean-performance costs | Implement training-only adversarial augmentation and defense training | Fixed-variant and fresh-search comparison under equal budgets |
@@ -367,7 +421,7 @@ Totals: Lior 10 x 5 = 50 units; Sharon Elimelech 10 x 5 = 50 units. The asymmetr
 
 ### 8.4 Contribution evidence and stage completion
 
-The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts and an offline validator. Stage 2 adds pinned-source acquisition, a sample label audit, deduplication, frozen grouped splits and dataset tests. The documents, code and initial audit were developed with AI assistance for both students to review. Stage 3 adds the trained baseline, safe model artifacts, measured evaluation and local inference. Stage 4 adds a reviewed pretrained transformer, paired comparison and local inference. Stage 4a adds the frozen external audit, internal diagnostics, unchanged-model verification and an unscored reserve. Transformer fine-tuning, perturbation/defense experiments and the web demo remain incomplete; stage 5 has not started.
+The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts and an offline validator. Stage 2 adds pinned-source acquisition, a sample label audit, deduplication, frozen grouped splits and dataset tests. The documents, code and initial audit were developed with AI assistance for both students to review. Stage 3 adds the trained baseline, safe model artifacts, measured evaluation and local inference. Stage 4 adds a reviewed pretrained transformer, paired comparison and local inference. Stage 4a adds the frozen external audit, internal diagnostics, unchanged-model verification and an unscored reserve. Stage 4b adds reviewed real-mail development data, targeted corpus repairs, separate baseline v2, fixed held-out comparisons, reproduction and a disclosed review-boundary sensitivity check. Transformer fine-tuning, perturbation/defense experiments and the web demo remain incomplete; stage 5 has not started.
 
 Lior owns the input/result contracts, dataset ingestion, baseline training, model adapters, fine-tuning runner, perturbation operations and demo integration listed in section 8.3. Sharon Elimelech owns validation fixtures, dataset quality and splits, evaluation and leakage checks, tokenization/reproducibility checks, perturbation validity, defense training and explanation/privacy checks. Each implementation package also includes tests and peer review; the weights in section 8.3 include that work.
 
@@ -398,3 +452,6 @@ The primary course reference is the student-supplied Project2_PhishGuard.docx, t
 
 - [R16 - Jose Nazario: phishing corpus README and attribution](https://monkey.org/~jose/phishing/README.txt)
 - [R17 - Apache SpamAssassin: public-corpus descriptions and terms](https://spamassassin.apache.org/old/publiccorpus/readme.html)
+
+- [R18 - MeAJOR v2.0 data record and publisher terms](https://zenodo.org/records/18471483)
+- [R19 - Phishing validation emails v3 and provenance metadata](https://zenodo.org/records/23954793)

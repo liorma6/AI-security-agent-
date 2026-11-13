@@ -1,0 +1,79 @@
+{
+  "bootstrap_intervals_identical": true,
+  "data_and_manifest_byte_identical": true,
+  "dataset_manifest_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+  "independent_confusion_and_metrics": {
+    "challenge": {
+      "baseline_v1": {
+        "accuracy": 0.66,
+        "balanced_accuracy": 0.6599999999999999,
+        "confusion": {
+          "fn": 27,
+          "fp": 653,
+          "tn": 347,
+          "tp": 973
+        },
+        "f1": 0.741051028179741,
+        "false_positive_rate": 0.653,
+        "precision": 0.5984009840098401,
+        "recall": 0.973
+      },
+      "baseline_v2": {
+        "accuracy": 0.801,
+        "balanced_accuracy": 0.8009999999999999,
+        "confusion": {
+          "fn": 26,
+          "fp": 372,
+          "tn": 628,
+          "tp": 974
+        },
+        "f1": 0.8303495311167945,
+        "false_positive_rate": 0.372,
+        "precision": 0.7236255572065379,
+        "recall": 0.974
+      }
+    },
+    "test": {
+      "baseline_v1": {
+        "accuracy": 0.8258823529411765,
+        "balanced_accuracy": 0.8439069614608271,
+        "confusion": {
+          "fn": 13,
+          "fp": 61,
+          "tn": 202,
+          "tp": 149
+        },
+        "f1": 0.8010752688172043,
+        "false_positive_rate": 0.23193916349809887,
+        "precision": 0.7095238095238096,
+        "recall": 0.9197530864197531
+      },
+      "baseline_v2": {
+        "accuracy": 0.9882352941176471,
+        "balanced_accuracy": 0.989309017509271,
+        "confusion": {
+          "fn": 1,
+          "fp": 4,
+          "tn": 259,
+          "tp": 161
+        },
+        "f1": 0.9847094801223242,
+        "false_positive_rate": 0.015209125475285171,
+        "precision": 0.9757575757575757,
+        "recall": 0.9938271604938271
+      }
+    }
+  },
+  "model_byte_identical": true,
+  "original_internal_files_unchanged": true,
+  "paired_and_subgroup_counts_match": true,
+  "predictions_byte_identical": true,
+  "reserve_rows_scored": 0,
+  "reserve_sha256": "cfedaf79d9ffd0dbc7aaa5831ca30add021b63b61cb08245091468d74cc19735",
+  "reserve_text_parsed_by_this_verifier": false,
+  "review_boundary_sensitivity_recounted": true,
+  "reviewed_rows_in_frozen_historical_test": 1,
+  "status": "passed",
+  "v1_model_sha256": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "v2_model_sha256": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480"
+}

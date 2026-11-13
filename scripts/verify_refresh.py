@@ -124,6 +124,20 @@ def main():
                     expected,
                 )
             recounted[split][name] = counts
+    review = read("docs/reports/refresh-review-boundary.json")
+    inspected = set(review["reviewed_ids"])
+    for split, recorded in review["final_partitions"].items():
+        ids = {rid for g in manifest["groups"] if g["split"] == split for rid in g["members"]}
+        assert sorted(ids & inspected) == recorded
+    sensitivity = [
+        r for r in predictions if r["cohort"] == "test" and r["example_id"] not in inspected
+    ]
+    assert len(sensitivity) == review["sensitivity_rows"] == 424
+    for short, name, threshold in (
+        ("v1", "baseline_v1", report["old_threshold"]),
+        ("v2", "baseline_v2", selection["threshold"]),
+    ):
+        assert_metrics(recount(sensitivity, short, threshold), review["posthoc_sensitivity"][name])
     verification = {
         "status": "passed",
         "independent_confusion_and_metrics": recounted,
@@ -139,6 +153,8 @@ def main():
         "reserve_sha256": digest(reserve),
         "reserve_rows_scored": 0,
         "reserve_text_parsed_by_this_verifier": False,
+        "reviewed_rows_in_frozen_historical_test": len(review["final_partitions"]["test"]),
+        "review_boundary_sensitivity_recounted": True,
     }
     Path("docs/reports/refresh-verification.json").write_text(
         json.dumps(verification, indent=2, sort_keys=True) + "\n", encoding="utf-8"
