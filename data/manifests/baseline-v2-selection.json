@@ -1,0 +1,6 @@
+{
+  "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+  "model_revision": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480",
+  "protocol_sha256": "aa7449ee98a0dd87012fa70682cb56f730e3510b7dce57e8fb100a896439b76e",
+  "threshold": 0.31
+}
