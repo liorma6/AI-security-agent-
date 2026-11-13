@@ -14,7 +14,9 @@ def recount(labels, scores, threshold):
         {"label": "phishing" if label else "legitimate", "checked_score": score}
         for label, score in zip(labels, scores, strict=True)
     ]
-    return recount_rows(rows, "checked", threshold)
+    result = recount_rows(rows, "checked", threshold)
+    result.pop("balanced_accuracy")  # Evasion reports expose the two class rates separately.
+    return result
 
 
 def main():
