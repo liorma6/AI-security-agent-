@@ -1,0 +1,52 @@
+{
+  "all_reviewed_files_unchanged": true,
+  "baseline_previous_predictions_max_absolute_error": 0.0,
+  "checkpoint_revision": "310a5602280486e01dd60e37230980cfcc327b41",
+  "code": {
+    "commit": "50172afacad72af4e6afa8596e56044c8bd48f1f",
+    "working_tree_dirty": false
+  },
+  "independent_confusion": {
+    "baseline": {
+      "fn": 8,
+      "fp": 19,
+      "tn": 807,
+      "tp": 891
+    },
+    "pretrained_default": {
+      "fn": 131,
+      "fp": 539,
+      "tn": 287,
+      "tp": 768
+    },
+    "pretrained_selected": {
+      "fn": 92,
+      "fp": 601,
+      "tn": 225,
+      "tp": 807
+    }
+  },
+  "independent_paired_correctness": {
+    "default": {
+      "baseline_only": 657,
+      "both_correct": 1041,
+      "both_wrong": 13,
+      "pretrained_only": 14
+    },
+    "selected": {
+      "baseline_only": 678,
+      "both_correct": 1020,
+      "both_wrong": 15,
+      "pretrained_only": 12
+    }
+  },
+  "invented_fixture_count": 8,
+  "invented_long_input_truncated": true,
+  "parameters": 65783042,
+  "reload_max_absolute_score_error": 0.0,
+  "repeat_token_counts_identical": true,
+  "report_version": "1.0",
+  "scope": "Independent recount of all saved test predictions plus real-checkpoint reload checks on eight invented messages; not a second full-corpus transformer run.",
+  "single_vs_padded_batch_max_absolute_score_error": 2.3283064365386963e-09,
+  "test_predictions_sha256": "ab903da72f230e1f023d89951a45c7ae927294db9ddf4ffe6622cc99ae001f96"
+}

@@ -1,4 +1,4 @@
-"""Research CLI: contracts, frozen datasets and the classical baseline."""
+"""Research CLI: contracts, frozen datasets and both classifier workflows."""
 
 import argparse
 import json

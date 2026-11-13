@@ -1,76 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="920" viewBox="0 0 1140 920">
-<title>PhishGuard UML components: implemented baseline and planned advanced modules</title>
-<defs><marker id="open" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#28616b" stroke-width="1.5"/></marker></defs>
-<rect width="1140" height="920" fill="white"/>
-<g font-family="Segoe UI,Arial,sans-serif" fill="#153c44">
-<text x="570" y="35" text-anchor="middle" font-size="25">PhishGuard | UML components | Stage 3</text>
-<text x="570" y="68" text-anchor="middle" font-size="17">Green: implemented. Pale: planned modules and artifacts.</text>
-<rect x="40" y="100" width="260" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
-<text x="170.0" y="124" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="170.0" y="152" text-anchor="middle" font-size="17">PhishGuard CLI</text>
-<text x="170.0" y="175" text-anchor="middle" font-size="17">data / baseline / validate</text>
-<rect x="430" y="100" width="300" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
-<text x="580.0" y="124" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="580.0" y="152" text-anchor="middle" font-size="17">Contract validator</text>
-<text x="580.0" y="175" text-anchor="middle" font-size="17">email / artifact / result</text>
-<polyline points="300,150 430,150" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="365" y="138" text-anchor="middle" font-size="14">uses</text>
-<rect x="40" y="320" width="260" height="100" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
-<text x="170.0" y="344" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="170.0" y="372" text-anchor="middle" font-size="17">Gradio demo UI</text>
-<text x="170.0" y="395" text-anchor="middle" font-size="17">paste email / show result</text>
-<rect x="430" y="320" width="300" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
-<text x="580.0" y="344" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="580.0" y="372" text-anchor="middle" font-size="17">Baseline inference</text>
-<rect x="850" y="320" width="250" height="100" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
-<text x="975.0" y="344" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="975.0" y="372" text-anchor="middle" font-size="17">Explanation module</text>
-<polyline points="300,350 430,350" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="365" y="338" text-anchor="middle" font-size="14">predicts</text>
-<polyline points="300,390 350,390 350,470 975,470 975,420" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="835" y="457" text-anchor="middle" font-size="14">explains</text>
-<polyline points="170,320 170,260 460,260 460,200" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="320" y="248" text-anchor="middle" font-size="14">validates</text>
-<polyline points="580,320 580,200" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="645" y="275" text-anchor="middle" font-size="14">validates result</text>
-<rect x="850" y="550" width="250" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
-<text x="975.0" y="574" text-anchor="middle" font-size="15">&lt;&lt;artifact&gt;&gt;</text>
-<text x="975.0" y="602" text-anchor="middle" font-size="17">Baseline JSON model</text>
-<text x="975.0" y="625" text-anchor="middle" font-size="17">weights + manifest</text>
-<polyline points="730,370 790,370 790,600 850,600" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="817" y="586" text-anchor="middle" font-size="14">loads</text>
-<rect x="400" y="720" width="340" height="130" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
-<text x="570.0" y="744" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="570.0" y="772" text-anchor="middle" font-size="17">Baseline experiment runner</text>
-<text x="570.0" y="795" text-anchor="middle" font-size="17">fit / select threshold</text>
-<text x="570.0" y="818" text-anchor="middle" font-size="17">evaluate / record results</text>
-<rect x="40" y="720" width="260" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
-<text x="170.0" y="744" text-anchor="middle" font-size="15">&lt;&lt;artifact&gt;&gt;</text>
-<text x="170.0" y="772" text-anchor="middle" font-size="17">Dataset + split manifest</text>
-<rect x="850" y="720" width="250" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
-<text x="975.0" y="744" text-anchor="middle" font-size="15">&lt;&lt;artifact&gt;&gt;</text>
-<text x="975.0" y="772" text-anchor="middle" font-size="17">Reports + prediction files</text>
-<polyline points="400,770 300,770" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="350" y="756" text-anchor="middle" font-size="14">reads</text>
-<polyline points="740,790 850,790" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="795" y="777" text-anchor="middle" font-size="14">writes</text>
-<polyline points="600,720 600,675 975,675 975,650" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="765" y="664" text-anchor="middle" font-size="14">produces / evaluates</text>
-<polyline points="400,750 365,750 365,230 510,230 510,200" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="465" y="630" text-anchor="middle" font-size="14">validates records</text>
-<rect x="40" y="535" width="260" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
-<text x="170" y="559" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="170" y="587" text-anchor="middle" font-size="17">Dataset preparation</text>
-<text x="170" y="610" text-anchor="middle" font-size="17">fetch / group / split / verify</text>
-<polyline points="170,635 170,720" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="220" y="684" font-size="14">writes</text>
-<polyline points="70,200 20,220 20,585 40,585" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="48" y="495" font-size="14">uses</text>
-<polyline points="300,575 365,575" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5"/>
-<rect x="850" y="100" width="250" height="100" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
-<text x="975" y="124" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="975" y="152" text-anchor="middle" font-size="17">Advanced experiments</text>
-<text x="975" y="175" text-anchor="middle" font-size="16">transformers / evasion / defense</text>
-<polyline points="300,180 400,180 400,300 500,300 500,320" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="570" y="890" text-anchor="middle" font-size="17">Dashed open arrows show dependencies. Components are logical Python modules.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1010" viewBox="0 0 1200 1010">
+<title>PhishGuard components after stage 4</title>
+<defs><marker id="open" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#28616b" stroke-width="1.5"/></marker></defs>
+<rect width="1200" height="1010" fill="white"/>
+<g font-family="Arial,sans-serif" fill="#18373e">
+<text x="600" y="36" text-anchor="middle" font-size="25" font-weight="bold">PhishGuard - component UML</text>
+<text x="600" y="62" text-anchor="middle" font-size="16">Stage 4: green = implemented; pale = planned</text>
+<rect x="40" y="100" width="280" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="180.0" y="124" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="180.0" y="151" text-anchor="middle" font-size="18">Research CLI</text>
+<text x="180.0" y="175" text-anchor="middle" font-size="15">data / baseline / pretrained</text>
+<rect x="450" y="100" width="300" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="600.0" y="124" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="600.0" y="151" text-anchor="middle" font-size="18">Contracts / validation</text>
+<text x="600.0" y="175" text-anchor="middle" font-size="15">EmailInput / Prediction / artifact</text>
+<rect x="870" y="100" width="290" height="110" rx="4" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="1015.0" y="124" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="1015.0" y="151" text-anchor="middle" font-size="18">Pasted-email web UI</text>
+<text x="1015.0" y="175" text-anchor="middle" font-size="15">local Gradio demo</text>
+<rect x="40" y="350" width="280" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="180.0" y="374" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="180.0" y="401" text-anchor="middle" font-size="18">Dataset preparation</text>
+<text x="180.0" y="425" text-anchor="middle" font-size="15">fetch / group / split / verify</text>
+<rect x="450" y="350" width="300" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="600.0" y="374" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="600.0" y="401" text-anchor="middle" font-size="18">Local inference adapters</text>
+<text x="600.0" y="425" text-anchor="middle" font-size="15">TF-IDF baseline + DistilBERT</text>
+<text x="600.0" y="446" text-anchor="middle" font-size="15">fixed preprocessing / limits</text>
+<rect x="870" y="350" width="290" height="130" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="1015.0" y="374" text-anchor="middle" font-size="14">&lt;&lt;artifact&gt;&gt;</text>
+<text x="1015.0" y="401" text-anchor="middle" font-size="18">Reviewed model artifacts</text>
+<text x="1015.0" y="425" text-anchor="middle" font-size="15">baseline numerical JSON</text>
+<text x="1015.0" y="446" text-anchor="middle" font-size="15">HF safetensors + vocabulary</text>
+<text x="1015.0" y="467" text-anchor="middle" font-size="15">source / selection manifests</text>
+<rect x="40" y="590" width="280" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="180.0" y="614" text-anchor="middle" font-size="14">&lt;&lt;artifact&gt;&gt;</text>
+<text x="180.0" y="641" text-anchor="middle" font-size="18">Frozen dataset</text>
+<text x="180.0" y="665" text-anchor="middle" font-size="15">train / validation / test</text>
+<text x="180.0" y="686" text-anchor="middle" font-size="15">group and file manifests</text>
+<rect x="450" y="590" width="300" height="130" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="600.0" y="614" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="600.0" y="641" text-anchor="middle" font-size="18">Offline experiments</text>
+<text x="600.0" y="665" text-anchor="middle" font-size="15">baseline training + evaluation</text>
+<text x="600.0" y="686" text-anchor="middle" font-size="15">pretrained selection + comparison</text>
+<text x="600.0" y="707" text-anchor="middle" font-size="15">frozen held-out protocol</text>
+<rect x="870" y="590" width="290" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="1015.0" y="614" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="1015.0" y="641" text-anchor="middle" font-size="18">Model acquisition</text>
+<text x="1015.0" y="665" text-anchor="middle" font-size="15">pinned HTTPS source</text>
+<text x="1015.0" y="686" text-anchor="middle" font-size="15">size and SHA-256 verification</text>
+<rect x="40" y="840" width="280" height="110" rx="4" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="180.0" y="864" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="180.0" y="891" text-anchor="middle" font-size="18">Advanced experiments</text>
+<text x="180.0" y="915" text-anchor="middle" font-size="15">fine-tuning / evasion / defense</text>
+<rect x="450" y="840" width="300" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="600.0" y="864" text-anchor="middle" font-size="14">&lt;&lt;artifact&gt;&gt;</text>
+<text x="600.0" y="891" text-anchor="middle" font-size="18">Reports and predictions</text>
+<text x="600.0" y="915" text-anchor="middle" font-size="15">aggregate metrics / IDs / scores</text>
+<text x="600.0" y="936" text-anchor="middle" font-size="15">no email text in reports</text>
+<rect x="870" y="840" width="290" height="110" rx="4" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="1015.0" y="864" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
+<text x="1015.0" y="891" text-anchor="middle" font-size="18">Explanation module</text>
+<text x="1015.0" y="915" text-anchor="middle" font-size="15">reviewed indicators / limits</text>
+<polyline points="320,155 450,155" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="385" y="142" text-anchor="middle" font-size="14">validates</text>
+<polyline points="870,155 750,155" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="810" y="142" text-anchor="middle" font-size="14">validates</text>
+<polyline points="600,350 600,210" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="669" y="284" text-anchor="middle" font-size="14">validates I/O</text>
+<polyline points="320,180 390,180 390,405 450,405" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="385" y="325" text-anchor="middle" font-size="14">predicts</text>
+<polyline points="180,210 180,350" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="210" y="285" text-anchor="middle" font-size="14">uses</text>
+<polyline points="180,460 180,590" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="215" y="535" text-anchor="middle" font-size="14">writes</text>
+<polyline points="320,190 360,190 360,640 450,640" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="402" y="628" text-anchor="middle" font-size="14">runs</text>
+<polyline points="450,670 320,670" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="385" y="657" text-anchor="middle" font-size="14">reads</text>
+<polyline points="600,720 600,840" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="670" y="783" text-anchor="middle" font-size="14">writes</text>
+<polyline points="750,405 870,405" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="810" y="392" text-anchor="middle" font-size="14">loads</text>
+<polyline points="1015,590 1015,480" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1053" y="542" text-anchor="middle" font-size="14">writes</text>
+<polyline points="750,650 815,650 815,450 870,450" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="788" y="638" text-anchor="middle" font-size="14">uses</text>
+<polyline points="1015,210 1015,260 720,260 720,350" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="866" y="248" text-anchor="middle" font-size="14">predicts</text>
+<polyline points="1150,210 1180,210 1180,895 1160,895" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="1125" y="793" text-anchor="middle" font-size="14">explains</text>
+<polyline points="320,895 450,895" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="385" y="882" text-anchor="middle" font-size="14">uses reports</text>
+<text x="600" y="990" text-anchor="middle" font-size="16">Dashed open arrows show dependencies between logical Python modules and artifacts.</text>
 </g></svg>

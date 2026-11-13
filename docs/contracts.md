@@ -11,7 +11,7 @@ Stage 1 implements offline validation with [Pydantic strict models](https://docs
 | `artifact` | `ModelArtifact` | Model identity/revision, digest, preprocessing version, label mapping, threshold and optional tokenizer reference |
 | `prediction` | `Prediction` or `UnavailablePrediction` | An explicitly successful result or an unavailable state, selected by `status` |
 
-These records do not train, download or load a model. Validating a prediction fixture checks its structure and arithmetic consistency, not the truth of a phishing decision. Artifact validation checks digest syntax; it does not verify a file's bytes or establish publisher trust. The stage-3 [baseline loader](baseline.md) separately verifies file integrity and cross-field numerical state; the contract validator alone still performs no loading.
+These records do not train, download or load a model. Validating a prediction fixture checks its structure and arithmetic consistency, not the truth of a phishing decision. Artifact validation checks digest syntax; it does not verify a file's bytes or establish publisher trust. The stage-3 [baseline loader](baseline.md) separately verifies file integrity and cross-field numerical state; the stage-4 pretrained loader also verifies source bytes, tokenizer reconstruction, labels and complete safetensors weights. The contract validator alone still performs no loading.
 
 ## Input and text rules
 
@@ -22,13 +22,13 @@ These records do not train, download or load a model. Validating a prediction fi
 - Labels are `legitimate` or `phishing`. Splits are `unassigned`, `train`, `validation` or `test`. Stage 2 implements cross-record split/group and lineage checks; see the [dataset guide](dataset.md). Optional `parent_id` identifies a derived example's original/parent and cannot equal its own ID. Dataset-level validation rejects missing parents, cycles and group/split separation from parents. Existing records that omit it remain valid.
 - Identifiers contain 1-128 ASCII letters/digits or `.`, `_`, `:`, `/`, `-`, starting with a letter/digit. Source/license/revision metadata is nonblank and bounded to 2,048 characters. Identifiers are not file paths and are never executed or opened.
 
-The selected research subset uses the publisher's English flag. The validator accepts Unicode without claiming to detect the language or support multilingual classification. The baseline adds word tokenization and a training-fitted vocabulary. A transformer token limit remains a later-stage concern.
+The selected research subset uses the publisher's English flag. The validator accepts Unicode without claiming to detect the language or support multilingual classification. The baseline adds word tokenization and a training-fitted vocabulary. The stage-4 pretrained adapter reports original token length and right truncation at 512 tokens; the original validated email record is preserved.
 
 ## Prediction and artifact rules
 
 `score` always refers to phishing. It must be a finite number in [0, 1], as must `threshold`. Boolean values and numeric strings are rejected. A successful result includes example ID, model ID/revision, threshold and finite nonnegative elapsed milliseconds. Its label must be `phishing` when `score >= threshold`, and `legitimate` otherwise. A score is not presented as a calibrated probability.
 
-The artifact's label mapping must assign distinct indices 0 and 1 to the two labels. Either ordering is valid in the general contract. The baseline loader supports the explicitly trained legitimate=0/phishing=1 mapping and rejects reversed state; future model adapters must interpret their own recorded mappings. A tokenizer, if supplied, requires both name and revision. SHA-256 digests contain exactly 64 lowercase hexadecimal characters.
+The artifact's label mapping must assign distinct indices 0 and 1 to the two labels. Either ordering is valid in the general contract. The baseline loader supports the explicitly trained legitimate=0/phishing=1 mapping and rejects reversed state; the pretrained adapter separately verifies explicit publisher labels and extracts the phishing column. Its source loader rejects incompatible configuration labels. A tokenizer, if supplied, requires both name and revision. SHA-256 digests contain exactly 64 lowercase hexadecimal characters.
 
 An unavailable result has `status: unavailable`, an optional model ID and one reason: `model_not_loaded`, `model_load_failed` or `manifest_mismatch`. It cannot contain a score, threshold, label or elapsed time. There is no fabricated fallback prediction.
 

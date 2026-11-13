@@ -1,14 +1,14 @@
 # PhishGuard
 
-PhishGuard is a course project on phishing-email classification and adversarial robustness. Its planned workflow compares a TF-IDF/logistic-regression baseline with Hugging Face classifiers, measures the effect of controlled text changes, and evaluates a defense. A local web demo will accept pasted email text and show a risk score and explanation.
+PhishGuard is a course project on phishing-email classification and adversarial robustness. It compares a TF-IDF/logistic-regression baseline with a reviewed Hugging Face classifier. Planned extensions fine-tune a transformer, measure the effect of controlled text changes, and evaluate a defense. A local web demo will accept pasted email text and show a risk score and explanation.
 
 ## Current status
 
-PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. Hugging Face comparison, transformer fine-tuning, adversarial experiments and the web demo remain planned.
+PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier and same-test comparison are also available. Transformer fine-tuning, adversarial experiments and the web demo remain planned.
 
 ## Install
 
-Use Python 3.11-3.13 and [uv](https://docs.astral.sh/uv/getting-started/installation/). Python 3.13 is the development default in `.python-version`; the local environment was verified with Python 3.13.16 and uv 0.13.1. The baseline uses scikit-learn 1.9.1 with numerical dependencies pinned in `uv.lock`. Transformer-library compatibility will be checked separately.
+Use Python 3.11-3.13 and [uv](https://docs.astral.sh/uv/getting-started/installation/). Python 3.13 is the development default in `.python-version`; the local environment was verified with Python 3.13.16 and uv 0.13.1. The baseline uses scikit-learn 1.9.1 with numerical dependencies pinned in `uv.lock`. The optional pretrained extra pins PyTorch 2.15.0 (CPU on Windows/Linux), Transformers 4.57.6 and safetensors 0.8.0.
 
 From the repository root:
 
@@ -71,17 +71,40 @@ To check your own message, supply a UTF-8 JSON file with `body` and optional `su
 
 The frozen synthetic test set produced **98.43% accuracy, 99.11% phishing recall and 2.30% legitimate false-positive rate**: 891 detected phishing messages, eight missed phishing messages, 807 correct legitimate decisions and 19 false alarms. These results do not establish real-inbox or adversarial performance. [Protocol, measured results and limitations](docs/baseline.md).
 
+## Use the pretrained classifier
+
+```sh
+uv sync --locked --extra pretrained
+uv run --frozen --extra pretrained phishguard pretrained fetch
+uv run --frozen --extra pretrained phishguard pretrained verify
+uv run --frozen --extra pretrained phishguard pretrained predict --file tests/fixtures/email.json
+```
+
+The first use downloads a pinned public DistilBERT checkpoint (about 263 MB of weights); inference then runs locally on CPU without an API key or sending email content to a service. The pretrained prediction contains the score/decision plus token-length and truncation metadata. Input over 512 model tokens is right-truncated and explicitly marked. The normal email character limit still applies.
+
+After preparing the dataset and baseline, reproduce the comparison with:
+
+```sh
+uv run --frozen --extra pretrained phishguard pretrained select
+uv run --frozen --extra pretrained phishguard pretrained evaluate
+uv run --frozen --extra pretrained phishguard pretrained predict --selection artifacts/pretrained-selection-v1 --file tests/fixtures/email.json
+```
+
+Selection uses validation only and freezes the threshold before final-test evaluation. Without `--selection`, prediction uses 0.50. Existing output directories are preserved; use new `--output` paths for repeated experiments. Model files and per-example predictions stay in ignored local folders. See [model provenance, commands, comparison and limitations](docs/pretrained.md).
+
+On the same synthetic test set, pretrained accuracy was **61.16% at threshold 0.50** and **59.83% at the validation-selected threshold 0.05**, versus **98.43% for the corpus-trained baseline**. This is a transfer comparison; upstream training overlap is unknown, and none of these measurements establish real-mail or adversarial performance.
+
 ## Run checks and build
 
 ```sh
-uv run --frozen pytest
+uv run --frozen --extra pretrained pytest
 uv run --frozen ruff check .
 uv run --frozen ruff format --check .
 uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The offline tests cover contracts, malformed JSON, input limits, label mappings, threshold decisions, data ingestion, grouping, split leakage, frozen-file integrity, downloader failures and CLI privacy/errors. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs the checks on Windows and Linux with Python 3.11 and 3.13. The 175 tests include small training/save/load/inference checks and leakage protections. Research-corpus metrics are recorded separately in the baseline reports. Builds are written to the ignored `dist` directory.
+The offline tests cover contracts, malformed JSON, input limits, label mappings, threshold decisions, data ingestion, grouping, split leakage, frozen-file integrity, downloader failures and CLI privacy/errors. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs the checks on Windows and Linux with Python 3.11 and 3.13. The full 201-test suite includes tiny training/save/load/inference checks, a local random transformer, source integrity, label mapping, token truncation and held-out comparison protections. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are recorded separately in the baseline and pretrained reports. Builds are written to the ignored `dist` directory.
 
 ## Documentation
 
@@ -93,13 +116,13 @@ The offline tests cover contracts, malformed JSON, input limits, label mappings,
 - [Dataset source, preparation and limits](docs/dataset.md)
 - [Label sample audit](docs/dataset-label-audit.md)
 - [Classical baseline and measured results](docs/baseline.md)
+- [Pretrained classifier comparison](docs/pretrained.md)
 
-The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover implemented data preparation, baseline training/evaluation and local inference. Web-demo commands will be added when the UI is implemented.
+The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover implemented data preparation, baseline training/evaluation, pretrained comparison and local inference. Web-demo commands will be added when the UI is implemented.
 
 ## Planned deliverables
 
 - A fine-tuned small transformer to compare with the implemented classical baseline.
-- A comparison against a suitable pretrained Hugging Face classifier.
 - A controlled text-perturbation runner and a robustness improvement experiment.
 - A local pasted-email demo with model identity, score and explanation.
 - A comparative report and final presentation.

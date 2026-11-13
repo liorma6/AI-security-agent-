@@ -36,7 +36,7 @@ Runtime: PyTorch 2.15.0, Transformers 4.57.6 and safetensors 0.8.0. The lockfile
 
 Default checkpoint directory: `models/pretrained/dima806-310a5602`. Selection output: `artifacts/pretrained-selection-v1`. Test output: `artifacts/pretrained-test-v1`. All remain ignored locally. Commands refuse existing experiment outputs. For a repeat, choose a new `--output` directory; use `--selection` to choose an existing frozen decision. Dataset/reference/model/baseline/report paths have explicit options; see `--help`.
 
-Prediction accepts the existing UTF-8 email JSON contract (or stdin with `--file -`) and returns a nested `prediction` plus original/used token counts and a truncation flag. Without `--selection`, it uses threshold 0.50. It does not store/echo the message or open its links. An unavailable model has no fabricated score. Selection and evaluation show only processed row counts on stderr. No final-test measurements are recorded until the implementation and protocol have been committed.
+Prediction accepts the existing UTF-8 email JSON contract (or stdin with `--file -`) and returns a nested `prediction` plus original/used token counts and a truncation flag. Without `--selection`, it uses threshold 0.50. It does not store/echo the message or open its links. An unavailable model has no fabricated score. Selection and evaluation show only processed row counts on stderr. Implementation/protocol commit `50172afacad72af4e6afa8596e56044c8bd48f1f` preceded validation and final-test scoring. Both reports record a clean working tree.
 
 ## Sources reviewed
 
@@ -46,3 +46,18 @@ Prediction accepts the existing UTF-8 email JSON contract (or stdin with `--file
 - [Transformers DistilBERT documentation](https://huggingface.co/docs/transformers/v4.57.3/en/model_doc/distilbert)
 - [Transformers model loading](https://huggingface.co/docs/transformers/v4.57.3/en/main_classes/model)
 - [PyTorch installation](https://pytorch.org/get-started/locally/)
+
+## Measured results
+
+| Measure | Classical baseline | Pretrained at 0.50 | Pretrained selected |
+| --- | --- | --- | --- |
+| Threshold | 0.44 | 0.50 | 0.05 |
+| Accuracy | 98.43% | 61.16% | 59.83% |
+| Phishing precision | 97.91% | 58.76% | 57.32% |
+| Phishing recall | 99.11% | 85.43% | 89.77% |
+| Phishing F1 | 98.51% | 69.63% | 69.96% |
+| Legitimate false-positive rate | 2.30% | 65.25% | 72.76% |
+| True positives / false positives | 891 / 19 | 768 / 539 | 807 / 601 |
+| True negatives / false negatives | 807 / 8 | 287 / 131 | 225 / 92 |
+
+Validation selected threshold 0.05; the test set contains 899 phishing and 826 legitimate messages. Pretrained right truncation affected 0 test rows, with maximum original length 345. CPU scoring took 457.82 seconds, versus 0.275 seconds for the recomputed baseline, excluding model loading. See the [project book](project-book.md) for interpretation and resource limits, [validation evidence](reports/pretrained-validation.json), [test evidence](reports/pretrained-test.json), and [independent counts/reload verification](reports/pretrained-reproduction.json). The latter is not a repeated full-corpus transformer run. No settings were changed after test outcomes were inspected.

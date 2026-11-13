@@ -1,0 +1,213 @@
+{
+  "baseline_report_sha256": "e0dda3a1df48b46019add880fe082d8e1794dff314c12a2b1cb3f1487b5d8cba",
+  "baseline_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "code": {
+    "commit": "50172afacad72af4e6afa8596e56044c8bd48f1f",
+    "working_tree_dirty": false
+  },
+  "dataset_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+  "environment": {
+    "architecture": "AMD64",
+    "logical_cpus": 12,
+    "os": "Windows",
+    "packages": {
+      "numpy": "2.5.4",
+      "phishguard": "0.4.0",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.8.0"
+    },
+    "pretrained_batch_size": 8,
+    "pretrained_device": "cpu",
+    "pretrained_dtype": "float32",
+    "pretrained_packages": {
+      "safetensors": "0.8.0",
+      "tokenizers": "0.22.2",
+      "torch": "2.15.0+cpu",
+      "transformers": "4.57.6"
+    },
+    "processor": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD",
+    "python": "3.13.16",
+    "requested_numeric_threads": 1
+  },
+  "limitations": [
+    "Synthetic publisher-English benchmark, not real-inbox performance.",
+    "Baseline fitted this corpus; pretrained weights fitted external data. This does not isolate the effect of model architecture.",
+    "Full upstream training membership is unavailable; overlap cannot be excluded.",
+    "Reconstructed cased tokenizer; inputs over 512 tokens are right-truncated.",
+    "Publisher labels can require missing context; grouping cannot prove independence.",
+    "Threshold selection is not probability calibration. No evasion robustness measured."
+  ],
+  "metrics": {
+    "baseline": {
+      "accuracy": 0.9843478260869565,
+      "confusion": {
+        "fn": 8,
+        "fp": 19,
+        "tn": 807,
+        "tp": 891
+      },
+      "f1": 0.9850746268656716,
+      "false_positive_rate": 0.023002421307506054,
+      "labels": {
+        "legitimate": 826,
+        "phishing": 899
+      },
+      "precision": 0.9791208791208791,
+      "recall": 0.9911012235817576,
+      "rows": 1725,
+      "threshold": 0.44
+    },
+    "pretrained_default": {
+      "accuracy": 0.6115942028985507,
+      "confusion": {
+        "fn": 131,
+        "fp": 539,
+        "tn": 287,
+        "tp": 768
+      },
+      "f1": 0.6962828649138713,
+      "false_positive_rate": 0.652542372881356,
+      "labels": {
+        "legitimate": 826,
+        "phishing": 899
+      },
+      "precision": 0.5876052027543994,
+      "recall": 0.8542825361512792,
+      "rows": 1725,
+      "threshold": 0.5
+    },
+    "pretrained_selected": {
+      "accuracy": 0.5982608695652174,
+      "confusion": {
+        "fn": 92,
+        "fp": 601,
+        "tn": 225,
+        "tp": 807
+      },
+      "f1": 0.6996098829648895,
+      "false_positive_rate": 0.7276029055690073,
+      "labels": {
+        "legitimate": 826,
+        "phishing": 899
+      },
+      "precision": 0.5731534090909091,
+      "recall": 0.8976640711902113,
+      "rows": 1725,
+      "threshold": 0.05
+    }
+  },
+  "paired_correctness": {
+    "default": {
+      "baseline_only": 657,
+      "both_correct": 1041,
+      "both_wrong": 13,
+      "pretrained_only": 14
+    },
+    "selected": {
+      "baseline_only": 678,
+      "both_correct": 1020,
+      "both_wrong": 15,
+      "pretrained_only": 12
+    }
+  },
+  "phase": "pretrained-final-test",
+  "predictions_sha256": "ab903da72f230e1f023d89951a45c7ae927294db9ddf4ffe6622cc99ae001f96",
+  "protocol": {
+    "attention": "eager",
+    "batch_size": 8,
+    "comparison": "Use all 1725 frozen test examples and the existing baseline's frozen 0.44 threshold. Recompute baseline metrics on exactly the same IDs and check reproduction of its published test counts. Report paired correctness, confusion counts, metrics and explicit resource/timing conditions.",
+    "device": "cpu",
+    "dtype": "float32",
+    "fairness_limit": "The baseline learned on this corpus; the external model did not. This measures target-domain transfer and is not an architecture-controlled training experiment. Upstream training overlap cannot be ruled out.",
+    "max_tokens": 512,
+    "numeric_threads": 1,
+    "preprocessing_version": "remove-synthetic-markers-v1",
+    "runtime": {
+      "safetensors": "0.8.0",
+      "torch": "2.15.0",
+      "transformers": "4.57.6"
+    },
+    "text": "Use the same preserved subject/body combination and label-independent marker removal as the classical baseline.",
+    "threshold_policy": "Report fixed threshold 0.50 and a separate validation-selected threshold using the identical baseline F1 grid/tie policy. Freeze that threshold before final-test evaluation. No checkpoint selection or protocol changes based on final-test outcomes.",
+    "tokenizer": {
+      "class": "BertTokenizerFast",
+      "do_lower_case": false,
+      "padding_side": "right",
+      "strip_accents": null,
+      "truncation_side": "right"
+    },
+    "truncation": "Right-truncate including special tokens; count original token lengths and report every truncated input. No record is dropped.",
+    "version": "pretrained-comparison-v1",
+    "weights": "Load only reviewed local safetensors, disable remote code, require all expected weights, use eval and inference_mode; no training or weight updates."
+  },
+  "protocol_sha256": "13ab323e05a056979b215b3cfd71deb68d321161ac4d2643020098f325803bf7",
+  "report_version": "1.0",
+  "selection_sha256": "e21d085907591e7dd0ffa1a2bf88508e8d6ba06df4ed01b45eb30a9e99f5a4da",
+  "source": {
+    "architecture": "DistilBertForSequenceClassification",
+    "base_model": "distilbert/distilbert-base-cased",
+    "excluded_files": [
+      "pytorch_model.bin",
+      "training_args.bin"
+    ],
+    "files": {
+      "README.md": {
+        "bytes": 295,
+        "sha256": "2b70ad8c07d2f1b94e8a3d711d4feb4b44414c28decde09e52c2b95892e2262b"
+      },
+      "config.json": {
+        "bytes": 706,
+        "sha256": "bfe567884c49794f4a6f5c600815a02355e00eabaee29f8b08960ed10a79ce39"
+      },
+      "model.safetensors": {
+        "bytes": 263144680,
+        "sha256": "45bb5e5608370c51e63ef9120627515093b1ef4d7cd6693e54301a894a2d910c"
+      },
+      "vocab.txt": {
+        "bytes": 213450,
+        "sha256": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+      }
+    },
+    "homepage": "https://huggingface.co/dima806/phishing-email-detection",
+    "id2label": {
+      "0": "SAVE EMAIL",
+      "1": "PHISHING EMAIL"
+    },
+    "label_interpretation": "Publisher spelling SAVE EMAIL denotes the non-phishing email class; PHISHING EMAIL denotes phishing. Unknown/generic/extra labels are rejected.",
+    "label_mapping": {
+      "legitimate": 0,
+      "phishing": 1
+    },
+    "license": "apache-2.0",
+    "license_evidence": "Publisher declaration in the pinned README.md; preserve the source card and attribution. No separate license file in this repository.",
+    "model_id": "dima806/phishing-email-detection",
+    "provenance_limits": "The model card links an author Kaggle notebook but does not provide a complete auditable training-membership manifest. The 2023 weight publication predates the 2025 E-PhishGen paper; this is not proof of no training overlap. No independent provenance or label-quality guarantee is claimed.",
+    "revision": "310a5602280486e01dd60e37230980cfcc327b41",
+    "tokenizer_reference": {
+      "do_lower_case": false,
+      "file": "tokenizer_config.json",
+      "model_id": "distilbert/distilbert-base-cased",
+      "model_max_length": 512,
+      "revision": "6ea81172465e8b0ad3fddeed32b986cdcdcffcf0"
+    }
+  },
+  "source_sha256": "7dc6e2912af1fe36b1563be5f96eba5bd3f7c64ffe2b0f55c9af966efb837a40",
+  "test_ids_sha256": "bbd08f06b89639017c05586e789613464504c7262b3c0ea78d665f18a901620f",
+  "timing": {
+    "baseline_amortized_ms": 0.1596355362309386,
+    "baseline_seconds": 0.27537129999836907,
+    "pretrained_amortized_ms": 265.4041434782625,
+    "pretrained_seconds": 457.82214750000276,
+    "scope": "CPU one numeric thread, preprocessing/tokenization/scoring; excludes loading and disk I/O. Pretrained batches of 8, baseline one sparse batch. Not single-request latency; no peak RAM measurement."
+  },
+  "tokens": {
+    "max_tokens": 512,
+    "maximum_original_tokens": 345,
+    "mean_original_tokens": 126.23884057971014,
+    "rows": 1725,
+    "truncated_rows": 0
+  },
+  "validation_report_sha256": "f753411d8cee755e1981afbc629b4b6d0a171d992a18672d4e83c898bfa310cb",
+  "weights_updated": false
+}

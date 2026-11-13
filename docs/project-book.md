@@ -1,10 +1,10 @@
 # PhishGuard - Initial Project Book
 
-Revision 1.3 - November 13, 2026 - Classical baseline
+Revision 1.4 - November 13, 2026 - Pretrained comparison
 
 Team: Lior and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
 
-Status: STAGE 3 CLASSICAL BASELINE IMPLEMENTED AND EVALUATED. The specification, contracts, frozen grouped dataset, training/evaluation runner, saved baseline and local prediction CLI are available. Transformer comparison/fine-tuning, adversarial experiments, defense and the web demo remain planned. This book is the canonical specification; implementation evidence and experimental results are added as each stage is completed.
+Status: STAGE 4 PRETRAINED COMPARISON IMPLEMENTED AND EVALUATED. The specification, contracts, frozen grouped dataset, baseline and reviewed pretrained inference/comparison are available. Transformer fine-tuning, adversarial experiments, defense and the web demo remain planned. This book is the canonical specification; implementation evidence and experimental results are added as each stage is completed.
 
 ## 1. Background
 
@@ -53,7 +53,7 @@ The main objective is to build a phishing-email detector and measure how control
 | Evaluate a defense | Training-only augmentation or another declared defense, with clean and attacked evaluations |
 | Deliver an understandable demo and report | Pasted-email workflow, bounded input, evidence-based explanation and comparative presentation |
 
-Stage 3 provides measured baseline accuracy and error counts in chapter 6. Robustness and real-inbox generalization have not been measured. Thresholds are selected using validation data only; report trade-offs and unsuccessful experiments without choosing conclusions in advance.
+Stages 3-4 provide measured baseline/pretrained comparisons and error counts in chapter 6. Robustness and real-inbox generalization have not been measured. Thresholds are selected using validation data only; report trade-offs and unsuccessful experiments without choosing conclusions in advance.
 
 ### 2.1 Experimental questions and metrics
 
@@ -67,7 +67,7 @@ For the defense comparison, report results on fixed saved variants and the same 
 
 ### 3.1 Requirements from the supplied brief
 
-The PG requirements describe the complete assignment. Stages 1-3 supply the environment, contracts, PG02 dataset evidence and the trained/evaluated PG03 baseline. PG09 has local CLI inference; its web UI and explanation remain pending. No completed robustness experiment is claimed. PG01's task-specific learning continues alongside implementation. The remaining end-to-end acceptance evidence is planned.
+The PG requirements describe the complete assignment. Stages 1-4 supply the environment, contracts, PG02 dataset evidence, the trained/evaluated PG03 baseline and the PG04 pretrained comparison. PG09 has local CLI inference; its web UI and explanation remain pending. No completed robustness experiment is claimed. PG01's task-specific learning continues alongside implementation. The remaining end-to-end acceptance evidence is planned.
 
 | ID | Requirement | Verification |
 | --- | --- | --- |
@@ -88,9 +88,9 @@ The brief lists Python, Hugging Face Transformers/Datasets, scikit-learn, Google
 
 Use a modular Python pipeline with a Gradio demo. Keep dataset preparation, feature extraction, training, perturbation, evaluation and inference separate. Use local versioned files for manifests and aggregate results. The offline experiment pipeline prepares reviewed artifacts; the demo loads a selected artifact for inference. Container packaging may be added when it makes the completed demo easier to reproduce.
 
-The selected input is the publisher-English subset of E-PhishLLM, with plain-text subject/body fields. Raw MIME parsing, attachments, sender authentication, mailbox integration and multilingual claims are outside the first version. The foundation supports Python 3.11-3.13; local development uses Python 3.13.16, uv 0.13.1 and a locked dependency environment. It uses Pydantic for strict record validation, pytest for tests and Ruff for code checks. The baseline uses scikit-learn 1.9.1 and locked numerical dependencies on CPU. Transformer-library compatibility remains to be checked. Keep large checkpoints and datasets outside Git and record provenance and digests in small manifests.
+The selected input is the publisher-English subset of E-PhishLLM, with plain-text subject/body fields. Raw MIME parsing, attachments, sender authentication, mailbox integration and multilingual claims are outside the first version. The foundation supports Python 3.11-3.13; local development uses Python 3.13.16, uv 0.13.1 and a locked dependency environment. It uses Pydantic for strict record validation, pytest for tests and Ruff for code checks. The baseline uses scikit-learn 1.9.1 and locked numerical dependencies on CPU. The pretrained runtime pins PyTorch 2.15.0, Transformers 4.57.6 and safetensors 0.8.0, with offline CI checks on Windows/Linux and Python 3.11/3.13. Full research-checkpoint scoring was measured locally on Windows. Keep large checkpoints and datasets outside Git and record provenance and digests in small manifests.
 
-Stage 2 selected the synthetic E-PhishLLM public dataset with a pinned publisher MIT declaration, explicit label mapping and a documented sample audit. No independent real-inbox evaluation is available. Select a pretrained classifier with relevant phishing/legitimate labels. A generic sentiment model cannot be evaluated by relabeling positive/negative sentiment as safe/phishing. A base encoder without a trained classification head also does not provide a ready phishing detector.
+Stage 2 selected the synthetic E-PhishLLM public dataset with a pinned publisher MIT declaration, explicit label mapping and a documented sample audit. No independent real-inbox evaluation is available. Stage 4 selected a pretrained classifier with explicit phishing/legitimate labels and documented source limitations. A generic sentiment model cannot be evaluated by relabeling positive/negative sentiment as safe/phishing. A base encoder without a trained classification head also does not provide a ready phishing detector.
 
 ### 3.3 Quality, security and reproducibility requirements
 
@@ -99,7 +99,7 @@ Stage 2 selected the synthetic E-PhishLLM public dataset with a pinned publisher
 | Q01 | Trace every dataset/model/experiment revision | Manifest with source revision, digest, seed, configuration and split IDs |
 | Q02 | Prevent leakage | No group or derived variant crosses splits; training alone fits transformations |
 | Q03 | Preserve email privacy | No raw pasted email logging or storage by default; licensed/redacted fixtures only |
-| Q04 | Bound resource use | Implemented 20,000-code-point combined email and 262,144-byte JSON limits, with rejection and no truncation; proposed 512-token/concurrency limits remain for model integration |
+| Q04 | Bound resource use | Implemented 20,000-code-point combined email and 262,144-byte JSON limits, with rejection and no truncation; pretrained inference enforces 512 tokens with disclosed truncation and batches of eight; web concurrency controls remain planned |
 | Q05 | Treat email content as inert data | Render escaped text; do not open links, send mail or execute attachments/instructions |
 | Q06 | Load reviewed model artifacts | Pin revisions, verify manifests and disable unreviewed remote code; avoid untrusted serialized executables |
 | Q07 | Explain uncertainty | Display a model score, threshold and model identity; do not claim a calibrated probability without calibration evidence |
@@ -142,9 +142,17 @@ The model is stored as strictly validated JSON vocabulary, numerical weights, th
 
 The [baseline guide](baseline.md) contains verified commands, the complete protocol, measured reports and limitations. Chapter 6 records the observed result; later transformer and robustness experiments remain separate work.
 
+### 3.7 Implemented pretrained adapter and comparison
+
+Stage 4 uses the externally trained two-class DistilBERT `dima806/phishing-email-detection`, pinned to revision `310a5602280486e01dd60e37230980cfcc327b41`. The publisher card declares Apache-2.0. Explicit configuration labels map `SAVE EMAIL` to legitimate and `PHISHING EMAIL` to phishing; generic/extra labels fail. The full upstream training manifest is unavailable, so no verified non-overlap claim is made. [R15]
+
+The source manifest verifies card/configuration/vocabulary/safetensors bytes. The local loader disables remote code, rejects incomplete classification heads and reconstructs a cased tokenizer from the supplied vocabulary and pinned base-tokenizer settings. Input uses the baseline's marker removal; token lengths and right truncation at 512 are disclosed. Weights stay fixed. Validation-only threshold selection is separate from final evaluation and bound by digests to model, dataset and baseline versions. Evaluation checks identical test IDs and reproduces the published baseline counts before comparing predictions.
+
+The [pretrained guide](pretrained.md) records selection reasons, source limitations, commands and CPU resource conditions. This comparison is implemented; fine-tuning those or other weights is a separate stage.
+
 ## 4. STRIDE threat analysis
 
-This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public errors. Stage 2 adds pinned source/file integrity, frozen splits, lineage checks and controlled source-only downloading. Stage 3 adds train-only fitting, held-out threshold selection, numerical JSON model validation, artifact digest checks and input-private prediction. The broader controls below remain planned unless linked to implemented evidence in the stage log. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
+This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public errors. Stage 2 adds pinned source/file integrity, frozen splits, lineage checks and controlled source-only downloading. Stage 3 adds train-only fitting, held-out threshold selection, numerical JSON model validation, artifact digest checks and input-private prediction. Stage 4 adds reviewed safetensors-only loading, explicit model labels, checked tokenizer reconstruction, token/batch limits and digest-bound validation decisions. The broader controls below remain planned unless linked to implemented evidence in the stage log. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
 
 ### 4.1 Assets, actors and trust boundaries
 
@@ -171,13 +179,13 @@ Residual risks include dataset bias, incomplete campaign grouping, novel attack 
 
 ### 5.1 Current verification status
 
-The repository contains the specification, contracts, dataset pipeline and classical baseline. The 175 automated tests passed locally on Python 3.13.16: 80 foundation, 44 dataset and 51 baseline checks. They cover the synthetic examples, input length and Unicode preservation, malformed/oversized/deep JSON, provenance, label mapping, score/threshold consistency and private CLI errors. Dataset checks additionally cover invalid rows, conflicting labels, similarity grouping, reproducibility, cross-split relatives, parent cycles, tampering, downloader failures and private errors. A brute-force comparison verifies the near-duplicate search on a generated fixture. Documentation checks cover chapter structure, English text, links and tables. The [stage log](stage-log.md) records verification details and CI evidence.
+The repository contains the specification, contracts, dataset pipeline, classical baseline and pretrained comparison. The 201 automated tests passed locally on Python 3.13.16: 80 foundation, 44 dataset, 51 baseline and 26 pretrained checks. They cover the synthetic examples, input length and Unicode preservation, malformed/oversized/deep JSON, provenance, label mapping, score/threshold consistency and private CLI errors. Dataset checks additionally cover invalid rows, conflicting labels, similarity grouping, reproducibility, cross-split relatives, parent cycles, tampering, downloader failures and private errors. A brute-force comparison verifies the near-duplicate search on a generated fixture. Documentation checks cover chapter structure, English text, links and tables. The [stage log](stage-log.md) records verification details and CI evidence.
 
 Baseline tests cover train-only vocabulary/IDF fitting, threshold selection, exact metric counts, non-convergence, leakage, JSON model integrity, save/load numerical agreement and private predictions. Measured research-corpus results appear in chapter 6 and the linked reports. Passing tests and measured benchmark accuracy are distinct evidence.
 
 ### 5.2 Planned PhishGuard unit-test matrix
 
-The matrix below describes the final test goals. Stage 1 implements the input-validation parts of U01/U02, text-preservation part of U03, metadata-mapping part of U06, record-level threshold checks in U07, unavailable-result shape in U11 and CLI privacy part of U12. Stage 2 adds U03 grouping and U04 duplicate/derived-lineage separation checks. Stage 3 implements U05 feature leakage checks, baseline mapping/loading in U06/U11, actual thresholded inference in U07, classification metrics in U10 and baseline CLI privacy in U12. Transformer adapters, perturbations, ASR and HTML output remain pending. Use small offline fixtures; full-corpus evaluation belongs to separate experiment checks.
+The matrix below describes the final test goals. Stage 1 implements the input-validation parts of U01/U02, text-preservation part of U03, metadata-mapping part of U06, record-level threshold checks in U07, unavailable-result shape in U11 and CLI privacy part of U12. Stage 2 adds U03 grouping and U04 duplicate/derived-lineage separation checks. Stage 3 implements U05 feature leakage checks, baseline mapping/loading in U06/U11, actual thresholded inference in U07, classification metrics in U10 and baseline CLI privacy in U12. Stage 4 adds transformer label direction, actual tiny-transformer inference, unchanged-weight checks, token truncation, safetensors loading policy, validated selection and comparison checks for U06/U07/U10/U11/U12. Perturbations, ASR and HTML output remain pending. Use small offline fixtures; full-corpus evaluation belongs to separate experiment checks.
 
 | ID | Unit and input | Expected result | Owner |
 | --- | --- | --- | --- |
@@ -198,13 +206,13 @@ For U10, a fixture with TP=3, FP=1, TN=4 and FN=2 must produce accuracy 0.7, pre
 
 ### 5.3 Integration and experiment checks
 
-Implemented a tiny train/save/load/predict/evaluate cycle on invented fixtures. Numerical round-trip agreement is checked within 1e-12. An independent full-corpus retraining produced identical model, manifest and test-prediction bytes; confusion counts were separately recomputed. Student review of fixtures remains open. Future checks cover selected pretrained classifiers, the pasted-email UI and the complete attack/defense evaluation.
+Implemented a tiny train/save/load/predict/evaluate cycle on invented fixtures. Numerical round-trip agreement is checked within 1e-12. An independent full-corpus retraining produced identical model, manifest and test-prediction bytes; confusion counts were separately recomputed. Student review of fixtures remains open. Stage 4 adds frozen external-checkpoint loading, complete validation/test runs, independent count reconstruction and reload/repeatability checks on invented messages. CI uses a tiny random local transformer and never downloads research weights. Future checks cover fine-tuning, the pasted-email UI and the complete attack/defense evaluation.
 
 Keep unit-test pass counts separate from model-quality measurements. A passing test suite cannot establish that the detector generalizes to real mail.
 
 ## 6. Summary and conclusions
 
-PhishGuard now has a working classical detector, reproducible data preparation, strict contracts and local inference. The broader project still aims to compare a pretrained classifier and a fine-tuned transformer, measure controlled evasion, evaluate a defense and provide a web demo.
+PhishGuard now has a working classical detector, a measured pretrained comparison, reproducible data preparation, strict contracts and local inference for both classifiers. The broader project still aims to fine-tune a transformer, measure controlled evasion, evaluate a defense and provide a web demo.
 
 ### 6.1 Measured baseline result
 
@@ -228,17 +236,40 @@ The initial run and an independent retraining produced identical model, manifest
 
 The marker-only rule reached 80.81% validation accuracy, demonstrating an artificial source cue. Complete synthetic markers were removed before training and inference, and none remained in transformed training/validation inputs. This removes that declared cue without proving removal of all generation artifacts. The benchmark is synthetic, labels sometimes require missing sender/link/attachment context, and grouping cannot establish complete campaign independence. High benchmark accuracy therefore does not establish real-mail reliability or adversarial robustness.
 
-Detailed, full-precision evidence is in the [training report](reports/baseline-training.json), [test report](reports/baseline-test.json) and [reproduction report](reports/baseline-reproduction.json). No real-inbox, pretrained-comparison, fine-tuning or defense result is claimed. The next stage is the pretrained Hugging Face comparison, with explicit checkpoint/license/label review and overlap limitations.
+Detailed, full-precision evidence is in the [training report](reports/baseline-training.json), [test report](reports/baseline-test.json) and [reproduction report](reports/baseline-reproduction.json). No real-inbox, fine-tuning or defense result is claimed. The stage 4 comparison follows below.
+
+### 6.3 Measured pretrained comparison
+
+Stage 4 selected `dima806/phishing-email-detection` before corpus evaluation and kept its external weights unchanged. Validation selected threshold 0.05 on the same 1,725 validation messages using the baseline's F1 grid/tie policy. At that threshold, validation accuracy was 58.14%. The selected 0.05 threshold is the lower boundary of the predeclared grid; the grid was not expanded. Maximizing F1 increased recall but also increased false alarms and reduced validation accuracy relative to 0.50. This threshold is an experimental decision, not an acceptable operational false-alarm policy. The code and protocol were committed at `50172afacad72af4e6afa8596e56044c8bd48f1f` before measurement; both validation and final-test reports record a clean working tree.
+
+The comparison uses the same 1,725 final-test IDs (899 phishing / 826 legitimate). Baseline scores were recomputed and their metrics matched the published stage 3 report. No model, threshold or preprocessing was changed in response to final-test results.
+
+| Measure | Classical baseline | Pretrained at 0.50 | Pretrained selected |
+| --- | --- | --- | --- |
+| Threshold | 0.44 | 0.50 | 0.05 |
+| Accuracy | 98.43% | 61.16% | 59.83% |
+| Phishing precision | 97.91% | 58.76% | 57.32% |
+| Phishing recall | 99.11% | 85.43% | 89.77% |
+| Phishing F1 | 98.51% | 69.63% | 69.96% |
+| Legitimate false-positive rate | 2.30% | 65.25% | 72.76% |
+| True positives / false positives | 891 / 19 | 768 / 539 | 807 / 601 |
+| True negatives / false negatives | 807 / 8 | 287 / 131 | 225 / 92 |
+
+The pretrained model did not outperform the baseline on this benchmark under the declared F1 objective. This measures an externally trained ready-made model versus a baseline fitted to our training split; it does not establish that one architecture is universally better. Missing upstream training membership means data overlap cannot be ruled out. The publisher card is brief, and its tokenizer was reconstructed from the supplied vocabulary and declared cased base model. Domain differences, synthetic writing style and missing email context limit the result.
+
+No test input exceeded 512 tokens; none was truncated or excluded. Original token length reached 345. On CPU with one numerical-library thread, pretrained scoring took 457.82 seconds (265.40 ms per email amortized); the baseline rerun took 0.275 seconds. Pretrained scoring includes tokenization and uses batches of eight. Loading/imports/disk I/O are excluded; timings are not single-request latency or peak-memory measurements. Runtime versions are PyTorch 2.15.0+cpu, Transformers 4.57.6 and safetensors 0.8.0.
+
+Aggregate evidence: [validation report](reports/pretrained-validation.json), [same-test comparison](reports/pretrained-test.json) and [verification/reload report](reports/pretrained-reproduction.json). The verification independently recounts confusion/paired counts from saved predictions and checks repeated loading/scoring on invented fixtures; it is not a second full-corpus transformer evaluation. Fine-tuning, evasion and defense measurements remain future work. Stage 5 will fine-tune a small transformer using training data only.
 
 ## 7. Architecture - UML
 
-The component UML marks the implemented baseline training, saved model and inference in addition to contracts and dataset preparation. The sequence diagram remains the target web-demo interaction: baseline prediction is implemented through the CLI, while the UI and explanation are planned.
+The component UML marks implemented baseline training, pretrained comparison, both local inference adapters, reviewed artifacts, contracts and dataset preparation. The sequence diagram remains the target web-demo interaction: both classifiers provide CLI prediction, while the UI and explanation are planned.
 
 ### 7.1 UML component diagram
 
 ![Proposed PhishGuard UML component diagram](diagrams/phishguard-components.svg)
 
-Rectangles marked component are software components; rectangles marked artifact are files. Dashed open-arrow dependencies point from a component to the component/artifact it uses. Green components/artifacts are implemented: CLI, validator, preparation, frozen data, baseline runner, numerical JSON model, inference and reports. The CLI calls the baseline scorer, which loads checked state; the offline runner fits and evaluates separately. Pale components are planned: web UI, explanation and advanced experiments. These are logical Python modules within the application.
+Rectangles marked component are software components; rectangles marked artifact are files. Dashed open-arrow dependencies point from a component to the component/artifact it uses. Green components/artifacts are implemented: CLI, validator, preparation, frozen data, experiment runner, model artifacts, both inference adapters and reports. The CLI calls the selected local scorer; the offline runner separates baseline fitting, external-model threshold selection and final evaluation. Pale components are planned: web UI, explanation and advanced experiments. These are logical Python modules within the application.
 
 The planned Gradio UI will call the Python inference function. Offline training can run on a workstation or Colab; exported reviewed artifacts feed local inference. Model/dataset downloads occur in the reviewed preparation workflow, not in response to pasted message instructions.
 
@@ -279,7 +310,7 @@ Both students participate in all topics. Each has five review-lead sessions. Pyt
 
 ### 8.3 Two-semester milestones and ownership
 
-Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05-W10 implementation has not started.
+Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05 pretrained source review, adapter, mapping checks and comparative evaluation are implemented and measured; student review remains open. W06-W10 implementation has not started.
 
 | Package / period | Lior - 5 units | Sharon Elimelech - 5 units | Completion evidence |
 | --- | --- | --- | --- |
@@ -298,7 +329,7 @@ Totals: Lior 10 x 5 = 50 units; Sharon Elimelech 10 x 5 = 50 units. The asymmetr
 
 ### 8.4 Contribution evidence and stage completion
 
-The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts and an offline validator. Stage 2 adds pinned-source acquisition, a sample label audit, deduplication, frozen grouped splits and dataset tests. The documents, code and initial audit were developed with AI assistance for both students to review. Stage 3 adds the trained baseline, safe model artifacts, measured evaluation and local inference. Transformer models, perturbation/defense experiments and the web demo remain incomplete.
+The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts and an offline validator. Stage 2 adds pinned-source acquisition, a sample label audit, deduplication, frozen grouped splits and dataset tests. The documents, code and initial audit were developed with AI assistance for both students to review. Stage 3 adds the trained baseline, safe model artifacts, measured evaluation and local inference. Stage 4 adds a reviewed pretrained transformer, paired comparison and local inference. Transformer fine-tuning, perturbation/defense experiments and the web demo remain incomplete.
 
 Lior owns the input/result contracts, dataset ingestion, baseline training, model adapters, fine-tuning runner, perturbation operations and demo integration listed in section 8.3. Sharon Elimelech owns validation fixtures, dataset quality and splits, evaluation and leakage checks, tokenization/reproducibility checks, perturbation validity, defense training and explanation/privacy checks. Each implementation package also includes tests and peer review; the weights in section 8.3 include that work.
 
@@ -324,3 +355,5 @@ The primary course reference is the student-supplied Project2_PhishGuard.docx, t
 
 - [R13 - scikit-learn: LogisticRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
 - [R14 - scikit-learn: model persistence](https://scikit-learn.org/stable/model_persistence.html)
+
+- [R15 - Pinned pretrained phishing classifier card/configuration](https://huggingface.co/dima806/phishing-email-detection/tree/310a5602280486e01dd60e37230980cfcc327b41)
