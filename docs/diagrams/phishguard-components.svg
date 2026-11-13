@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="690" viewBox="0 0 1140 690">
+<title>Proposed PhishGuard UML component diagram</title>
+<defs><marker id="open" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#28616b" stroke-width="1.5"/></marker><marker id="closed" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L9 5 L0 10 Z" fill="#28616b"/></marker></defs>
+<rect width="1140" height="690" fill="white"/>
+<g font-family="Segoe UI,Arial,sans-serif" fill="#153c44">
+<text x="570" y="35" text-anchor="middle" font-size="25" font-weight="600">PhishGuard | UML components | Proposed design</text>
+<rect x="40" y="140" width="260" height="100" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="170.0" y="164" text-anchor="middle" font-size="15" font-weight="normal">&lt;&lt;component&gt;&gt;</text>
+<text x="170.0" y="192" text-anchor="middle" font-size="18" font-weight="600">Gradio demo UI</text>
+<text x="170.0" y="215" text-anchor="middle" font-size="18" font-weight="normal">paste email / show result</text>
+<rect x="430" y="100" width="260" height="90" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="560.0" y="124" text-anchor="middle" font-size="15" font-weight="normal">&lt;&lt;component&gt;&gt;</text>
+<text x="560.0" y="152" text-anchor="middle" font-size="18" font-weight="600">Inference module</text>
+<rect x="430" y="250" width="260" height="90" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="560.0" y="274" text-anchor="middle" font-size="15" font-weight="normal">&lt;&lt;component&gt;&gt;</text>
+<text x="560.0" y="302" text-anchor="middle" font-size="18" font-weight="600">Explanation module</text>
+<rect x="850" y="100" width="250" height="90" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="975.0" y="124" text-anchor="middle" font-size="15" font-weight="normal">&lt;&lt;artifact&gt;&gt;</text>
+<text x="975.0" y="152" text-anchor="middle" font-size="18" font-weight="600">Reviewed model + manifest</text>
+<rect x="400" y="470" width="330" height="135" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="565.0" y="494" text-anchor="middle" font-size="15" font-weight="normal">&lt;&lt;component&gt;&gt;</text>
+<text x="565.0" y="522" text-anchor="middle" font-size="18" font-weight="600">Offline experiment pipeline</text>
+<text x="565.0" y="545" text-anchor="middle" font-size="18" font-weight="normal">prepare / train / perturb</text>
+<text x="565.0" y="568" text-anchor="middle" font-size="18" font-weight="normal">evaluate / record results</text>
+<rect x="40" y="490" width="260" height="90" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="170.0" y="514" text-anchor="middle" font-size="15" font-weight="normal">&lt;&lt;artifact&gt;&gt;</text>
+<text x="170.0" y="542" text-anchor="middle" font-size="18" font-weight="600">Dataset + split manifest</text>
+<rect x="850" y="490" width="250" height="90" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="975.0" y="514" text-anchor="middle" font-size="15" font-weight="normal">&lt;&lt;artifact&gt;&gt;</text>
+<text x="975.0" y="542" text-anchor="middle" font-size="18" font-weight="600">Reports + prediction files</text>
+<polyline points="300,170 360,170 360,145 430,145" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="365" y="130" text-anchor="middle" font-size="15" font-weight="normal">uses</text>
+<polyline points="300,205 355,205 355,295 430,295" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="390" y="282" text-anchor="middle" font-size="15" font-weight="normal">uses</text>
+<polyline points="690,145 850,145" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="770" y="130" text-anchor="middle" font-size="15" font-weight="normal">loads</text>
+<polyline points="650,470 650,400 975,400 975,190" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="816" y="387" text-anchor="middle" font-size="15" font-weight="normal">produces / evaluates</text>
+<polyline points="400,535 300,535" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="350" y="520" text-anchor="middle" font-size="15" font-weight="normal">reads</text>
+<polyline points="730,535 850,535" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="790" y="520" text-anchor="middle" font-size="15" font-weight="normal">writes</text>
+<text x="570" y="650" text-anchor="middle" font-size="16" font-weight="normal">Dashed open arrows show UML dependencies. Components are logical modules, not separate servers.</text>
+</g></svg>
