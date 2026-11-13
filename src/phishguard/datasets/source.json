@@ -1,0 +1,22 @@
+{
+  "source_id": "pajola-e-phishGen",
+  "revision": "dda1f1e0b155206a4f84915bf117012f960bdafe",
+  "dataset": "E-PhishLLM",
+  "homepage": "https://huggingface.co/datasets/pajola/e-phishGen",
+  "license": "MIT",
+  "license_evidence": "Publisher-declared license in the pinned README.md YAML metadata; no separate LICENSE file is supplied.",
+  "citation": "Luca Pajola, Eugenio Caripoti, Simeone Pizzi, Mauro Conti, Stefan Banzer, Giovanni Apruzzese. E-PhishGen: Unlocking Novel Research in Phishing Email Detection. AISec 2025. https://doi.org/10.1145/3733799.3762967",
+  "language_filter": "en",
+  "label_mapping": {"0": "legitimate", "1": "phishing"},
+  "synthetic": true,
+  "files": {
+    "ephishLLM.json": {
+      "bytes": 12275474,
+      "sha256": "56420b143e30343f6db723c3716e10abec9f72a67ba99ae2cc7c3a87b547f51f"
+    },
+    "README.md": {
+      "bytes": 2569,
+      "sha256": "76242889ff357e4fd89fa678e926ad4a68d31b72394c03019dd936ba3d2c8030"
+    }
+  }
+}

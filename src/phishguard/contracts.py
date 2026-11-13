@@ -67,6 +67,13 @@ class EmailExample(Record):
     license: MetadataText
     group_id: Identifier
     split: Split = "unassigned"
+    parent_id: Identifier | None = None
+
+    @model_validator(mode="after")
+    def distinct_parent(self) -> Self:
+        if self.parent_id == self.example_id:
+            raise ValueError("An example cannot be its own parent")
+        return self
 
 
 class LabelMapping(BaseModel):

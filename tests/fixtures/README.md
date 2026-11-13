@@ -6,4 +6,4 @@ The phishing example uses a fictional account and a reserved `.invalid` host. Tr
 
 The artifact digest is a placeholder, not the hash of a real checkpoint. The prediction score and elapsed time are hand-authored test values, not model measurements. The unavailable fixture demonstrates the result shape when inference cannot run. None of the examples measures detector accuracy or robustness.
 
-Both labeled examples use `split: unassigned`. Dataset selection, licensing review, deduplication and train/validation/test assignment belong to stage 2. Students should record their own fixture review in the contribution log when performed.
+Both labeled examples use `split: unassigned`. Stage 2 keeps these tiny fixtures separate from the research corpus described in the dataset guide. The dataset tests also generate invented rows in memory; they never download or include public email text. Students should record their own fixture review in the contribution log when performed.

@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "phishguard"
-version = "0.1.0"
-description = "Phishing-email detection research: validated foundation contracts."
+version = "0.2.0"
+description = "Phishing-email detection research: contracts and reproducible dataset preparation."
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 dependencies = ["pydantic>=2.12,<3"]

@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1140" height="920" viewBox="0 0 1140 920">
-<title>PhishGuard UML components: implemented foundation and planned application</title>
+<title>PhishGuard UML components: implemented data preparation and planned application</title>
 <defs><marker id="open" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#28616b" stroke-width="1.5"/></marker></defs>
 <rect width="1140" height="920" fill="white"/>
 <g font-family="Segoe UI,Arial,sans-serif" fill="#153c44">
-<text x="570" y="35" text-anchor="middle" font-size="25">PhishGuard | UML components | Stage 1</text>
-<text x="570" y="68" text-anchor="middle" font-size="17">Green: implemented foundation. Pale: planned modules and artifacts.</text>
+<text x="570" y="35" text-anchor="middle" font-size="25">PhishGuard | UML components | Stage 2</text>
+<text x="570" y="68" text-anchor="middle" font-size="17">Green: implemented. Pale: planned modules and artifacts.</text>
 <rect x="40" y="100" width="260" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="170.0" y="124" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
-<text x="170.0" y="152" text-anchor="middle" font-size="17">Offline validation CLI</text>
-<text x="170.0" y="175" text-anchor="middle" font-size="17">validate / schema</text>
+<text x="170.0" y="152" text-anchor="middle" font-size="17">Research data CLI</text>
+<text x="170.0" y="175" text-anchor="middle" font-size="17">validate / schema / data</text>
 <rect x="430" y="100" width="300" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="580.0" y="124" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
 <text x="580.0" y="152" text-anchor="middle" font-size="17">Contract validator</text>
@@ -42,9 +42,9 @@
 <rect x="400" y="720" width="340" height="130" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
 <text x="570.0" y="744" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
 <text x="570.0" y="772" text-anchor="middle" font-size="17">Offline experiment pipeline</text>
-<text x="570.0" y="795" text-anchor="middle" font-size="17">prepare / train / perturb</text>
+<text x="570.0" y="795" text-anchor="middle" font-size="17">train / perturb</text>
 <text x="570.0" y="818" text-anchor="middle" font-size="17">evaluate / record results</text>
-<rect x="40" y="720" width="260" height="100" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<rect x="40" y="720" width="260" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="170.0" y="744" text-anchor="middle" font-size="15">&lt;&lt;artifact&gt;&gt;</text>
 <text x="170.0" y="772" text-anchor="middle" font-size="17">Dataset + split manifest</text>
 <rect x="850" y="720" width="250" height="100" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
@@ -57,6 +57,15 @@
 <polyline points="600,720 600,675 975,675 975,650" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
 <text x="765" y="664" text-anchor="middle" font-size="14">produces / evaluates</text>
 <polyline points="400,750 365,750 365,230 510,230 510,200" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="245" y="630" text-anchor="middle" font-size="14">validates records</text>
+<text x="465" y="630" text-anchor="middle" font-size="14">validates records</text>
+<rect x="40" y="535" width="260" height="100" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
+<text x="170" y="559" text-anchor="middle" font-size="15">&lt;&lt;component&gt;&gt;</text>
+<text x="170" y="587" text-anchor="middle" font-size="17">Dataset preparation</text>
+<text x="170" y="610" text-anchor="middle" font-size="17">fetch / group / split / verify</text>
+<polyline points="170,635 170,720" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="220" y="684" font-size="14">writes</text>
+<polyline points="70,200 20,220 20,585 40,585" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="48" y="495" font-size="14">uses</text>
+<polyline points="300,575 365,575" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5"/>
 <text x="570" y="890" text-anchor="middle" font-size="17">Dashed open arrows show dependencies. Components are logical Python modules.</text>
 </g></svg>

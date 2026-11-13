@@ -4,7 +4,7 @@ PhishGuard is a course project on phishing-email classification and adversarial 
 
 ## Current status
 
-Stage 1 provides an installable Python package, versioned email/example/model/prediction contracts, an offline JSON validator, synthetic fixtures and automated tests. Dataset preparation, classifiers, training, perturbation experiments and the web demo are **not implemented yet**. The validator does not classify an email or produce a risk score.
+Stages 1-2 provide an installable Python package, strict data contracts, an offline JSON validator and a reproducible dataset-preparation pipeline with grouped training/validation/test splits. Classifiers, training, perturbation experiments and the web demo are **not implemented yet**. These commands do not classify new email or produce a risk score.
 
 ## Install
 
@@ -45,6 +45,18 @@ uv run --frozen phishguard schema email
 
 For Python integration, use `validate_record` or `validate_json` from `phishguard.validation` and handle `ContractError`. See [contract rules and error handling](docs/contracts.md). The maximum combined subject/body text is 20,000 Unicode code points; the validator preserves text and rejects excess length instead of truncating it.
 
+## Prepare the research dataset
+
+```sh
+uv run --frozen phishguard data fetch
+uv run --frozen phishguard data prepare
+uv run --frozen phishguard data verify --reference data/manifests/ephishllm-v1.json
+```
+
+The downloader retrieves a pinned public E-PhishLLM file and publisher license card, verifies their digests and caches them locally. No account or paid service is needed. Preparation and verification then run offline. The selected corpus is **synthetic**, with 11,502 English-flagged messages: 8,052 training, 1,725 validation and 1,725 test examples.
+
+The raw and processed message files remain in ignored local `data/raw/` and `data/processed/` folders. Only a text-free split manifest is tracked in Git. Preparation refuses an existing output directory; see the [dataset guide](docs/dataset.md) for separate reproductions, options, label audit and limitations. Synthetic placeholders create a known shortcut that must be addressed before model training.
+
 ## Run checks and build
 
 ```sh
@@ -55,7 +67,7 @@ uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The tests cover contracts, malformed JSON, input limits, label mappings, threshold decisions and CLI privacy/errors. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs the checks on Windows and Linux with Python 3.11 and 3.13. These are foundation checks, not measurements of detection accuracy. Builds are written to the ignored `dist` directory.
+The offline tests cover contracts, malformed JSON, input limits, label mappings, threshold decisions, data ingestion, grouping, split leakage, frozen-file integrity, downloader failures and CLI privacy/errors. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs the checks on Windows and Linux with Python 3.11 and 3.13. These are foundation checks, not measurements of detection accuracy. Builds are written to the ignored `dist` directory.
 
 ## Documentation
 
@@ -64,6 +76,8 @@ The tests cover contracts, malformed JSON, input limits, label mappings, thresho
 - [Implementation plan](docs/implementation-plan.md)
 - [Progress and verification log](docs/stage-log.md)
 - [Implemented contracts](docs/contracts.md)
+- [Dataset source, preparation and limits](docs/dataset.md)
+- [Label sample audit](docs/dataset-label-audit.md)
 
 The project book is the canonical specification. It distinguishes implemented behavior from future work. Training, evaluation and demo commands will be added when their implementations are available and verified.
 
@@ -77,7 +91,7 @@ The project book is the canonical specification. It distinguishes implemented be
 
 ## Data and models
 
-No research dataset or checkpoint is included. [Fixture provenance](tests/fixtures/README.md) describes the synthetic examples. Review licenses, provenance, privacy and label meanings before selecting research data. Keep raw/private email, credentials and large model artifacts out of Git. Keep related messages and all their derived variants in the same data split.
+No raw research emails or model checkpoints are included in Git. The reviewed source is pinned in the [source manifest](src/phishguard/datasets/source.json); the publisher declares MIT. Downloaded data remains on your local disk. [Fixture provenance](tests/fixtures/README.md) describes the separate invented unit-test examples. Keep credentials, private mail and large artifacts out of Git. Keep related messages and their derived variants in the same split. Dataset checks do not establish real-mail classification quality.
 
 ## Team
 

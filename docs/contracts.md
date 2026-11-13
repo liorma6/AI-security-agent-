@@ -19,10 +19,10 @@ These records do not train, download or load a model. Validating a prediction fi
 - The combined text is `subject + "\n\n" + body` when the subject is nonempty, or just `body` otherwise. Its maximum length is 20,000 Unicode code points, including the separator. Emoji can comprise multiple code points; this is not a byte or token limit.
 - Text, punctuation, line endings and whitespace are preserved. There is no trimming, Unicode normalization, HTML rendering, link fetching or automatic truncation. NUL and unpaired surrogate characters are rejected.
 - JSON must be UTF-8 and at most 262,144 bytes. Object keys must be unique. NaN/Infinity literals are rejected. Container nesting is limited to 16 levels. The CLI reads at most the byte limit plus one before rejecting oversized input.
-- Labels are `legitimate` or `phishing`. Splits are `unassigned`, `train`, `validation` or `test`. Split/group fields are metadata; cross-record leakage checks belong to stage 2.
+- Labels are `legitimate` or `phishing`. Splits are `unassigned`, `train`, `validation` or `test`. Stage 2 implements cross-record split/group and lineage checks; see the [dataset guide](dataset.md). Optional `parent_id` identifies a derived example's original/parent and cannot equal its own ID. Dataset-level validation rejects missing parents, cycles and group/split separation from parents. Existing records that omit it remain valid.
 - Identifiers contain 1-128 ASCII letters/digits or `.`, `_`, `:`, `/`, `-`, starting with a letter/digit. Source/license/revision metadata is nonblank and bounded to 2,048 characters. Identifiers are not file paths and are never executed or opened.
 
-English is the proposed dataset language. The validator accepts Unicode without claiming to detect the language or support multilingual classification. Tokenization and a token limit are not implemented in this stage.
+The selected research subset uses the publisher's English flag. The validator accepts Unicode without claiming to detect the language or support multilingual classification. Tokenization and a token limit are not implemented in this stage.
 
 ## Prediction and artifact rules
 

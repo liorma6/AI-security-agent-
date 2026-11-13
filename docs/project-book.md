@@ -1,10 +1,10 @@
 # PhishGuard - Initial Project Book
 
-Revision 1.1 - November 13, 2026 - Python foundation
+Revision 1.2 - November 13, 2026 - Dataset preparation
 
 Team: Lior and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
 
-Status: STAGE 1 FOUNDATION IMPLEMENTED. The specification and Python foundation are available: versioned contracts, offline input validation, synthetic fixtures and automated tests. Dataset preparation, classification, training, adversarial evaluation and the demo are planned and not implemented. This book is the canonical specification; implementation evidence and experimental results are added as each stage is completed.
+Status: STAGE 2 DATASET PREPARATION IMPLEMENTED. The specification, Python contracts, validation tools and reviewed dataset pipeline are available. E-PhishLLM has been acquired, audited at sample level and split into frozen groups. Classification, training, adversarial evaluation and the demo remain planned. This book is the canonical specification; implementation evidence and experimental results are added as each stage is completed.
 
 ## 1. Background
 
@@ -67,7 +67,7 @@ For the defense comparison, report results on fixed saved variants and the same 
 
 ### 3.1 Requirements from the supplied brief
 
-The PG requirements describe the complete assignment. Stage 1 supplies the environment and contract-validation foundation for them; no dataset, trained detector or completed robustness experiment is claimed. PG01's task-specific learning continues alongside implementation. The remaining end-to-end acceptance evidence is planned.
+The PG requirements describe the complete assignment. Stages 1-2 supply the environment, contracts and PG02 dataset-preparation evidence. No trained detector or completed robustness experiment is claimed. PG01's task-specific learning continues alongside implementation. The remaining end-to-end acceptance evidence is planned.
 
 | ID | Requirement | Verification |
 | --- | --- | --- |
@@ -88,9 +88,9 @@ The brief lists Python, Hugging Face Transformers/Datasets, scikit-learn, Google
 
 Use a modular Python pipeline with a Gradio demo. Keep dataset preparation, feature extraction, training, perturbation, evaluation and inference separate. Use local versioned files for manifests and aggregate results. The offline experiment pipeline prepares reviewed artifacts; the demo loads a selected artifact for inference. Container packaging may be added when it makes the completed demo easier to reproduce.
 
-Start with English plain-text subject/body inputs, subject to dataset review. Raw MIME parsing, attachments, sender authentication, mailbox integration and multilingual claims are outside the first version. The foundation supports Python 3.11-3.13; local development uses Python 3.13.16, uv 0.13.1 and a locked dependency environment. It uses Pydantic for strict record validation, pytest for tests and Ruff for code checks. Training-library compatibility will be checked when models are selected. Keep large checkpoints and datasets outside Git and record provenance and digests in small manifests.
+The selected input is the publisher-English subset of E-PhishLLM, with plain-text subject/body fields. Raw MIME parsing, attachments, sender authentication, mailbox integration and multilingual claims are outside the first version. The foundation supports Python 3.11-3.13; local development uses Python 3.13.16, uv 0.13.1 and a locked dependency environment. It uses Pydantic for strict record validation, pytest for tests and Ruff for code checks. Training-library compatibility will be checked when models are selected. Keep large checkpoints and datasets outside Git and record provenance and digests in small manifests.
 
-Select a public dataset after checking license, privacy, label semantics and overlap with evaluation sources. Select a pretrained classifier with relevant phishing/legitimate labels. A generic sentiment model cannot be evaluated by relabeling positive/negative sentiment as safe/phishing. A base encoder without a trained classification head also does not provide a ready phishing detector.
+Stage 2 selected the synthetic E-PhishLLM public dataset with a pinned publisher MIT declaration, explicit label mapping and a documented sample audit. No independent real-inbox evaluation is available. Select a pretrained classifier with relevant phishing/legitimate labels. A generic sentiment model cannot be evaluated by relabeling positive/negative sentiment as safe/phishing. A base encoder without a trained classification head also does not provide a ready phishing detector.
 
 ### 3.3 Quality, security and reproducibility requirements
 
@@ -110,7 +110,7 @@ Select a public dataset after checking license, privacy, label semantics and ove
 
 | Record | Required information |
 | --- | --- |
-| EmailExample | ID, reviewed text, binary label, source, license reference, group ID and split |
+| EmailExample | ID, preserved text, source label, source/license, group ID, split and optional parent ID |
 | ModelArtifact | Model/tokenizer revisions, label mapping, preprocessing configuration, manifest digest and threshold |
 | Perturbation | Original ID, operation, seed, budget/query count, changed text and validity review |
 | Prediction | Example/variant ID, model revision, score, decision, threshold and elapsed time |
@@ -120,9 +120,21 @@ Separate model indicators from factual claims about the sender. A baseline expla
 
 Stage 1 implements EmailInput, EmailExample, ModelArtifact, Prediction and UnavailablePrediction. [Contract details](contracts.md) define required fields, strict types, preserved text, explicit label mapping, finite scores and threshold/label consistency. The prediction contract has no inference implementation; manifest validation checks metadata/digest syntax without loading or hashing a model file. Perturbation and ExperimentRun remain future designs. Synthetic fixtures document provenance and use unassigned splits; they are not a selected research dataset.
 
+### 3.5 Implemented dataset preparation
+
+The source is the authors' E-PhishLLM release, revision `dda1f1e0b155206a4f84915bf117012f960bdafe`, with a publisher-declared MIT license. It contains synthetic emails, not real inbox observations. Type 0 means legitimate and type 1 means phishing. Source digests, attribution, commands, quality results and limitations are maintained in the [dataset guide](dataset.md). [R12]
+
+Of 16,616 source rows, 11,502 are flagged English and retained; 5,114 other-language rows are excluded. No selected row violates the input contract; normalized exact duplicates and conflicting exact labels number zero. Similarity/template grouping produces 10,564 groups, including 325 multi-message groups, with a largest group of 40. The seed-42 split contains 8,052 training messages (3,854 legitimate / 4,198 phishing), 1,725 validation messages (826 / 899) and 1,725 final-test messages (826 / 899).
+
+Grouping combines normalized exact text, sufficiently long identical subjects, masked body templates and exact word-trigram Jaccard similarity of at least 0.90. Connected relatives and declared parent links remain together. These rules reduce detectable overlap but cannot establish complete campaign independence because the source supplies no campaign/profile IDs. Original accepted text remains unchanged; no learned model preprocessing has been fitted.
+
+The [24-example label audit](dataset-label-audit.md) found 17 text-compatible and seven context-dependent examples. It was AI-assisted and is not a full label validation or completed student review. Labels remain the publisher's. A corpus-wide shortcut is also present: synthetic angle-bracket markers occur in 3,609 phishing messages and no legitimate messages. Before stage 3 training, freeze a label-independent policy removing those marker contents from model input and inspect training/validation diagnostics. Do not tune preprocessing using final-test performance. Synthetic style, missing context and possible semantic overlap limit later conclusions.
+
+The public source and processed JSONL files are kept on the local disk outside Git tracking. The repository stores a text-free frozen split manifest. A second preparation from a fresh verified download produced identical partition and manifest bytes. CLI verification checks file digests, membership, counts, provenance, unique IDs/text, similarity groups and parent lineage; the committed reference additionally anchors the expected bytes.
+
 ## 4. STRIDE threat analysis
 
-This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public error responses. The broader controls below remain planned unless linked to implemented evidence in the stage log. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
+This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public errors. Stage 2 adds pinned source/file integrity, frozen splits, lineage checks and controlled source-only downloading. The broader controls below remain planned unless linked to implemented evidence in the stage log. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
 
 ### 4.1 Assets, actors and trust boundaries
 
@@ -149,13 +161,13 @@ Residual risks include dataset bias, incomplete campaign grouping, novel attack 
 
 ### 5.1 Current verification status
 
-The repository contains the specification and implemented Python contracts/CLI. Eighty automated tests passed locally on Python 3.13.16. They cover the synthetic examples, input length and Unicode preservation, malformed/oversized/deep JSON, provenance, label mapping, score/threshold consistency and private CLI errors. Documentation checks cover chapter structure, English text, links and tables. The [stage log](stage-log.md) records verification details and CI evidence.
+The repository contains the specification, Python contracts/CLI and dataset preparation. The 124 automated tests passed locally on Python 3.13.16, including 44 dataset checks. They cover the synthetic examples, input length and Unicode preservation, malformed/oversized/deep JSON, provenance, label mapping, score/threshold consistency and private CLI errors. Dataset checks additionally cover invalid rows, conflicting labels, similarity grouping, reproducibility, cross-split relatives, parent cycles, tampering, downloader failures and private errors. A brute-force comparison verifies the near-duplicate search on a generated fixture. Documentation checks cover chapter structure, English text, links and tables. The [stage log](stage-log.md) records verification details and CI evidence.
 
 No trained-classifier tests or model-quality measurements exist yet. Contract/CLI tests verify data handling, not detection quality. Add module tests and measured experiments as implementation proceeds.
 
 ### 5.2 Planned PhishGuard unit-test matrix
 
-The matrix below describes the final test goals. Stage 1 implements the input-validation parts of U01/U02, text-preservation part of U03, metadata-mapping part of U06, record-level threshold checks in U07, unavailable-result shape in U11 and CLI privacy part of U12. Grouping, inference adapters, model loading, HTML output and all remaining model/experiment behaviors are pending. Use small offline fixtures; full-corpus evaluation belongs to separate experiment checks.
+The matrix below describes the final test goals. Stage 1 implements the input-validation parts of U01/U02, text-preservation part of U03, metadata-mapping part of U06, record-level threshold checks in U07, unavailable-result shape in U11 and CLI privacy part of U12. Stage 2 adds U03 grouping and U04 duplicate/derived-lineage separation checks. Inference adapters, model loading, HTML output and the remaining model/experiment behaviors are pending. Use small offline fixtures; full-corpus evaluation belongs to separate experiment checks.
 
 | ID | Unit and input | Expected result | Owner |
 | --- | --- | --- | --- |
@@ -188,17 +200,17 @@ The proposed solution is a modular Python experiment with a simple local Gradio 
 
 This initial book contains the required eight chapters, a STRIDE analysis, UML design, test plan and equal ownership allocation. It contains no claimed detector accuracy, trained-model result or completed defense. Those conclusions must follow measured experiments.
 
-Stage 1 established the Python environment, strict contracts, privacy-conscious offline validation and synthetic fixtures. Validation results support those foundation behaviors only. Open decisions are the licensed dataset, confirmed language coverage, pretrained checkpoint, training environment and compute budget. Stage 2 selects and prepares research data; the baseline follows in stage 3 of the [implementation plan](implementation-plan.md).
+Stages 1-2 established strict contracts and a reproducible synthetic research corpus with frozen grouped splits. Data checks confirm the declared integrity/separation rules, not phishing-detection quality or complete campaign independence. The sample audit exposed context-dependent labels; marker counts exposed a generation shortcut. Stage 3 must address that shortcut before training the baseline. Pretrained checkpoint choice, model-library compatibility and compute budget remain open. See the [implementation plan](implementation-plan.md).
 
 ## 7. Architecture - UML
 
-The UML diagrams distinguish the implemented CLI/contract foundation from the planned application and experiment modules. The complete inference interaction remains a target design; a validated prediction record is not a model-generated prediction.
+The UML diagrams distinguish implemented contracts, CLI and data preparation from planned inference/training modules. The complete inference interaction remains a target design; a validated prediction record is not a model-generated prediction.
 
 ### 7.1 UML component diagram
 
 ![Proposed PhishGuard UML component diagram](diagrams/phishguard-components.svg)
 
-Rectangles marked component are software components; rectangles marked artifact are files. Dashed open-arrow dependencies point from a component to the component/artifact it uses. Green components are implemented in stage 1: the CLI calls the shared contract validator. Pale components are planned. The demo and offline runner will reuse the validator along with inference, explanation and experiment modules. These are logical Python modules within the application.
+Rectangles marked component are software components; rectangles marked artifact are files. Dashed open-arrow dependencies point from a component to the component/artifact it uses. Green components/artifacts are implemented: the CLI, shared validator, dataset-preparation module and frozen data manifest. The CLI uses preparation, which validates records and writes local splits. Pale components are planned. The demo and offline runner will reuse the validator along with inference, explanation and experiment modules. These are logical Python modules within the application.
 
 The Gradio UI calls a Python inference function. Offline training can run on a workstation or Colab; exported reviewed artifacts feed local inference. Model/dataset downloads occur in the reviewed preparation workflow, not in response to pasted message instructions.
 
@@ -239,7 +251,7 @@ Both students participate in all topics. Each has five review-lead sessions. Pyt
 
 ### 8.3 Two-semester milestones and ownership
 
-Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. Implementation in W03-W10 has not started.
+Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. Implementation in W04-W10 has not started.
 
 | Package / period | Lior - 5 units | Sharon Elimelech - 5 units | Completion evidence |
 | --- | --- | --- | --- |
@@ -258,7 +270,7 @@ Totals: Lior 10 x 5 = 50 units; Sharon Elimelech 10 x 5 = 50 units. The asymmetr
 
 ### 8.4 Contribution evidence and stage completion
 
-The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts, an offline validator, fixtures and automated validation tests. The documents and code were developed with AI assistance for both students to review. No dataset preparation, classifier, training pipeline, perturbation harness or demo implementation is claimed as complete.
+The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts and an offline validator. Stage 2 adds pinned-source acquisition, a sample label audit, deduplication, frozen grouped splits and dataset tests. The documents, code and initial audit were developed with AI assistance for both students to review. No classifier, training pipeline, perturbation harness or demo is claimed as complete.
 
 Lior owns the input/result contracts, dataset ingestion, baseline training, model adapters, fine-tuning runner, perturbation operations and demo integration listed in section 8.3. Sharon Elimelech owns validation fixtures, dataset quality and splits, evaluation and leakage checks, tokenization/reproducibility checks, perturbation validity, defense training and explanation/privacy checks. Each implementation package also includes tests and peer review; the weights in section 8.3 include that work.
 
@@ -279,3 +291,5 @@ The primary course reference is the student-supplied Project2_PhishGuard.docx, t
 - [R9 - scikit-learn: TfidfVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html)
 - [R10 - scikit-learn: common pitfalls and data leakage](https://scikit-learn.org/stable/common_pitfalls.html)
 - [R11 - Microsoft: STRIDE threat categories](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats)
+
+- [R12 - E-PhishGen: author dataset and source card](https://huggingface.co/datasets/pajola/e-phishGen)

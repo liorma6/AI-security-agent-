@@ -33,7 +33,7 @@ def main() -> int:
             "uv.lock",
         )
     ]
-    for directory in ("docs", "scripts", ".github", "src", "tests"):
+    for directory in ("docs", "scripts", ".github", "src", "tests", "data/manifests"):
         paths.extend(
             path
             for path in (ROOT / directory).rglob("*")
@@ -101,7 +101,9 @@ def main() -> int:
         f"Documentation checks passed: {len(paths)} English UTF-8 files, local links, "
         "table structure, eight chapters and two UML diagrams."
     )
-    print("Foundation contracts are implemented; model experiments and the demo are pending.")
+    print(
+        "Contracts and dataset preparation are implemented; model experiments and demo are pending."
+    )
     return 0
 
 
