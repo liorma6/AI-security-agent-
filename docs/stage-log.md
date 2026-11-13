@@ -54,6 +54,10 @@ Regenerated the local English Word and PDF books from revision 1.2. The PDF has 
 
 Next functional stage: stage 3, TF-IDF/logistic regression with training-only feature fitting and the documented shortcut mitigation. Stages 0-2 are implemented; stages 3-9 remain planned.
 
+## Stage 3 - Baseline protocol freeze - November 13, 2026
+
+Implemented the classical baseline runner, safe JSON artifacts, separate evaluation and private inference CLI. The fixed protocol specifies marker removal, training-only TF-IDF/logistic-regression fitting, validation-only threshold selection and independent final evaluation. The initial 172 offline tests passed, including 48 baseline checks. This entry precedes research-corpus training; no measured research accuracy is claimed yet. W04 assigns training/artifacts to Lior and evaluation/leakage checks to Sharon Elimelech, with AI assistance and individual student review still open.
+
 ## Contribution record format
 
 For each completed activity record the package ID, student, date, actual work, artifact or commit, peer review status and verification results. Reference the ownership plan without treating assigned responsibility as evidence of historical authorship.

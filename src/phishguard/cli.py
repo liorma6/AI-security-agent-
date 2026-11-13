@@ -1,4 +1,4 @@
-"""Contract inspection and reviewed data preparation; no model is invoked."""
+"""Research CLI: contracts, frozen datasets and the classical baseline."""
 
 import argparse
 import json
@@ -33,7 +33,28 @@ def main(argv: list[str] | None = None) -> int:
     verify = actions.add_parser("verify", help="Verify file integrity and grouped split separation")
     verify.add_argument("--directory", type=Path, default=Path("data/processed/ephishllm-v1"))
     verify.add_argument("--reference", type=Path, help="Require the exact frozen manifest bytes")
+    baseline = commands.add_parser("baseline", help="Train, evaluate or use the classical detector")
+    baseline_actions = baseline.add_subparsers(dest="action", required=True)
+    for action in ("train", "evaluate"):
+        command = baseline_actions.add_parser(action)
+        command.add_argument("--dataset", type=Path, default=Path("data/processed/ephishllm-v1"))
+        command.add_argument(
+            "--reference", type=Path, default=Path("data/manifests/ephishllm-v1.json")
+        )
+        default_output = "models/baseline-v1" if action == "train" else "artifacts/baseline-test-v1"
+        command.add_argument("--output", type=Path, default=Path(default_output))
+        if action == "evaluate":
+            command.add_argument("--model", type=Path, default=Path("models/baseline-v1"))
+    predict = baseline_actions.add_parser(
+        "predict", help="Score a JSON email locally without storing it"
+    )
+    predict.add_argument("--model", type=Path, default=Path("models/baseline-v1"))
+    predict.add_argument("--file", required=True, help="UTF-8 JSON email, or - for standard input")
     args = parser.parse_args(argv)
+    if args.command == "baseline":
+        from phishguard.baseline.cli import run
+
+        return run(args)
     if args.command == "data":
         return data_command(args)
     if args.command == "schema":
