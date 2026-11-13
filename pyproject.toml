@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "phishguard"
-version = "0.5.0"
+version = "0.6.0"
 description = "Phishing-email detection research: reproducible data, classical and pretrained classifiers."
 readme = "README.md"
 requires-python = ">=3.11,<3.14"

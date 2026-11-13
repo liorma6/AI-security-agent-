@@ -90,7 +90,14 @@ def main(argv: list[str] | None = None) -> int:
     from phishguard.finetune.cli import register as register_finetune
 
     register_finetune(commands)
+    from phishguard.evasion.cli import register as register_evasion
+
+    register_evasion(commands)
     args = parser.parse_args(argv)
+    if args.command == "evasion":
+        from phishguard.evasion.cli import run
+
+        return run(args)
     if args.command == "finetune":
         from phishguard.finetune.cli import run
 
