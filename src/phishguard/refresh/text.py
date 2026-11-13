@@ -20,6 +20,23 @@ PLACEHOLDER = re.compile(
     re.I,
 )
 HTML_ROOT = re.compile(r"^\s*(?:<!doctype\s+html|<html\b|<body\b|<script\b)", re.I)
+REDACTIONS = re.compile(
+    r"\[(?:NAME|ORGANIZATION|DATE|PRODUCT|EMAIL_ADDRESS|TIME|URL|ADDRESS|REFERENCE_NUMBER|"
+    r"PHONE_NUMBER|FINANCIAL_INFO|FILE_NAME|USERNAME|INITIALS|FILE_PATH|VERSION|IMAGE|"
+    r"IP_ADDRESS|NUMBER|JOB_TITLE|LOCATION|EVENT|FAX_NUMBER|SYMBOL|COORDINATES|NATIONALITY)\]"
+)
+
+
+def remove_redactions(email):
+    """Remove declared publisher placeholder types, independently of source and label."""
+    try:
+        result = EmailInput(
+            subject=REDACTIONS.sub(" ", email.subject), body=REDACTIONS.sub(" ", email.body)
+        )
+        preprocess(result.text)
+        return result
+    except (ValidationError, BaselineError):
+        raise AuditError("unusable_after_redaction_removal") from None
 
 
 def visible(body):

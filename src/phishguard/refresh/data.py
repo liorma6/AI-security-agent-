@@ -15,11 +15,11 @@ from phishguard.baseline.common import BaselineError, parse_json, read_bytes
 from phishguard.baseline.data import FrozenDataset
 from phishguard.baseline.preprocessing import preprocess
 from phishguard.contracts import EmailExample, EmailInput
-from phishguard.datasets.grouping import canonical, group_identifier
+from phishguard.datasets.grouping import canonical, group_identifier, related_components
 from phishguard.datasets.preparation import json_bytes
 from phishguard.datasets.source import checked_bytes, digest
 from phishguard.refresh.common import PROTOCOL, PROTOCOL_SHA256, SOURCE, SOURCE_SHA256, verify_file
-from phishguard.refresh.text import clean_text, extract
+from phishguard.refresh.text import clean_text, extract, remove_redactions
 from phishguard.validation import validate_json
 
 
@@ -208,7 +208,9 @@ def components(records):
         a, b = root(a), root(b)
         parent[max(a, b)] = min(a, b)
 
-    for group in groups:
+    # Preserve every original baseline guard as well as the broader audit rules.
+    # Stripping Re: can shorten a subject below the audit's length/word boundary.
+    for group in groups + related_components(records):
         for rid in group[1:]:
             union(group[0], rid)
     known = {}
@@ -263,13 +265,31 @@ def prepare(cache, internal_dir, internal_ref, audit_dir, audit_ref, raw_cache, 
     ham, ham_report = meajor(cache)
     phish, phish_report = nazario(cache)
     holdout, origins = challenge(cache)
-    all_candidates = audit + ham + phish + holdout
+    all_candidates, preprocessing_exclusions = [], []
+    redactions = Counter()
+    for row in audit + ham + phish + holdout:
+        try:
+            email = remove_redactions(row.email)
+        except AuditError as error:
+            preprocessing_exclusions.append({"example_id": row.example_id, "reason": str(error)})
+            continue
+        if email != row.email:
+            redactions[row.source_id] += 1
+        all_candidates.append(row.model_copy(update={"email": email}))
+    comparable_protected = []
+    for row in protected:
+        try:
+            email = remove_redactions(row.email)
+        except AuditError:
+            email = row.email
+        comparable_protected.append(row.model_copy(update={"email": email}))
+    protected = comparable_protected
     all_rows = all_candidates + protected
     by_id = {r.example_id: r for r in all_rows}
     protected_ids = {r.example_id for r in protected}
     audit_ids = {r.example_id for r in audit}
     challenge_ids = {r.example_id for r in holdout}
-    exclusions, duplicates = [], defaultdict(list)
+    exclusions, duplicates = preprocessing_exclusions, defaultdict(list)
     for row in all_candidates:
         duplicates[canonical(preprocess(row.email.text))].append(row.example_id)
     removed = set()
@@ -340,6 +360,7 @@ def prepare(cache, internal_dir, internal_ref, audit_dir, audit_ref, raw_cache, 
         "partitions": {s: cohort_stats(rows) for s, rows in partitions.items()},
         "ingestion": {"meajor": ham_report, "nazario": phish_report},
         "extraction_repairs": repairs,
+        "redaction_removal_rows_by_source": dict(redactions),
         "exclusions": sorted(exclusions, key=lambda e: e["example_id"]),
         "exclusion_counts": dict(Counter(e["reason"] for e in exclusions)),
         "protected_internal_rows": len(protected) - len(reserve),

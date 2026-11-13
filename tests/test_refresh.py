@@ -152,6 +152,28 @@ def test_known_families_unite_transitively_with_text_relatives():
     assert data.components(rows) == [["a", "b", "c"]]
 
 
+def test_original_subject_boundary_is_preserved_in_broader_groups():
+    rows = [
+        example("a", "Short unrelated ordinary body"),
+        example("b", "Entirely different words here"),
+    ]
+    rows = [
+        r.model_copy(update={"email": EmailInput(subject="Re: List status", body=r.email.body)})
+        for r in rows
+    ]
+    assert data.components(rows) == [["a", "b"]]
+
+
+def test_publisher_redactions_removed_without_erasing_normal_bracket_words():
+    parsed = text.remove_redactions(
+        EmailInput(subject="[NAME] report", body="[PATCH] Contact [EMAIL_ADDRESS] about [PRODUCT].")
+    )
+    assert "NAME" not in parsed.text and "EMAIL_ADDRESS" not in parsed.text
+    assert "PRODUCT" not in parsed.text and "[PATCH] Contact" in parsed.body
+    with pytest.raises(AuditError, match="unusable_after_redaction_removal"):
+        text.remove_redactions(EmailInput(body="[NAME] [ADDRESS]"))
+
+
 @pytest.fixture
 def prepared_refresh(corpus, tmp_path, monkeypatch):
     protected = [example("protected", "Protected body content here", group="reserve-family")]
