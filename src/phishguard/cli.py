@@ -93,7 +93,14 @@ def main(argv: list[str] | None = None) -> int:
     from phishguard.evasion.cli import register as register_evasion
 
     register_evasion(commands)
+    from phishguard.defense.cli import register as register_defense
+
+    register_defense(commands)
     args = parser.parse_args(argv)
+    if args.command == "defense":
+        from phishguard.defense.cli import run
+
+        return run(args)
     if args.command == "evasion":
         from phishguard.evasion.cli import run
 

@@ -17,8 +17,9 @@ PROTECTED = re.compile(
 )
 
 
-def rank(*values):
-    return digest(":".join(map(str, (PROTOCOL["seed"], *values))).encode())
+def rank(*values, seed=None):
+    seed = PROTOCOL["seed"] if seed is None else seed
+    return digest(":".join(map(str, (seed, *values))).encode())
 
 
 def text_digest(email):
@@ -67,29 +68,32 @@ def apply_edits(email, edits):
     return EmailInput(subject=email.subject, body=body)
 
 
-def replacement(word, operation, key):
+def replacement(word, operation, key, *, seed=None):
     if operation == "substitute_word":
         return PROTOCOL["substitutions"][word]
     if operation == "duplicate_letter":
-        position = 1 + int(rank(key, word), 16) % (len(word) - 2)
+        position = 1 + int(rank(key, word, seed=seed), 16) % (len(word) - 2)
         return word[:position] + word[position] + word[position:]
     positions = [p for p in range(1, len(word) - 2) if word[p] != word[p + 1]]
     if not positions:
         return word
-    position = min(positions, key=lambda p: rank(key, word, p))
+    position = min(positions, key=lambda p: rank(key, word, p, seed=seed))
     return word[:position] + word[position + 1] + word[position] + word[position + 2 :]
 
 
-def generate(row, cohort, *, max_candidates=None, max_edits=None):
+def generate(row, cohort, *, max_candidates=None, max_edits=None, seed=None):
     """Each candidate starts at the original; no model access or cross-split assignment."""
     cap = PROTOCOL["max_candidates"] if max_candidates is None else max_candidates
     edit_cap = PROTOCOL["max_edits"] if max_edits is None else max_edits
+    seed = PROTOCOL["seed"] if seed is None else seed
     if (
         type(cap) is not int
         or not 0 <= cap <= PROTOCOL["max_candidates"]
         or type(edit_cap) is not int
         or not 0 <= edit_cap <= PROTOCOL["max_edits"]
-        or cohort not in {"train", "test", "challenge"}
+        or type(seed) is not int
+        or not 0 <= seed < 2**32
+        or cohort not in {"train", "validation", "test", "challenge"}
         or row.split != ("test" if cohort == "challenge" else cohort)
     ):
         raise EvasionError("invalid_perturbation_scope_or_budget")
@@ -102,11 +106,11 @@ def generate(row, cohort, *, max_candidates=None, max_edits=None):
         for operation in PROTOCOL["operations"]:
             words = sorted(
                 eligible_words(row.email, operation),
-                key=lambda w: rank(row.example_id, operation, proposal, w[0]),
+                key=lambda w: rank(row.example_id, operation, proposal, w[0], seed=seed),
             )
             edits = []
             for start, end, word in words:
-                after = replacement(word, operation, (row.example_id, proposal, start))
+                after = replacement(word, operation, (row.example_id, proposal, start), seed=seed)
                 if after == word:
                     continue
                 edits.append({"start": start, "end": end, "before": word, "after": after})
@@ -126,7 +130,8 @@ def generate(row, cohort, *, max_candidates=None, max_edits=None):
             variants.append(
                 {
                     "schema_version": "1.0",
-                    "variant_id": "ev6-" + rank(cohort, row.example_id, fingerprint)[:24],
+                    "variant_id": "ev6-"
+                    + rank(cohort, row.example_id, fingerprint, seed=seed)[:24],
                     "parent_id": row.example_id,
                     "group_id": row.group_id,
                     "split": row.split,
@@ -134,7 +139,7 @@ def generate(row, cohort, *, max_candidates=None, max_edits=None):
                     "label": row.label,
                     "source_id": row.source_id,
                     "operation": operation,
-                    "seed": PROTOCOL["seed"],
+                    "seed": seed,
                     "proposal": proposal,
                     "candidate_index": len(variants) + 1,
                     "original_sha256": text_digest(row.email),
