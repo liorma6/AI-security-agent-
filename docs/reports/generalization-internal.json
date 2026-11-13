@@ -1,0 +1,437 @@
+{
+  "broader_connected_test_rows": 1,
+  "broader_edges_by_reason": {
+    "subject": 1
+  },
+  "broader_edges_by_split_pair": {
+    "test:train": 1
+  },
+  "broader_relation_cross_split_edges": 1,
+  "code": {
+    "commit": "09165d3b40a46cc84504356789bcd8bc499c5249",
+    "working_tree_dirty": false
+  },
+  "coefficient_associations": {
+    "towards_legitimate": [
+      {
+        "coefficient": -2.6996142775709178,
+        "term": "these",
+        "training_document_frequency": {
+          "legitimate": 1186,
+          "phishing": 285
+        }
+      },
+      {
+        "coefficient": -2.340637103210017,
+        "term": "next",
+        "training_document_frequency": {
+          "legitimate": 1296,
+          "phishing": 377
+        }
+      },
+      {
+        "coefficient": -2.295134364040389,
+        "term": "and",
+        "training_document_frequency": {
+          "legitimate": 3612,
+          "phishing": 2952
+        }
+      },
+      {
+        "coefficient": -2.266265816401319,
+        "term": "in",
+        "training_document_frequency": {
+          "legitimate": 2856,
+          "phishing": 2191
+        }
+      },
+      {
+        "coefficient": -2.245446417689972,
+        "term": "on",
+        "training_document_frequency": {
+          "legitimate": 2922,
+          "phishing": 1713
+        }
+      },
+      {
+        "coefficient": -2.1760521670830957,
+        "term": "client",
+        "training_document_frequency": {
+          "legitimate": 552,
+          "phishing": 110
+        }
+      },
+      {
+        "coefficient": -2.052267966307029,
+        "term": "training",
+        "training_document_frequency": {
+          "legitimate": 315,
+          "phishing": 3
+        }
+      },
+      {
+        "coefficient": -2.0367093535131606,
+        "term": "provide",
+        "training_document_frequency": {
+          "legitimate": 720,
+          "phishing": 196
+        }
+      },
+      {
+        "coefficient": -1.9787275052285063,
+        "term": "upcoming",
+        "training_document_frequency": {
+          "legitimate": 1346,
+          "phishing": 293
+        }
+      },
+      {
+        "coefficient": -1.9733372107398586,
+        "term": "be",
+        "training_document_frequency": {
+          "legitimate": 1798,
+          "phishing": 670
+        }
+      },
+      {
+        "coefficient": -1.88308771226776,
+        "term": "or",
+        "training_document_frequency": {
+          "legitimate": 987,
+          "phishing": 425
+        }
+      },
+      {
+        "coefficient": -1.8658836195530963,
+        "term": "am",
+        "training_document_frequency": {
+          "legitimate": 1055,
+          "phishing": 193
+        }
+      }
+    ],
+    "towards_phishing": [
+      {
+        "coefficient": 4.526280157775231,
+        "term": "attached",
+        "training_document_frequency": {
+          "legitimate": 349,
+          "phishing": 1326
+        }
+      },
+      {
+        "coefficient": 4.24543999031257,
+        "term": "document",
+        "training_document_frequency": {
+          "legitimate": 115,
+          "phishing": 660
+        }
+      },
+      {
+        "coefficient": 3.817995140091947,
+        "term": "link",
+        "training_document_frequency": {
+          "legitimate": 131,
+          "phishing": 1816
+        }
+      },
+      {
+        "coefficient": 3.6724797916570457,
+        "term": "access",
+        "training_document_frequency": {
+          "legitimate": 64,
+          "phishing": 1272
+        }
+      },
+      {
+        "coefficient": 3.4160834283417523,
+        "term": "download",
+        "training_document_frequency": {
+          "legitimate": 2,
+          "phishing": 668
+        }
+      },
+      {
+        "coefficient": 3.1645834711618845,
+        "term": "immediate",
+        "training_document_frequency": {
+          "legitimate": 93,
+          "phishing": 1978
+        }
+      },
+      {
+        "coefficient": 3.1477123332049923,
+        "term": "project",
+        "training_document_frequency": {
+          "legitimate": 1134,
+          "phishing": 1171
+        }
+      },
+      {
+        "coefficient": 3.082817993007659,
+        "term": "required",
+        "training_document_frequency": {
+          "legitimate": 136,
+          "phishing": 2268
+        }
+      },
+      {
+        "coefficient": 3.021611343266825,
+        "term": "invoice",
+        "training_document_frequency": {
+          "legitimate": 0,
+          "phishing": 430
+        }
+      },
+      {
+        "coefficient": 3.019268743614141,
+        "term": "exclusive",
+        "training_document_frequency": {
+          "legitimate": 28,
+          "phishing": 197
+        }
+      },
+      {
+        "coefficient": 2.9085774457321714,
+        "term": "update",
+        "training_document_frequency": {
+          "legitimate": 494,
+          "phishing": 1448
+        }
+      },
+      {
+        "coefficient": 2.905155916104768,
+        "term": "find",
+        "training_document_frequency": {
+          "legitimate": 160,
+          "phishing": 735
+        }
+      }
+    ]
+  },
+  "declared_rule_cross_split_components": 0,
+  "environment": {
+    "architecture": "AMD64",
+    "audit_packages": {
+      "langdetect": "1.0.9",
+      "truststore": "0.10.5"
+    },
+    "logical_cpus": 12,
+    "os": "Windows",
+    "packages": {
+      "numpy": "2.5.4",
+      "phishguard": "0.4.1",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.8.0"
+    },
+    "processor": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD",
+    "python": "3.13.16",
+    "requested_numeric_threads": 1
+  },
+  "internal_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+  "interpretation_limits": [
+    "Small same-source accuracy gaps cannot establish cross-source generalization.",
+    "Large coefficients and text patterns are associations, not causal evidence.",
+    "The broader 0.70 relation rule is exploratory and may over-group unrelated text."
+  ],
+  "metrics": {
+    "test": {
+      "accuracy": 0.9843478260869565,
+      "balanced_accuracy": 0.9840494011371257,
+      "confusion": {
+        "fn": 8,
+        "fp": 19,
+        "tn": 807,
+        "tp": 891
+      },
+      "f1": 0.9850746268656716,
+      "false_positive_rate": 0.023002421307506054,
+      "labels": {
+        "legitimate": 826,
+        "phishing": 899
+      },
+      "precision": 0.9791208791208791,
+      "recall": 0.9911012235817576,
+      "rows": 1725,
+      "threshold": 0.44
+    },
+    "train": {
+      "accuracy": 0.9931693989071039,
+      "balanced_accuracy": 0.9932260104584361,
+      "confusion": {
+        "fn": 34,
+        "fp": 21,
+        "tn": 3833,
+        "tp": 4164
+      },
+      "f1": 0.9934391029464392,
+      "false_positive_rate": 0.005448884276076803,
+      "labels": {
+        "legitimate": 3854,
+        "phishing": 4198
+      },
+      "precision": 0.9949820788530466,
+      "recall": 0.991900905192949,
+      "rows": 8052,
+      "threshold": 0.44
+    },
+    "validation": {
+      "accuracy": 0.9866666666666667,
+      "balanced_accuracy": 0.9865690153439253,
+      "confusion": {
+        "fn": 10,
+        "fp": 13,
+        "tn": 813,
+        "tp": 889
+      },
+      "f1": 0.9872293170460855,
+      "false_positive_rate": 0.015738498789346248,
+      "labels": {
+        "legitimate": 826,
+        "phishing": 899
+      },
+      "precision": 0.9855875831485588,
+      "recall": 0.9888765294771968,
+      "rows": 1725,
+      "threshold": 0.44
+    }
+  },
+  "model_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "pattern_counts": {
+    "test": {
+      "legitimate": {
+        "html_markup": 0,
+        "http_url": 40,
+        "square_placeholder": 51,
+        "urgency_word": 46
+      },
+      "phishing": {
+        "html_markup": 1,
+        "http_url": 0,
+        "square_placeholder": 100,
+        "urgency_word": 507
+      }
+    },
+    "train": {
+      "legitimate": {
+        "html_markup": 1,
+        "http_url": 204,
+        "square_placeholder": 252,
+        "urgency_word": 202
+      },
+      "phishing": {
+        "html_markup": 11,
+        "http_url": 0,
+        "square_placeholder": 553,
+        "urgency_word": 2398
+      }
+    },
+    "validation": {
+      "legitimate": {
+        "html_markup": 0,
+        "http_url": 55,
+        "square_placeholder": 59,
+        "urgency_word": 37
+      },
+      "phishing": {
+        "html_markup": 3,
+        "http_url": 1,
+        "square_placeholder": 104,
+        "urgency_word": 507
+      }
+    }
+  },
+  "pattern_definitions": {
+    "html_markup": "<[A-Za-z][^>]*>",
+    "http_url": "https?://",
+    "square_placeholder": "\\[[^\\[\\]]{1,80}\\]",
+    "urgency_word": "\\b(?:urgent|immediate|suspend|suspended)\\b"
+  },
+  "phase": "internal-generalization-audit",
+  "protocol": {
+    "archive_expanded_bytes": 134217728,
+    "audit_label_review": {
+      "per_label": 8,
+      "selection": "Lowest SHA-256 of stage4a-label-review:<example_id> in audit partition, before scores; retain labels, report ambiguity."
+    },
+    "baseline_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+    "baseline_threshold": 0.44,
+    "bootstrap": {
+      "repetitions": 1000,
+      "seed": 42
+    },
+    "evaluation": [
+      "Report all eligible audit rows, per-source metrics, class counts, balanced accuracy, confusion, precision/recall/F1/FPR and exclusions.",
+      "Record model/dataset/protocol digests and local text-free predictions.",
+      "Independent group bootstrap, 1000 resamples, seed 42, percentile 95% intervals; intervals do not address source bias or label errors.",
+      "The audit cohort becomes development evidence after inspection. Keep reserve unscored and require a new precommitted protocol before any future final use."
+    ],
+    "external_split": {
+      "audit": 0.7,
+      "reserve": 0.3,
+      "rule": "Deterministic whole-group allocation minimizing class-wise squared target deviation; reserve never scored or manually reviewed. Preparation reads it only for quality, language and grouping.",
+      "seed": 20261113
+    },
+    "internal_diagnostics": [
+      "Rescore frozen train/validation/test, compare published test counts.",
+      "Recheck declared grouping at 0.90 and exploratory broader similarity at 0.70; report cross-split relations without modifying data.",
+      "Report coefficients and training document frequencies for 12 top terms per direction; coefficients are associations, not causal explanations.",
+      "Count fixed text-pattern indicators by label; no feature removal or retuning based on outcomes."
+    ],
+    "internal_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+    "language": {
+      "accept": "en",
+      "minimum_probability": 0.9,
+      "name": "langdetect",
+      "seed": 0
+    },
+    "max_archive_members": 10000,
+    "mime": "Parse offline. Decode subject and select inline plain text, falling back to HTML text. Ignore attachments and embedded messages, script/style/head/noscript and comments; do not follow links or execute/render HTML. Strict declared charset decoding; fallback UTF-8 replacement is excluded if replacement characters remain. Remove repeated leading [SPAM]/[PHISHING] subject flags. Reject unusable/overlong text rather than truncate.",
+    "model_policy": "Load the exact stage-3 baseline and threshold. No fitting, feature/threshold tuning or stage-5 work. Do not evaluate the stage-4 pretrained model in this audit.",
+    "raw_message_bytes": 1048576,
+    "relatedness": {
+      "closure": "transitive components; exact duplicate inputs collapsed, conflicting exact labels excluded. Entire external components touching ANY internal train/validation/test row excluded.",
+      "exact": "canonical preprocessed subject/body; exact body at least 20 characters",
+      "minimum_body_words": 10,
+      "near_body_jaccard": 0.7,
+      "shingle_words": 3,
+      "subject": "casefold/whitespace, remove leading Re/Fw/Fwd prefixes; at least 15 characters and 3 words",
+      "template": "remove complete synthetic markers; mask square placeholders, URLs, email addresses and digits"
+    },
+    "runtime": {
+      "langdetect": "1.0.9",
+      "truststore": "0.10.5"
+    },
+    "system_subjects": [
+      "DON'T DELETE THIS MESSAGE -- FOLDER INTERNAL DATA"
+    ],
+    "version": "generalization-audit-v1"
+  },
+  "protocol_sha256": "491476f2dc31898f80fc516e8b39d76b556186e84777ac787abba4ab839f1b8e",
+  "report_version": "1.0",
+  "subset_interpretation": "Post-hoc sensitivity subset, not a replacement test set or proof of semantic independence.",
+  "test_without_broader_development_relatives": {
+    "accuracy": 0.984338747099768,
+    "balanced_accuracy": 0.9840444463618372,
+    "confusion": {
+      "fn": 8,
+      "fp": 19,
+      "tn": 807,
+      "tp": 890
+    },
+    "f1": 0.9850581073602657,
+    "false_positive_rate": 0.023002421307506054,
+    "labels": {
+      "legitimate": 826,
+      "phishing": 898
+    },
+    "precision": 0.9790979097909791,
+    "recall": 0.9910913140311804,
+    "rows": 1724,
+    "threshold": 0.44
+  },
+  "threshold": 0.44,
+  "threshold_updated": false,
+  "weights_updated": false
+}

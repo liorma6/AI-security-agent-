@@ -1,0 +1,335 @@
+{
+  "amortized_ms_per_email": 0.32456467358413643,
+  "audit_ids_sha256": "55d1c70db597a857148163392799685511cc44ce9a96264b0d9b6fd7586e1a98",
+  "batch_inference_seconds": 0.5319615000043996,
+  "code": {
+    "commit": "09165d3b40a46cc84504356789bcd8bc499c5249",
+    "working_tree_dirty": false
+  },
+  "environment": {
+    "architecture": "AMD64",
+    "audit_packages": {
+      "langdetect": "1.0.9",
+      "truststore": "0.10.5"
+    },
+    "logical_cpus": 12,
+    "os": "Windows",
+    "packages": {
+      "numpy": "2.5.4",
+      "phishguard": "0.4.1",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.8.0"
+    },
+    "processor": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD",
+    "python": "3.13.16",
+    "requested_numeric_threads": 1
+  },
+  "exclusions": {
+    "duplicate_model_input": 69,
+    "invalid_or_overlong_email": 11,
+    "mailbox_system_record": 1,
+    "not_confident_english": 74,
+    "raw_message_too_large": 5,
+    "related_to_internal_corpus": 1,
+    "undecodable_text": 31
+  },
+  "external_manifest_sha256": "0fe63a922df2fc61df665f3d8d6ddaea8cafcc9c3cf9abb9297e892e8b23ff36",
+  "group_bootstrap": {
+    "groups": 1003,
+    "intervals": {
+      "accuracy": {
+        "lower": 0.9130872329579968,
+        "upper": 0.9433482250645161,
+        "valid_resamples": 1000
+      },
+      "balanced_accuracy": {
+        "lower": 0.897806659007724,
+        "upper": 0.9357337379539838,
+        "valid_resamples": 1000
+      },
+      "false_positive_rate": {
+        "lower": 0.037356120609163206,
+        "upper": 0.06809398341241822,
+        "valid_resamples": 1000
+      },
+      "recall": {
+        "lower": 0.8508791980097236,
+        "upper": 0.9178639306599833,
+        "valid_resamples": 1000
+      }
+    },
+    "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+    "method": "whole-group percentile bootstrap 95%",
+    "repetitions": 1000,
+    "seed": 42
+  },
+  "internal_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+  "limitations": [
+    "Sources and eras differ by label; this is a cross-source stress test, not a contemporary-inbox prevalence sample.",
+    "Nazario represents one personal inbox with hand labels that may contain errors. Ham means publisher non-spam, not independently authenticated safe mail.",
+    "MIME text extraction cannot assess attachments, images, sender identity or destinations.",
+    "Language identification and heuristic grouping may make mistakes.",
+    "Observed class prevalence is determined by archive selection; report balanced accuracy and class-conditional errors.",
+    "This scored cohort is now development evidence. Reserve remains unscored, but shares the same sources.",
+    "No external result licenses claims about contemporary inboxes, calibrated probabilities or adversarial robustness."
+  ],
+  "metrics": {
+    "accuracy": 0.9286150091519219,
+    "balanced_accuracy": 0.9175241907545183,
+    "confusion": {
+      "fn": 59,
+      "fp": 58,
+      "tn": 1059,
+      "tp": 463
+    },
+    "f1": 0.887823585810163,
+    "false_positive_rate": 0.051924798567591766,
+    "labels": {
+      "legitimate": 1117,
+      "phishing": 522
+    },
+    "precision": 0.8886756238003839,
+    "recall": 0.8869731800766284,
+    "rows": 1639,
+    "threshold": 0.44
+  },
+  "model_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "per_source": {
+    "nazario-2024": {
+      "accuracy": 0.8778280542986425,
+      "balanced_accuracy": null,
+      "confusion": {
+        "fn": 27,
+        "fp": 0,
+        "tn": 0,
+        "tp": 194
+      },
+      "f1": 0.9349397590361446,
+      "false_positive_rate": null,
+      "labels": {
+        "legitimate": 0,
+        "phishing": 221
+      },
+      "precision": 1.0,
+      "recall": 0.8778280542986425,
+      "rows": 221,
+      "threshold": 0.44
+    },
+    "nazario-2025": {
+      "accuracy": 0.893687707641196,
+      "balanced_accuracy": null,
+      "confusion": {
+        "fn": 32,
+        "fp": 0,
+        "tn": 0,
+        "tp": 269
+      },
+      "f1": 0.9438596491228071,
+      "false_positive_rate": null,
+      "labels": {
+        "legitimate": 0,
+        "phishing": 301
+      },
+      "precision": 1.0,
+      "recall": 0.893687707641196,
+      "rows": 301,
+      "threshold": 0.44
+    },
+    "spamassassin-easy-ham-2": {
+      "accuracy": 0.9457768508863399,
+      "balanced_accuracy": null,
+      "confusion": {
+        "fn": 0,
+        "fp": 52,
+        "tn": 907,
+        "tp": 0
+      },
+      "f1": 0.0,
+      "false_positive_rate": 0.054223149113660066,
+      "labels": {
+        "legitimate": 959,
+        "phishing": 0
+      },
+      "precision": 0.0,
+      "recall": null,
+      "rows": 959,
+      "threshold": 0.44
+    },
+    "spamassassin-hard-ham": {
+      "accuracy": 0.9620253164556962,
+      "balanced_accuracy": null,
+      "confusion": {
+        "fn": 0,
+        "fp": 6,
+        "tn": 152,
+        "tp": 0
+      },
+      "f1": 0.0,
+      "false_positive_rate": 0.0379746835443038,
+      "labels": {
+        "legitimate": 158,
+        "phishing": 0
+      },
+      "precision": 0.0,
+      "recall": null,
+      "rows": 158,
+      "threshold": 0.44
+    }
+  },
+  "phase": "external-audit",
+  "predictions_sha256": "8621889616332d1b5c249c8fa2b2c3e74f232b8c053d7c22087ce2d09c6bdc6e",
+  "protocol": {
+    "archive_expanded_bytes": 134217728,
+    "audit_label_review": {
+      "per_label": 8,
+      "selection": "Lowest SHA-256 of stage4a-label-review:<example_id> in audit partition, before scores; retain labels, report ambiguity."
+    },
+    "baseline_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+    "baseline_threshold": 0.44,
+    "bootstrap": {
+      "repetitions": 1000,
+      "seed": 42
+    },
+    "evaluation": [
+      "Report all eligible audit rows, per-source metrics, class counts, balanced accuracy, confusion, precision/recall/F1/FPR and exclusions.",
+      "Record model/dataset/protocol digests and local text-free predictions.",
+      "Independent group bootstrap, 1000 resamples, seed 42, percentile 95% intervals; intervals do not address source bias or label errors.",
+      "The audit cohort becomes development evidence after inspection. Keep reserve unscored and require a new precommitted protocol before any future final use."
+    ],
+    "external_split": {
+      "audit": 0.7,
+      "reserve": 0.3,
+      "rule": "Deterministic whole-group allocation minimizing class-wise squared target deviation; reserve never scored or manually reviewed. Preparation reads it only for quality, language and grouping.",
+      "seed": 20261113
+    },
+    "internal_diagnostics": [
+      "Rescore frozen train/validation/test, compare published test counts.",
+      "Recheck declared grouping at 0.90 and exploratory broader similarity at 0.70; report cross-split relations without modifying data.",
+      "Report coefficients and training document frequencies for 12 top terms per direction; coefficients are associations, not causal explanations.",
+      "Count fixed text-pattern indicators by label; no feature removal or retuning based on outcomes."
+    ],
+    "internal_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+    "language": {
+      "accept": "en",
+      "minimum_probability": 0.9,
+      "name": "langdetect",
+      "seed": 0
+    },
+    "max_archive_members": 10000,
+    "mime": "Parse offline. Decode subject and select inline plain text, falling back to HTML text. Ignore attachments and embedded messages, script/style/head/noscript and comments; do not follow links or execute/render HTML. Strict declared charset decoding; fallback UTF-8 replacement is excluded if replacement characters remain. Remove repeated leading [SPAM]/[PHISHING] subject flags. Reject unusable/overlong text rather than truncate.",
+    "model_policy": "Load the exact stage-3 baseline and threshold. No fitting, feature/threshold tuning or stage-5 work. Do not evaluate the stage-4 pretrained model in this audit.",
+    "raw_message_bytes": 1048576,
+    "relatedness": {
+      "closure": "transitive components; exact duplicate inputs collapsed, conflicting exact labels excluded. Entire external components touching ANY internal train/validation/test row excluded.",
+      "exact": "canonical preprocessed subject/body; exact body at least 20 characters",
+      "minimum_body_words": 10,
+      "near_body_jaccard": 0.7,
+      "shingle_words": 3,
+      "subject": "casefold/whitespace, remove leading Re/Fw/Fwd prefixes; at least 15 characters and 3 words",
+      "template": "remove complete synthetic markers; mask square placeholders, URLs, email addresses and digits"
+    },
+    "runtime": {
+      "langdetect": "1.0.9",
+      "truststore": "0.10.5"
+    },
+    "system_subjects": [
+      "DON'T DELETE THIS MESSAGE -- FOLDER INTERNAL DATA"
+    ],
+    "version": "generalization-audit-v1"
+  },
+  "protocol_sha256": "491476f2dc31898f80fc516e8b39d76b556186e84777ac787abba4ab839f1b8e",
+  "report_version": "1.0",
+  "reserve_rows_scored": 0,
+  "reserved_cohort": {
+    "groups": 432,
+    "labels": {
+      "legitimate": 479,
+      "phishing": 224
+    },
+    "rows": 703,
+    "sources": {
+      "nazario-2024": 116,
+      "nazario-2025": 108,
+      "spamassassin-easy-ham-2": 414,
+      "spamassassin-hard-ham": 65
+    }
+  },
+  "source": {
+    "attribution": [
+      "Jose Nazario, Phishing Corpus, 2024 and 2025 mailboxes, CC-BY-4.0.",
+      "Apache SpamAssassin public corpus / Justin Mason and original message authors, February 2003 easy_ham_2 and hard_ham."
+    ],
+    "files": {
+      "easy-ham-2.tar.bz2": {
+        "bytes": 1077892,
+        "kind": "tar-bz2",
+        "label": "legitimate",
+        "license": "Publisher-offered filtering research corpus; original senders retain copyright",
+        "sha256": "b4bd3dc5ae5b40f38e99a0e41ad7d16b428b56e818e3a6ffa07330d62004dd38",
+        "source_id": "spamassassin-easy-ham-2",
+        "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_easy_ham_2.tar.bz2"
+      },
+      "hard-ham.tar.bz2": {
+        "bytes": 1029898,
+        "kind": "tar-bz2",
+        "label": "legitimate",
+        "license": "Publisher-offered filtering research corpus; original senders retain copyright",
+        "sha256": "ce2ce67880643dbde65ea7f85bffbfe4417349c4bd80b6b0de56262ae6b0a9c9",
+        "source_id": "spamassassin-hard-ham",
+        "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_hard_ham.tar.bz2"
+      },
+      "nazario-2024.mbox": {
+        "bytes": 15457816,
+        "kind": "mbox",
+        "label": "phishing",
+        "license": "CC-BY-4.0",
+        "sha256": "60afa40a2757170093a2bde31ec9cda4e54d33992203ce04bfbbc86d2e5e5b99",
+        "source_id": "nazario-2024",
+        "url": "https://monkey.org/~jose/phishing/phishing-2024"
+      },
+      "nazario-2025.mbox": {
+        "bytes": 18769863,
+        "kind": "mbox",
+        "label": "phishing",
+        "license": "CC-BY-4.0",
+        "sha256": "f1fa7e0fe35c9a16f36d9aa20ade7e1d3908d1d0c1d917b8c53c8aa799ec1c8f",
+        "source_id": "nazario-2025",
+        "url": "https://monkey.org/~jose/phishing/phishing-2025"
+      },
+      "nazario-license.txt": {
+        "bytes": 18657,
+        "kind": "terms",
+        "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+        "url": "https://monkey.org/~jose/phishing/LICENSE.txt"
+      },
+      "nazario-readme.txt": {
+        "bytes": 961,
+        "kind": "terms",
+        "sha256": "4589b63a4149bff0b65e82c2110baaebee36e5d9219009a31cc78bb6ab597fab",
+        "url": "https://monkey.org/~jose/phishing/README.txt"
+      },
+      "spamassassin-readme.html": {
+        "bytes": 4566,
+        "kind": "terms",
+        "sha256": "9f8cc0c8be6f32b25226d3ece26da775a6e008581b8fb061a679e3acee6b64be",
+        "url": "https://spamassassin.apache.org/old/publiccorpus/readme.html"
+      }
+    },
+    "limits": [
+      "Sources and eras differ by label; this is a cross-source stress test, not a contemporary-inbox prevalence sample.",
+      "Nazario represents one personal inbox with hand labels that may contain errors. Ham means publisher non-spam, not independently authenticated safe mail.",
+      "MIME text extraction cannot assess attachments, images, sender identity or destinations.",
+      "Language identification and heuristic grouping may make mistakes."
+    ],
+    "retrieved": "2026-11-13",
+    "terms": "Nazario explicitly declares CC-BY-4.0. SpamAssassin offers its public corpus for filtering research/testing, retains sender copyright and states no standardized open-data license. Raw messages are used only locally and are not redistributed. No independent rights or privacy audit is claimed.",
+    "version": "external-mail-v1"
+  },
+  "source_sha256": "01a0951b890d8a32378d049fe1f55923140258ac23a9de1afec566fefc5791f8",
+  "threshold": 0.44,
+  "threshold_updated": false,
+  "timing_scope": "One CPU numerical thread; preprocessing, TF-IDF and scoring, excluding loading and I/O.",
+  "weights_updated": false,
+  "zero_feature_rows": 0
+}

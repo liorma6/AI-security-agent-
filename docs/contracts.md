@@ -24,6 +24,8 @@ These records do not train, download or load a model. Validating a prediction fi
 
 The selected research subset uses the publisher's English flag. The validator accepts Unicode without claiming to detect the language or support multilingual classification. The baseline adds word tokenization and a training-fitted vocabulary. The stage-4 pretrained adapter reports original token length and right truncation at 512 tokens; the original validated email record is preserved.
 
+Stage 4a separately extracts MIME subject/inline text and applies fixed English detection before constructing external `EmailExample` records. Audit rows have `split: test`; reserve rows have `split: unassigned` and separate manifest cohort membership. Evaluation accepts only audit membership and does not read the reserve file. The general text validator remains language-agnostic and performs no MIME processing. See the [audit protocol](generalization-audit.md).
+
 ## Prediction and artifact rules
 
 `score` always refers to phishing. It must be a finite number in [0, 1], as must `threshold`. Boolean values and numeric strings are rejected. A successful result includes example ID, model ID/revision, threshold and finite nonnegative elapsed milliseconds. Its label must be `phishing` when `score >= threshold`, and `legitimate` otherwise. A score is not presented as a calibrated probability.

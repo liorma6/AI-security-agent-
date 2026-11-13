@@ -102,7 +102,7 @@ def main() -> int:
         "table structure, eight chapters and two UML diagrams."
     )
     print(
-        "Contracts, data preparation, baseline and pretrained comparison are implemented; "
+        "Contracts, data preparation, classifiers and generalization audit are implemented; "
         "later experiments/UI are pending."
     )
     return 0

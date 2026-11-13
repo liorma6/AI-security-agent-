@@ -4,7 +4,7 @@ PhishGuard is a course project on phishing-email classification and adversarial 
 
 ## Current status
 
-PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier and same-test comparison are also available. Transformer fine-tuning, adversarial experiments and the web demo remain planned.
+PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison and external generalization audit are available. Transformer fine-tuning, adversarial experiments and the web demo remain planned; stage 5 has not started.
 
 ## Install
 
@@ -69,7 +69,7 @@ Run these after dataset preparation. Training writes the model and training repo
 
 To check your own message, supply a UTF-8 JSON file with `body` and optional `subject`, or use `--file -` for JSON standard input. Prediction returns the score, threshold, decision and model identity without saving or echoing the email. It uses the trained local model; no network or paid API is involved. A missing/invalid model returns `unavailable` with no score. This score is not a calibrated probability or proof that a message is safe.
 
-The frozen synthetic test set produced **98.43% accuracy, 99.11% phishing recall and 2.30% legitimate false-positive rate**: 891 detected phishing messages, eight missed phishing messages, 807 correct legitimate decisions and 19 false alarms. These results do not establish real-inbox or adversarial performance. [Protocol, measured results and limitations](docs/baseline.md).
+The frozen synthetic test set produced **98.43% accuracy, 99.11% phishing recall and 2.30% legitimate false-positive rate**. The unchanged model scored **92.86% accuracy, 88.70% recall and 5.19% false-positive rate** on a later external audit. This drop limits interpretation of the synthetic score. The external sources differ by class and era, so neither result establishes contemporary-inbox or adversarial performance. [Baseline protocol](docs/baseline.md) and [external audit](docs/generalization-audit.md).
 
 ## Use the pretrained classifier
 
@@ -94,6 +94,21 @@ Selection uses validation only and freezes the threshold before final-test evalu
 
 On the same synthetic test set, pretrained accuracy was **61.16% at threshold 0.50** and **59.83% at the validation-selected threshold 0.05**, versus **98.43% for the corpus-trained baseline**. This is a transfer comparison; upstream training overlap is unknown, and none of these measurements establish real-mail or adversarial performance.
 
+## Audit generalization on external email
+
+After internal dataset preparation and baseline training:
+
+```sh
+uv run --frozen phishguard audit fetch
+uv run --frozen phishguard audit prepare
+uv run --frozen phishguard audit internal
+uv run --frozen phishguard audit evaluate
+```
+
+The downloader verifies pinned Nazario phishing and SpamAssassin legitimate-mail archives (about 36.4 MB). Review the [source terms and limitations](docs/generalization-audit.md) before downloading. Messages stay local. Offline preparation extracts inert MIME text, filters language, removes duplicates and groups relatives. The committed manifest binds 1,639 audit messages and 703 reserved messages. The evaluator loads the exact baseline and threshold, scores only the audit partition and does not open the reserve file. It performs no training.
+
+Results go to ignored `artifacts/generalization-internal-v1/` and `artifacts/generalization-external-v1/`; existing outputs are refused. Aggregate published reports include confusion counts, balanced accuracy, per-source metrics and group-bootstrap uncertainty. See [reproduction commands and interpretation](docs/generalization-audit.md). The inspected audit cohort is development evidence for future decisions; the reserve remains unscored.
+
 ## Run checks and build
 
 ```sh
@@ -104,7 +119,7 @@ uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The offline tests cover contracts, malformed JSON, input limits, label mappings, threshold decisions, data ingestion, grouping, split leakage, frozen-file integrity, downloader failures and CLI privacy/errors. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs the checks on Windows and Linux with Python 3.11 and 3.13. The full 201-test suite includes tiny training/save/load/inference checks, a local random transformer, source integrity, label mapping, token truncation and held-out comparison protections. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are recorded separately in the baseline and pretrained reports. Builds are written to the ignored `dist` directory.
+The 227 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
 
 ## Documentation
 
@@ -117,8 +132,10 @@ The offline tests cover contracts, malformed JSON, input limits, label mappings,
 - [Label sample audit](docs/dataset-label-audit.md)
 - [Classical baseline and measured results](docs/baseline.md)
 - [Pretrained classifier comparison](docs/pretrained.md)
+- [Generalization audit and external results](docs/generalization-audit.md)
+- [External pre-score label review](docs/external-label-audit.md)
 
-The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover implemented data preparation, baseline training/evaluation, pretrained comparison and local inference. Web-demo commands will be added when the UI is implemented.
+The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit and local inference. Web-demo commands will be added when the UI is implemented.
 
 ## Planned deliverables
 
@@ -129,7 +146,7 @@ The project book is the canonical specification. It distinguishes implemented be
 
 ## Data and models
 
-No raw research emails or model checkpoints are included in Git. The reviewed source is pinned in the [source manifest](src/phishguard/datasets/source.json); the publisher declares MIT. Downloaded data remains on your local disk. [Fixture provenance](tests/fixtures/README.md) describes the separate invented unit-test examples. Keep credentials, private mail and large artifacts out of Git. Keep related messages and their derived variants in the same split. Dataset checks do not establish real-mail classification quality.
+No raw research emails or model checkpoints are included in Git. The internal synthetic source is pinned in its [source manifest](src/phishguard/datasets/source.json), with a publisher MIT declaration. The [external source manifest](src/phishguard/audit/source.json) separately records Nazario CC BY 4.0 attribution and SpamAssassin's research-use terms retaining sender copyright. Downloaded data remains on your disk. [Fixture provenance](tests/fixtures/README.md) describes invented test examples. Keep credentials, private mail and large artifacts out of Git; keep detected relatives and derived variants together. Dataset checks do not establish classification quality.
 
 ## Team
 

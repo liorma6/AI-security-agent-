@@ -303,7 +303,19 @@ def test_group_bootstrap_repeatable_and_perfect_case():
 
 
 def test_audit_cli_redacts_input_failures(tmp_path, capsys):
-    assert main(["audit", "evaluate", "--model", str(tmp_path / "PRIVATE-MARKER")]) == 1
+    assert (
+        main(
+            [
+                "audit",
+                "evaluate",
+                "--model",
+                str(tmp_path / "PRIVATE-MARKER"),
+                "--output",
+                str(tmp_path / "result"),
+            ]
+        )
+        == 1
+    )
     captured = capsys.readouterr()
     assert "PRIVATE" not in captured.out + captured.err
     assert json.loads(captured.err)["code"] == "artifact_missing"

@@ -66,6 +66,8 @@ Model SHA-256: `a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703
 
 ## Verification and responsibility
 
+Stage 4a subsequently evaluated this exact model and threshold on 1,639 external emails: accuracy 92.86%, phishing recall 88.70%, legitimate false-positive rate 5.19% (TP 463, FP 58, TN 1,059, FN 59). This cross-source stress test includes source/era confounding and context-dependent labels; it is not a contemporary-inbox accuracy estimate. Another 703 messages remain unscored. See the [generalization audit](generalization-audit.md) for protocol, internal diagnostics, confidence intervals and reproducibility. The original synthetic-only score is not a universal reliability claim.
+
 The offline tests exercise train-only vocabulary/IDF fitting, no test-file access during training, deterministic fitting, threshold arithmetic, group/parent/cleaned-text leakage, hand-calculated confusion counts, malformed/tampered model files, numerical round trips, private inference and explicit unavailable states. Tests use invented messages; they are separate from benchmark-quality results.
 
 W04 assigns training/artifacts to Lior and metrics, threshold selection and leakage checks to Sharon Elimelech, with equal planning weight and mutual review. Implementation is AI-assisted; individual student review remains to be recorded. Conclusions apply only to the synthetic source labels and the frozen experimental protocol, not to real inboxes or robustness against adversarial messages.

@@ -1,0 +1,25 @@
+{
+  "audit_rows": 1639,
+  "evaluation_code": {
+    "commit": "09165d3b40a46cc84504356789bcd8bc499c5249",
+    "working_tree_dirty": false
+  },
+  "external_manifest_sha256": "0fe63a922df2fc61df665f3d8d6ddaea8cafcc9c3cf9abb9297e892e8b23ff36",
+  "frozen_model_unchanged": true,
+  "independent_confusion": {
+    "fn": 59,
+    "fp": 58,
+    "tn": 1059,
+    "tp": 463
+  },
+  "metrics_and_intervals_identical": true,
+  "model_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "prediction_byte_identical": true,
+  "predictions_sha256": "8621889616332d1b5c249c8fa2b2c3e74f232b8c053d7c22087ce2d09c6bdc6e",
+  "preparation_byte_identical": true,
+  "reserve_integrity_verified_without_parsing": true,
+  "reserve_rows": 703,
+  "reserve_rows_scored": 0,
+  "status": "verified",
+  "threshold": 0.44
+}
