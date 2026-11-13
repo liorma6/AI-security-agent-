@@ -1,0 +1,129 @@
+{
+  "augmentation_manifest_sha256": "03e5165c555c2fc0207b69dbb97d85df787ccafb61d1ed11ef246ea039e43b0a",
+  "decisions": [
+    {
+      "decision": "supported",
+      "group_id": "group-c90eb71411478dd40b245a7c",
+      "label": "legitimate",
+      "observation": "Readable typos in a volume/deal reconciliation discussion preserve the request and numeric values.",
+      "operation": "duplicate_letter",
+      "parent_id": "meajor-trec5-004138",
+      "split": "train",
+      "variant_id": "ev6-affa96b010194c3219fd0fd5"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-4c528b8734e76e94a7ae3af0",
+      "label": "legitimate",
+      "observation": "The status typo preserves the reservation notification and unchanged structured fields.",
+      "operation": "duplicate_letter",
+      "parent_id": "meajor-trec5-048747",
+      "split": "train",
+      "variant_id": "ev6-c757fc31dc17a99efa7402c4"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-82931495d6e343655663392d",
+      "label": "phishing",
+      "observation": "A footer typo leaves the account-verification request and links unchanged.",
+      "operation": "duplicate_letter",
+      "parent_id": "nazario-2007-001640",
+      "split": "train",
+      "variant_id": "ev6-bbb50f15351cc5291b64543e"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-82931495d6e343655663392d",
+      "label": "phishing",
+      "observation": "Typos leave the account-suspension/update request and disclaimer intent unchanged.",
+      "operation": "duplicate_letter",
+      "parent_id": "nazario-2007-001525",
+      "split": "train",
+      "variant_id": "ev6-156f01efe8f85ed80dd69242"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-ff0e0be28b6c7751826a7d79",
+      "label": "legitimate",
+      "observation": "The false-positive discussion remains understandable. One lowercase identifier in quoted diagnostic text changes; this is not byte-preserving for embedded diagnostics, but the message classification context is retained.",
+      "operation": "swap_letters",
+      "parent_id": "external-easy-ham-2-000564",
+      "split": "train",
+      "variant_id": "ev6-1fab54ac70f90df5cb37577b"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-81b5989d2b4e72a513d5dc8c",
+      "label": "legitimate",
+      "observation": "A timing-word typo preserves the proposal/feedback discussion.",
+      "operation": "swap_letters",
+      "parent_id": "meajor-trec5-027096",
+      "split": "train",
+      "variant_id": "ev6-9f9364bb6639e259f9326ca3"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-953f6f7bc5b6c56652287143",
+      "label": "phishing",
+      "observation": "Readable typos preserve the webmail-update request, urgency and target URL.",
+      "operation": "swap_letters",
+      "parent_id": "external-nazario-2024-000393",
+      "split": "train",
+      "variant_id": "ev6-b0f5d7cc061846630d40e403"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-13c7942462823e5654508be4",
+      "label": "phishing",
+      "observation": "The notice typo leaves the listing-notification content unchanged. Publisher phishing provenance is retained; this excerpt alone does not authenticate the sender or prove the original is fraudulent.",
+      "operation": "swap_letters",
+      "parent_id": "nazario-2007-001936",
+      "split": "train",
+      "variant_id": "ev6-f8f0315f8af1471fae75f9b5"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-1ebaee92ffa8277590223a66",
+      "label": "legitimate",
+      "observation": "The politeness substitution preserves the circuit-schematic request.",
+      "operation": "substitute_word",
+      "parent_id": "meajor-trec6-052252",
+      "split": "train",
+      "variant_id": "ev6-dee644776c2e6f01adc10a55"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-78abd94c75dbe6219fed03b9",
+      "label": "legitimate",
+      "observation": "The information/details substitution preserves the statistical software explanation.",
+      "operation": "substitute_word",
+      "parent_id": "meajor-trec7-085018",
+      "split": "train",
+      "variant_id": "ev6-f1ab3d9555978f66e7cf9520"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-c6bfe191536819bda18fa0ce",
+      "label": "phishing",
+      "observation": "Information/details and assistance/help preserve the account-update/security pretext and requested action.",
+      "operation": "substitute_word",
+      "parent_id": "nazario-2007-000788",
+      "split": "train",
+      "variant_id": "ev6-a7c36848a501ac5d9a932d06"
+    },
+    {
+      "decision": "supported",
+      "group_id": "group-3b09bef6e0a2030f19ac6285",
+      "label": "phishing",
+      "observation": "The account-reactivation request remains unchanged. The phrase involving technology becomes awkward after substitution; readability and grammar are not guaranteed, but the classification context is retained.",
+      "operation": "substitute_word",
+      "parent_id": "nazario-2007-000865",
+      "split": "train",
+      "variant_id": "ev6-3d513f046f454a6e4f39f5a5"
+    }
+  ],
+  "limitation": "Preservation of publisher-labelled message context, not independent proof of original label truth or exhaustive semantic certification. Raw excerpts remain local.",
+  "phase": "training-only-pre-fit-contextual-review",
+  "reviewer": "AI-assisted contextual review; individual student review remains open",
+  "scope": "Original subject, first 900 body characters (or full shorter body), and surrounding context of every changed word; inspect original/replacement pairs. No model queries or benchmark/reserve content."
+}
