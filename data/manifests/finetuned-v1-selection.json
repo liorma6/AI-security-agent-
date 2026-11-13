@@ -1,0 +1,9 @@
+{
+  "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+  "manifest_sha256": "c308d3672a5ae218d4515435dbae0f674957e41d2a2bf04de91717c83a6b064f",
+  "model_revision": "2a49e59947fd081463a300c9b99d34e9ea609d6a671593c8f204cea02435d3d5",
+  "protocol_sha256": "fb44414c60fd271c720da9b2669fdc7301067113fefac965b593ef2933b4fa8c",
+  "selected_epoch": 5,
+  "study_sha256": "62cb5eb33819328180643793d71ceae7b3f3365cd0a9240704cb8d9df73c8b02",
+  "threshold": 0.69
+}
