@@ -1,0 +1,264 @@
+{
+  "counts": {
+    "challenge": {
+      "correct": {
+        "rows": 1616,
+        "truncated_rows": 0
+      },
+      "false_negative": {
+        "rows": 86,
+        "truncated_rows": 0
+      },
+      "false_positive": {
+        "rows": 298,
+        "truncated_rows": 0
+      }
+    },
+    "test": {
+      "correct": {
+        "rows": 417,
+        "truncated_rows": 198
+      },
+      "false_negative": {
+        "rows": 4,
+        "truncated_rows": 3
+      },
+      "false_positive": {
+        "rows": 2,
+        "truncated_rows": 1
+      }
+    }
+  },
+  "labels_weights_thresholds_changed": false,
+  "limitations": [
+    "A bounded descriptive sample, not exhaustive error or label adjudication.",
+    "Publisher labels retained; sender, attachment and link authenticity not verified.",
+    "Truncation/error associations are not causal evidence.",
+    "Correct controls share topics with errors, so keyword explanations are insufficient.",
+    "Retrospective benchmarks cannot become fresh final evidence through this review."
+  ],
+  "phase": "post-freeze post-score error review",
+  "predictions_sha256": "f4aa71f6abb3ef622d787d260f83eca47fe1970d78ee5db6467394612bdcf138",
+  "raw_text_published": false,
+  "reserve_rows_reviewed_or_scored": 0,
+  "review_date": "2026-11-14",
+  "review_scope": "Subject and first 1400 body characters; full short challenge texts",
+  "reviewer": "AI-assisted local excerpt review; individual student review remains open",
+  "sample": [
+    {
+      "baseline_score": 0.1702957178758246,
+      "category": "false_positive",
+      "cohort": "test",
+      "example_id": "meajor-trec5-021213",
+      "finetuned_score": 0.9879943132400513,
+      "group_id": "group-8fbaec4788e255230cdacee2",
+      "label": "legitimate",
+      "observation": "Routine personal/corporate account transfer discussion; truncated.",
+      "original_tokens": 487,
+      "source_id": "meajor-trec5"
+    },
+    {
+      "baseline_score": 0.6207424006411982,
+      "category": "false_positive",
+      "cohort": "test",
+      "example_id": "meajor-trec5-039720",
+      "finetuned_score": 0.9906206130981445,
+      "group_id": "group-c386e43cde114116c974a342",
+      "label": "legitimate",
+      "observation": "Ordinary ID setup notice mentions passwords and an attachment.",
+      "original_tokens": 76,
+      "source_id": "meajor-trec5"
+    },
+    {
+      "baseline_score": 0.5850748503950396,
+      "category": "false_negative",
+      "cohort": "test",
+      "example_id": "nazario-2007-001139",
+      "finetuned_score": 0.009666869416832924,
+      "group_id": "group-dec3e24684fb72d7a5fdaea3",
+      "label": "phishing",
+      "observation": "Promotional selling-service content; text alone is ambiguous; truncated.",
+      "original_tokens": 1044,
+      "source_id": "nazario-2007"
+    },
+    {
+      "baseline_score": 0.4228306946634268,
+      "category": "false_negative",
+      "cohort": "test",
+      "example_id": "nazario-2007-000498",
+      "finetuned_score": 0.16874827444553375,
+      "group_id": "group-5ded9b18b3a8256b56275c12",
+      "label": "phishing",
+      "observation": "Subscription/payment discussion with repeated padding; truncated.",
+      "original_tokens": 443,
+      "source_id": "nazario-2007"
+    },
+    {
+      "baseline_score": 0.7693813484366954,
+      "category": "false_negative",
+      "cohort": "test",
+      "example_id": "nazario-2007-001868",
+      "finetuned_score": 0.02033131755888462,
+      "group_id": "group-0826cafa4a80578b642e57f8",
+      "label": "phishing",
+      "observation": "Account-verification lure with markup and a long redirect; truncated.",
+      "original_tokens": 365,
+      "source_id": "nazario-2007"
+    },
+    {
+      "baseline_score": 0.11149828139995772,
+      "category": "correct",
+      "cohort": "test",
+      "example_id": "meajor-trec5-017924",
+      "finetuned_score": 0.009080817922949791,
+      "group_id": "group-b938feba4f4d02ae38761a56",
+      "label": "legitimate",
+      "observation": "Correct legitimate payment discussion, despite financial vocabulary.",
+      "original_tokens": 119,
+      "source_id": "meajor-trec5"
+    },
+    {
+      "baseline_score": 0.9378841784834853,
+      "category": "correct",
+      "cohort": "test",
+      "example_id": "nazario-2007-000316",
+      "finetuned_score": 0.9916154742240906,
+      "group_id": "group-b140e56268b1e8da44502059",
+      "label": "phishing",
+      "observation": "Correct phishing account-update notice with a suspension threat.",
+      "original_tokens": 196,
+      "source_id": "nazario-2007"
+    },
+    {
+      "baseline_score": 0.1459948079525382,
+      "category": "correct",
+      "cohort": "test",
+      "example_id": "meajor-trec6-064346",
+      "finetuned_score": 0.010366963222622871,
+      "group_id": "group-5112563216e0c018a344807e",
+      "label": "legitimate",
+      "observation": "Correct legitimate research announcement; truncated.",
+      "original_tokens": 739,
+      "source_id": "meajor-trec6"
+    },
+    {
+      "baseline_score": 0.44365088934611074,
+      "category": "false_positive",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-1617",
+      "finetuned_score": 0.9784864187240601,
+      "group_id": "group-f9467ec8e0baffd8865c6c5d",
+      "label": "legitimate",
+      "observation": "Routine revised-document attachment and feedback message.",
+      "original_tokens": 31,
+      "source_id": "zenodo-v3-generated_v3"
+    },
+    {
+      "baseline_score": 0.3725028557379916,
+      "category": "false_positive",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-0532",
+      "finetuned_score": 0.9572609663009644,
+      "group_id": "group-c73fa3385e839d39a986c2de",
+      "label": "legitimate",
+      "observation": "Routine report attachment and meeting feedback request.",
+      "original_tokens": 33,
+      "source_id": "zenodo-v3-generated_v3"
+    },
+    {
+      "baseline_score": 0.2606683345108771,
+      "category": "false_positive",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-0560",
+      "finetuned_score": 0.8987686038017273,
+      "group_id": "group-7a683a5aa680888297827d5b",
+      "label": "legitimate",
+      "observation": "Routine travel confirmation with attachment mention.",
+      "original_tokens": 35,
+      "source_id": "zenodo-v3-generated_v3"
+    },
+    {
+      "baseline_score": 0.31069186518109465,
+      "category": "false_negative",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-1956",
+      "finetuned_score": 0.12299716472625732,
+      "group_id": "group-8fea3b7f6c50f6c17497933f",
+      "label": "phishing",
+      "observation": "Missed gift-card purchase request impersonating a colleague.",
+      "original_tokens": 41,
+      "source_id": "zenodo-v3-generated_v3"
+    },
+    {
+      "baseline_score": 0.39674657201050484,
+      "category": "false_negative",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-0699",
+      "finetuned_score": 0.09085863828659058,
+      "group_id": "group-2e29cb1ce743c973d458d3f3",
+      "label": "phishing",
+      "observation": "Missed secure-message/transaction login lure.",
+      "original_tokens": 49,
+      "source_id": "zenodo-v3-generated_v3"
+    },
+    {
+      "baseline_score": 0.43891080162505397,
+      "category": "false_negative",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-0172",
+      "finetuned_score": 0.22185571491718292,
+      "group_id": "group-17d96f6c3d3d702b712f6784",
+      "label": "phishing",
+      "observation": "Missed overdue-invoice/payment-link lure.",
+      "original_tokens": 53,
+      "source_id": "zenodo-v3-generated_v3"
+    },
+    {
+      "baseline_score": 0.5337428596829684,
+      "category": "correct",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-0500",
+      "finetuned_score": 0.9902961850166321,
+      "group_id": "group-926fba134340daa69fd5e5b2",
+      "label": "phishing",
+      "observation": "Correct urgent-payment/service-disconnection lure.",
+      "original_tokens": 53,
+      "source_id": "zenodo-v3-generated_v3"
+    },
+    {
+      "baseline_score": 0.14634290001956957,
+      "category": "correct",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-1072",
+      "finetuned_score": 0.0118752745911479,
+      "group_id": "group-16967b991b48538c42c08f73",
+      "label": "legitimate",
+      "observation": "Correct legitimate meeting-minutes attachment notice.",
+      "original_tokens": 21,
+      "source_id": "zenodo-v3-original_v1"
+    },
+    {
+      "baseline_score": 0.5664411128796194,
+      "category": "correct",
+      "cohort": "challenge",
+      "example_id": "zenodo-v3-0798",
+      "finetuned_score": 0.9887222051620483,
+      "group_id": "group-d46dea5e4bebf5c4a7333d7e",
+      "label": "phishing",
+      "observation": "Correct prize/gift-card claim lure.",
+      "original_tokens": 50,
+      "source_id": "zenodo-v3-generated_v3"
+    }
+  ],
+  "sample_rows": 17,
+  "sampling": "First 3 per cohort/category by SHA256(stage5-review:<ID>); all if fewer",
+  "selection": {
+    "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+    "manifest_sha256": "c308d3672a5ae218d4515435dbae0f674957e41d2a2bf04de91717c83a6b064f",
+    "model_revision": "2a49e59947fd081463a300c9b99d34e9ea609d6a671593c8f204cea02435d3d5",
+    "protocol_sha256": "fb44414c60fd271c720da9b2669fdc7301067113fefac965b593ef2933b4fa8c",
+    "selected_epoch": 5,
+    "study_sha256": "62cb5eb33819328180643793d71ceae7b3f3365cd0a9240704cb8d9df73c8b02",
+    "threshold": 0.69
+  }
+}

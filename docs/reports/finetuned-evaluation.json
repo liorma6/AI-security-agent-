@@ -1,0 +1,722 @@
+{
+  "baseline_revision": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480",
+  "baseline_threshold": 0.31,
+  "code": {
+    "commit": "de5324891998bfab35554a0c30b4d4a235850dfd",
+    "working_tree_dirty": false
+  },
+  "cohorts": {
+    "challenge": {
+      "finetuned_at_default_threshold": {
+        "accuracy": 0.801,
+        "balanced_accuracy": 0.801,
+        "confusion": {
+          "fn": 74,
+          "fp": 324,
+          "tn": 676,
+          "tp": 926
+        },
+        "f1": 0.8231111111111111,
+        "false_positive_rate": 0.324,
+        "labels": {
+          "legitimate": 1000,
+          "phishing": 1000
+        },
+        "precision": 0.7408,
+        "recall": 0.926,
+        "rows": 2000,
+        "threshold": 0.5
+      },
+      "groups": 91,
+      "paired_correctness": {
+        "baseline_only_correct": 106,
+        "both_correct": 1496,
+        "both_wrong": 278,
+        "finetuned_only_correct": 120
+      },
+      "results": {
+        "baseline_v2": {
+          "group_bootstrap": {
+            "groups": 91,
+            "intervals": {
+              "accuracy": {
+                "lower": 0.7050839906440017,
+                "upper": 0.8817579936538931,
+                "valid_resamples": 1000
+              },
+              "balanced_accuracy": {
+                "lower": 0.7220241247598235,
+                "upper": 0.874260752684692,
+                "valid_resamples": 1000
+              },
+              "false_positive_rate": {
+                "lower": 0.22821447254112526,
+                "upper": 0.5260518733688945,
+                "valid_resamples": 1000
+              },
+              "recall": {
+                "lower": 0.9242405092379814,
+                "upper": 1.0,
+                "valid_resamples": 1000
+              }
+            },
+            "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42
+          },
+          "metrics": {
+            "accuracy": 0.801,
+            "balanced_accuracy": 0.8009999999999999,
+            "confusion": {
+              "fn": 26,
+              "fp": 372,
+              "tn": 628,
+              "tp": 974
+            },
+            "f1": 0.8303495311167945,
+            "false_positive_rate": 0.372,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7236255572065379,
+            "recall": 0.974,
+            "rows": 2000,
+            "threshold": 0.31
+          },
+          "per_source": {
+            "zenodo-v3-generated_v3": {
+              "accuracy": 0.8105263157894737,
+              "balanced_accuracy": 0.8057622167933988,
+              "confusion": {
+                "fn": 26,
+                "fp": 334,
+                "tn": 589,
+                "tp": 951
+              },
+              "f1": 0.8408488063660478,
+              "false_positive_rate": 0.361863488624052,
+              "labels": {
+                "legitimate": 923,
+                "phishing": 977
+              },
+              "precision": 0.7400778210116732,
+              "recall": 0.9733879222108496,
+              "rows": 1900,
+              "threshold": 0.31
+            },
+            "zenodo-v3-original_v1": {
+              "accuracy": 0.62,
+              "balanced_accuracy": 0.7532467532467533,
+              "confusion": {
+                "fn": 0,
+                "fp": 38,
+                "tn": 39,
+                "tp": 23
+              },
+              "f1": 0.5476190476190477,
+              "false_positive_rate": 0.4935064935064935,
+              "labels": {
+                "legitimate": 77,
+                "phishing": 23
+              },
+              "precision": 0.3770491803278688,
+              "recall": 1.0,
+              "rows": 100,
+              "threshold": 0.31
+            }
+          }
+        },
+        "finetuned": {
+          "group_bootstrap": {
+            "groups": 91,
+            "intervals": {
+              "accuracy": {
+                "lower": 0.716128605226413,
+                "upper": 0.8861141664344621,
+                "valid_resamples": 1000
+              },
+              "balanced_accuracy": {
+                "lower": 0.7248201604070746,
+                "upper": 0.8812990648664825,
+                "valid_resamples": 1000
+              },
+              "false_positive_rate": {
+                "lower": 0.16705265696531377,
+                "upper": 0.463591089729725,
+                "valid_resamples": 1000
+              },
+              "recall": {
+                "lower": 0.8370685806650247,
+                "upper": 0.9762290496917216,
+                "valid_resamples": 1000
+              }
+            },
+            "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42
+          },
+          "metrics": {
+            "accuracy": 0.808,
+            "balanced_accuracy": 0.808,
+            "confusion": {
+              "fn": 86,
+              "fp": 298,
+              "tn": 702,
+              "tp": 914
+            },
+            "f1": 0.8264014466546112,
+            "false_positive_rate": 0.298,
+            "labels": {
+              "legitimate": 1000,
+              "phishing": 1000
+            },
+            "precision": 0.7541254125412541,
+            "recall": 0.914,
+            "rows": 2000,
+            "threshold": 0.69
+          },
+          "per_source": {
+            "zenodo-v3-generated_v3": {
+              "accuracy": 0.8173684210526316,
+              "balanced_accuracy": 0.8146009352707062,
+              "confusion": {
+                "fn": 86,
+                "fp": 261,
+                "tn": 662,
+                "tp": 891
+              },
+              "f1": 0.8370126820103335,
+              "false_positive_rate": 0.28277356446370533,
+              "labels": {
+                "legitimate": 923,
+                "phishing": 977
+              },
+              "precision": 0.7734375,
+              "recall": 0.9119754350051177,
+              "rows": 1900,
+              "threshold": 0.69
+            },
+            "zenodo-v3-original_v1": {
+              "accuracy": 0.63,
+              "balanced_accuracy": 0.7597402597402597,
+              "confusion": {
+                "fn": 0,
+                "fp": 37,
+                "tn": 40,
+                "tp": 23
+              },
+              "f1": 0.5542168674698795,
+              "false_positive_rate": 0.4805194805194805,
+              "labels": {
+                "legitimate": 77,
+                "phishing": 23
+              },
+              "precision": 0.38333333333333336,
+              "recall": 1.0,
+              "rows": 100,
+              "threshold": 0.69
+            }
+          }
+        }
+      },
+      "rows": 2000,
+      "timing_seconds": {
+        "baseline_v2": 0.07995110002229922,
+        "finetuned": 1.0839123999758158
+      },
+      "tokens": {
+        "max_tokens": 256,
+        "maximum_original_tokens": 58,
+        "mean_original_tokens": 41.533,
+        "rows": 2000,
+        "truncated_rows": 0
+      }
+    },
+    "test": {
+      "finetuned_at_default_threshold": {
+        "accuracy": 0.9858156028368794,
+        "balanced_accuracy": 0.9838229033631333,
+        "confusion": {
+          "fn": 4,
+          "fp": 2,
+          "tn": 259,
+          "tp": 158
+        },
+        "f1": 0.9813664596273292,
+        "false_positive_rate": 0.007662835249042145,
+        "labels": {
+          "legitimate": 261,
+          "phishing": 162
+        },
+        "precision": 0.9875,
+        "recall": 0.9753086419753086,
+        "rows": 423,
+        "threshold": 0.5
+      },
+      "groups": 339,
+      "paired_correctness": {
+        "baseline_only_correct": 5,
+        "both_correct": 413,
+        "both_wrong": 1,
+        "finetuned_only_correct": 4
+      },
+      "results": {
+        "baseline_v2": {
+          "group_bootstrap": {
+            "groups": 339,
+            "intervals": {
+              "accuracy": {
+                "lower": 0.9755421462063085,
+                "upper": 0.9975262471899364,
+                "valid_resamples": 1000
+              },
+              "balanced_accuracy": {
+                "lower": 0.9780433719541245,
+                "upper": 0.9980544747081712,
+                "valid_resamples": 1000
+              },
+              "false_positive_rate": {
+                "lower": 0.003676470588235294,
+                "upper": 0.03279138893892992,
+                "valid_resamples": 1000
+              },
+              "recall": {
+                "lower": 0.9784093892768997,
+                "upper": 1.0,
+                "valid_resamples": 1000
+              }
+            },
+            "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42
+          },
+          "metrics": {
+            "accuracy": 0.9881796690307328,
+            "balanced_accuracy": 0.9892507449978714,
+            "confusion": {
+              "fn": 1,
+              "fp": 4,
+              "tn": 257,
+              "tp": 161
+            },
+            "f1": 0.9847094801223242,
+            "false_positive_rate": 0.01532567049808429,
+            "labels": {
+              "legitimate": 261,
+              "phishing": 162
+            },
+            "precision": 0.9757575757575757,
+            "recall": 0.9938271604938271,
+            "rows": 423,
+            "threshold": 0.31
+          },
+          "per_source": {
+            "meajor-trec5": {
+              "accuracy": 0.9761904761904762,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 2,
+                "tn": 82,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.023809523809523808,
+              "labels": {
+                "legitimate": 84,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 84,
+              "threshold": 0.31
+            },
+            "meajor-trec6": {
+              "accuracy": 0.9888888888888889,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 1,
+                "tn": 89,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.011111111111111112,
+              "labels": {
+                "legitimate": 90,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 90,
+              "threshold": 0.31
+            },
+            "meajor-trec7": {
+              "accuracy": 0.9885057471264368,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 1,
+                "tn": 86,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.011494252873563218,
+              "labels": {
+                "legitimate": 87,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 87,
+              "threshold": 0.31
+            },
+            "nazario-2007": {
+              "accuracy": 0.9938271604938271,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 1,
+                "fp": 0,
+                "tn": 0,
+                "tp": 161
+              },
+              "f1": 0.9969040247678018,
+              "false_positive_rate": null,
+              "labels": {
+                "legitimate": 0,
+                "phishing": 162
+              },
+              "precision": 1.0,
+              "recall": 0.9938271604938271,
+              "rows": 162,
+              "threshold": 0.31
+            }
+          }
+        },
+        "finetuned": {
+          "group_bootstrap": {
+            "groups": 339,
+            "intervals": {
+              "accuracy": {
+                "lower": 0.9719377300100368,
+                "upper": 0.9955156950672646,
+                "valid_resamples": 1000
+              },
+              "balanced_accuracy": {
+                "lower": 0.9665337580119034,
+                "upper": 0.9954796849529066,
+                "valid_resamples": 1000
+              },
+              "false_positive_rate": {
+                "lower": 0.0,
+                "upper": 0.01953316482843137,
+                "valid_resamples": 1000
+              },
+              "recall": {
+                "lower": 0.9432624113475178,
+                "upper": 0.9949251332806163,
+                "valid_resamples": 1000
+              }
+            },
+            "limitation": "Conditional on this corpus and heuristic groups; not protection against source bias or label errors.",
+            "method": "whole-group percentile bootstrap 95%",
+            "repetitions": 1000,
+            "seed": 42
+          },
+          "metrics": {
+            "accuracy": 0.9858156028368794,
+            "balanced_accuracy": 0.9838229033631333,
+            "confusion": {
+              "fn": 4,
+              "fp": 2,
+              "tn": 259,
+              "tp": 158
+            },
+            "f1": 0.9813664596273292,
+            "false_positive_rate": 0.007662835249042145,
+            "labels": {
+              "legitimate": 261,
+              "phishing": 162
+            },
+            "precision": 0.9875,
+            "recall": 0.9753086419753086,
+            "rows": 423,
+            "threshold": 0.69
+          },
+          "per_source": {
+            "meajor-trec5": {
+              "accuracy": 0.9761904761904762,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 2,
+                "tn": 82,
+                "tp": 0
+              },
+              "f1": 0.0,
+              "false_positive_rate": 0.023809523809523808,
+              "labels": {
+                "legitimate": 84,
+                "phishing": 0
+              },
+              "precision": 0.0,
+              "recall": null,
+              "rows": 84,
+              "threshold": 0.69
+            },
+            "meajor-trec6": {
+              "accuracy": 1.0,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 0,
+                "tn": 90,
+                "tp": 0
+              },
+              "f1": null,
+              "false_positive_rate": 0.0,
+              "labels": {
+                "legitimate": 90,
+                "phishing": 0
+              },
+              "precision": null,
+              "recall": null,
+              "rows": 90,
+              "threshold": 0.69
+            },
+            "meajor-trec7": {
+              "accuracy": 1.0,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 0,
+                "fp": 0,
+                "tn": 87,
+                "tp": 0
+              },
+              "f1": null,
+              "false_positive_rate": 0.0,
+              "labels": {
+                "legitimate": 87,
+                "phishing": 0
+              },
+              "precision": null,
+              "recall": null,
+              "rows": 87,
+              "threshold": 0.69
+            },
+            "nazario-2007": {
+              "accuracy": 0.9753086419753086,
+              "balanced_accuracy": null,
+              "confusion": {
+                "fn": 4,
+                "fp": 0,
+                "tn": 0,
+                "tp": 158
+              },
+              "f1": 0.9875,
+              "false_positive_rate": null,
+              "labels": {
+                "legitimate": 0,
+                "phishing": 162
+              },
+              "precision": 1.0,
+              "recall": 0.9753086419753086,
+              "rows": 162,
+              "threshold": 0.69
+            }
+          }
+        }
+      },
+      "rows": 423,
+      "timing_seconds": {
+        "baseline_v2": 0.15043860001605935,
+        "finetuned": 1.2847561999806203
+      },
+      "tokens": {
+        "max_tokens": 256,
+        "maximum_original_tokens": 1566,
+        "mean_original_tokens": 343.54846335697397,
+        "rows": 423,
+        "truncated_rows": 202
+      }
+    }
+  },
+  "development_or_reserve_files_opened": false,
+  "environment": {
+    "architecture": "AMD64",
+    "logical_cpus": 12,
+    "neural_device": "cpu",
+    "neural_packages": {
+      "safetensors": "0.8.0",
+      "torch": "2.15.0+cpu",
+      "transformers": "4.57.6"
+    },
+    "neural_threads": 4,
+    "os": "Windows",
+    "packages": {
+      "numpy": "2.5.4",
+      "phishguard": "0.5.0",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.8.0"
+    },
+    "processor": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD",
+    "python": "3.13.16",
+    "requested_numeric_threads": 1
+  },
+  "limitations": [
+    "Previously scored data; retrospective comparison only. No fresh final-test or contemporary-inbox claim. Keep every inspected family outside benchmark scoring. No split regeneration.",
+    "Source, era and publisher processing remain confounded.",
+    "Challenge is mainly synthetic; original subset provenance is unverified.",
+    "Transformer right-truncates at 256 tokens; baseline can use the full accepted text.",
+    "No adversarial robustness or production-readiness claim."
+  ],
+  "model_weights_updated": false,
+  "phase": "retrospective-finetuned-comparison",
+  "predictions_sha256": "f4aa71f6abb3ef622d787d260f83eca47fe1970d78ee5db6467394612bdcf138",
+  "protocol": {
+    "adam_betas": [
+      0.9,
+      0.999
+    ],
+    "adam_epsilon": 1e-08,
+    "attention": "eager",
+    "batch_size": 16,
+    "checkpoint_selection": "Smallest mean validation cross-entropy after an epoch; earliest epoch wins exact ties. Never evaluate test/challenge during fit.",
+    "determinism": "Seed Python, NumPy and torch; deterministic torch algorithms; seeded independent shuffle generator; CPU float32. Reproduce full training once; report discrepancies rather than promising cross-platform bit equality.",
+    "device": "cpu",
+    "dtype": "float32",
+    "epochs": 5,
+    "evaluation": "Compare frozen baseline v2 and selected transformer on identical 423 historical benchmark and 2000 challenge inputs. Freeze model/threshold before scoring. Report class metrics, FPR, balanced accuracy, source/origin subgroups, paired correctness, whole-group 1000-resample seed-42 intervals, token truncation and resource conditions. Current benchmarks are already inspected; final reserve is not used.",
+    "learning_rate": 5e-05,
+    "max_gradient_norm": 1.0,
+    "max_tokens": 256,
+    "numeric_threads": 4,
+    "optimizer": "AdamW; decay weights except bias and LayerNorm.weight. All encoder/head parameters train.",
+    "post_score_review": "Review deterministic capped false-positive/false-negative and correct-control samples only after selection and scoring; record observations without retuning.",
+    "reproduction": "Repeat training and benchmark scoring once under the unchanged protocol; independent counts and artifact integrity. No stage 6.",
+    "runtime": {
+      "safetensors": "0.8.0",
+      "torch": "2.15.0",
+      "transformers": "4.57.6"
+    },
+    "schedule": "Linear warmup then linear decay to zero; one fixed configuration and seed, no hyperparameter search.",
+    "seed": 42,
+    "text": "Use frozen real-mail-v2 subject/body and baseline marker removal; fixed uncased WordPiece tokenizer. Right truncate including special tokens, dynamic batch padding; record all truncation counts. No row dropped for length after the existing character contract.",
+    "threshold_selection": "At the selected checkpoint use the unchanged baseline validation-only phishing-F1 grid and ties. Report fixed 0.50 as a prespecified diagnostic. No adjustment after benchmark results.",
+    "version": "finetuned-bert-v1",
+    "warmup_fraction": 0.1,
+    "weight_decay": 0.01
+  },
+  "protocol_sha256": "fb44414c60fd271c720da9b2669fdc7301067113fefac965b593ef2933b4fa8c",
+  "report_version": "1.0",
+  "reserve_rows_scored": 0,
+  "selection": {
+    "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+    "manifest_sha256": "c308d3672a5ae218d4515435dbae0f674957e41d2a2bf04de91717c83a6b064f",
+    "model_revision": "2a49e59947fd081463a300c9b99d34e9ea609d6a671593c8f204cea02435d3d5",
+    "protocol_sha256": "fb44414c60fd271c720da9b2669fdc7301067113fefac965b593ef2933b4fa8c",
+    "selected_epoch": 5,
+    "study_sha256": "62cb5eb33819328180643793d71ceae7b3f3365cd0a9240704cb8d9df73c8b02",
+    "threshold": 0.69
+  },
+  "source": {
+    "attribution": "Google BERT Miniatures; Turc et al., Well-Read Students Learn Better (2019). Publisher Apache-2.0 declaration.",
+    "configuration": {
+      "attention_probs_dropout_prob": 0.1,
+      "hidden_act": "gelu",
+      "hidden_dropout_prob": 0.1,
+      "hidden_size": 128,
+      "initializer_range": 0.02,
+      "intermediate_size": 512,
+      "layer_norm_eps": 1e-12,
+      "max_position_embeddings": 512,
+      "model_type": "bert",
+      "num_attention_heads": 2,
+      "num_hidden_layers": 2,
+      "pad_token_id": 0,
+      "type_vocab_size": 2,
+      "vocab_size": 30522
+    },
+    "files": {
+      "README.md": {
+        "bytes": 4617,
+        "sha256": "d13a54d652a2a54fbbc50e063b465fb273295870867821e1b06baba1d49d68a9"
+      },
+      "config.json": {
+        "bytes": 382,
+        "sha256": "508e1f01aae55d73355cbdd82609be2f43ba5a0d3428837adbe56cf8391f8b39"
+      },
+      "model.safetensors": {
+        "bytes": 17739144,
+        "sha256": "7fb69ad9f6866d8983183c930e33828f326470bf6ad8bbb2ad4ed957a92e9414"
+      },
+      "vocab.txt": {
+        "bytes": 231508,
+        "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+      }
+    },
+    "homepage": "https://huggingface.co/google/bert_uncased_L-2_H-128_A-2",
+    "license": "Apache-2.0",
+    "limits": [
+      "Upstream pretraining membership is unavailable; no verified non-overlap claim.",
+      "Small capacity and right truncation can miss important context.",
+      "No knowledge-distillation teacher is used in this study."
+    ],
+    "model_id": "google/bert_uncased_L-2_H-128_A-2",
+    "reviewed": "2026-11-13",
+    "revision": "30b0a37ccaaa32f332884b96992754e246e48c5f",
+    "role": "English uncased pretrained BERT encoder. Discard MLM/NSP heads; initialize a new two-class head and fine-tune every encoder/head parameter. No upstream phishing classifier is assumed."
+  },
+  "source_sha256": "75627f870f06e159c8e48e30fc202b8062e49d1322729a32ba624357a248975a",
+  "study": {
+    "baseline_v2_revision": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480",
+    "baseline_v2_threshold": 0.31,
+    "benchmark_status": "Previously scored data; retrospective comparison only. No fresh final-test or contemporary-inbox claim. Keep every inspected family outside benchmark scoring. No split regeneration.",
+    "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+    "excluded_benchmark_groups": [
+      {
+        "group_id": "group-4eb17677c4154815ed3c9b27",
+        "members": [
+          "meajor-trec7-081259",
+          "meajor-trec7-082202"
+        ],
+        "split": "test"
+      }
+    ],
+    "expected_rows": {
+      "challenge": 2000,
+      "test": 423,
+      "train": 3261,
+      "validation": 745
+    },
+    "reserve_policy": "Original 703 rows stay byte-identical, unscored and unopened by train/evaluate. Before stage 9 freeze all model/threshold/attack/defense decisions and the final evaluation protocol; report reserve once without using it to choose a model or retune. Repeated technical reproduction is not a new independent test. Reserve remains source/era biased.",
+    "review_trace_sha256": "6b4c3b86410a9ffcddca06d4ee0f61c2a1bf5bfb92cf402eadb8baae96e84b98",
+    "reviewed_ids": [
+      "external-easy-ham-2-000161",
+      "external-easy-ham-2-001007",
+      "external-hard-ham-000037",
+      "external-hard-ham-000057",
+      "external-nazario-2024-000307",
+      "external-nazario-2024-000394",
+      "external-nazario-2025-000102",
+      "external-nazario-2025-000136",
+      "meajor-trec5-010689",
+      "meajor-trec5-014503",
+      "meajor-trec6-056426",
+      "meajor-trec6-061001",
+      "meajor-trec7-081259",
+      "meajor-trec7-101200",
+      "nazario-2007-000026",
+      "nazario-2007-000141"
+    ],
+    "stage6_status": "Not started; no perturbation generation, attacks, augmentation or defense.",
+    "version": "stage5-fixed-study-v1"
+  },
+  "study_sha256": "62cb5eb33819328180643793d71ceae7b3f3365cd0a9240704cb8d9df73c8b02",
+  "thresholds_updated": false
+}

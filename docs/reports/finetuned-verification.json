@@ -1,0 +1,81 @@
+{
+  "baseline_scores_match_stage4b": true,
+  "bootstrap_intervals_identical": true,
+  "class_subgroup_paired_and_default_threshold_metrics_match": true,
+  "independent_counts": {
+    "challenge": {
+      "baseline_v2": {
+        "accuracy": 0.801,
+        "balanced_accuracy": 0.8009999999999999,
+        "confusion": {
+          "fn": 26,
+          "fp": 372,
+          "tn": 628,
+          "tp": 974
+        },
+        "f1": 0.8303495311167945,
+        "false_positive_rate": 0.372,
+        "precision": 0.7236255572065379,
+        "recall": 0.974
+      },
+      "finetuned": {
+        "accuracy": 0.808,
+        "balanced_accuracy": 0.808,
+        "confusion": {
+          "fn": 86,
+          "fp": 298,
+          "tn": 702,
+          "tp": 914
+        },
+        "f1": 0.8264014466546112,
+        "false_positive_rate": 0.298,
+        "precision": 0.7541254125412541,
+        "recall": 0.914
+      }
+    },
+    "test": {
+      "baseline_v2": {
+        "accuracy": 0.9881796690307328,
+        "balanced_accuracy": 0.9892507449978715,
+        "confusion": {
+          "fn": 1,
+          "fp": 4,
+          "tn": 257,
+          "tp": 161
+        },
+        "f1": 0.9847094801223242,
+        "false_positive_rate": 0.01532567049808429,
+        "precision": 0.9757575757575757,
+        "recall": 0.9938271604938271
+      },
+      "finetuned": {
+        "accuracy": 0.9858156028368794,
+        "balanced_accuracy": 0.9838229033631332,
+        "confusion": {
+          "fn": 4,
+          "fp": 2,
+          "tn": 259,
+          "tp": 158
+        },
+        "f1": 0.9813664596273292,
+        "false_positive_rate": 0.007662835249042145,
+        "precision": 0.9875,
+        "recall": 0.9753086419753086
+      }
+    }
+  },
+  "model_revision": "2a49e59947fd081463a300c9b99d34e9ea609d6a671593c8f204cea02435d3d5",
+  "old_baselines_pretrained_source_and_datasets_unchanged": true,
+  "predictions_byte_identical": true,
+  "reserve_content_parsed_by_verifier": false,
+  "reserve_rows_scored": 0,
+  "reserve_sha256": "cfedaf79d9ffd0dbc7aaa5831ca30add021b63b61cb08245091468d74cc19735",
+  "reviewed_families_excluded": [
+    "meajor-trec7-081259",
+    "meajor-trec7-082202"
+  ],
+  "selected_encoder_updated": true,
+  "status": "passed",
+  "training_history_and_validation_identical": true,
+  "weights_and_artifacts_byte_identical": true
+}

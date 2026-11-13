@@ -1,10 +1,10 @@
 # PhishGuard
 
-PhishGuard is a course project on phishing-email classification and adversarial robustness. It compares a TF-IDF/logistic-regression baseline with a reviewed Hugging Face classifier. Planned extensions fine-tune a transformer, measure the effect of controlled text changes, and evaluate a defense. A local web demo will accept pasted email text and show a risk score and explanation.
+PhishGuard is a course project on phishing-email classification and adversarial robustness. It compares a TF-IDF/logistic-regression baseline, a reviewed Hugging Face classifier and a locally fine-tuned small transformer. Planned extensions measure the effect of controlled text changes and evaluate a defense. A local web demo will accept pasted email text and show a risk score and explanation.
 
 ## Current status
 
-PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison, external generalization audit and separately trained real-mail baseline v2 are available. Transformer fine-tuning, adversarial experiments and the web demo remain planned; stage 5 has not started.
+PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison, external generalization audit and separately trained real-mail baseline v2 are available. Stage 5 adds reproduced BERT-Tiny fine-tuning and a preserved-baseline comparison. Adversarial experiments and the web demo remain planned; stage 6 has not started.
 
 ## Install
 
@@ -124,7 +124,26 @@ uv run --frozen phishguard baseline predict --model models/baseline-v2 --file te
 
 Review the [source terms, protocol and reproduction guide](docs/baseline-refresh.md). New verified downloads total about 211.7 MB. Preparation adds reviewed historical legitimate/phishing mail, repairs specific extraction artifacts, removes declared publisher placeholders and protects earlier held-out groups. Training writes a separate model to `models/baseline-v2/`; results go to `artifacts/real-mail-v2-evaluation/`. Original data/model files are preserved. The 703-message reserve remains unscored. Existing outputs are refused; the guide provides separate reproduction paths.
 
-On the 425-row historical benchmark, v1/v2 accuracy is 82.59%/98.82%; on the separate 2,000-row, mainly synthetic challenge it is 66.00%/80.10%. V2 still falsely flags 37.20% of legitimate challenge texts. Historical source families also occur in v2 development, and one previously reviewed message is disclosed in that test; the 424-row post-hoc sensitivity remains 98.82%. The challenge's 100 original records have unverified provenance and only 62% v2 accuracy. These are bounded research benchmarks, not production or universal accuracy claims. No stage-5 fine-tuning has started.
+On the 425-row historical benchmark, v1/v2 accuracy is 82.59%/98.82%; on the separate 2,000-row, mainly synthetic challenge it is 66.00%/80.10%. V2 still falsely flags 37.20% of legitimate challenge texts. Historical source families also occur in v2 development, and one previously reviewed message is disclosed in that test; the 424-row post-hoc sensitivity remains 98.82%. The challenge's 100 original records have unverified provenance and only 62% v2 accuracy. These are bounded research benchmarks, not production or universal accuracy claims. Stage 5 excludes that reviewed message and its full family for the subsequent comparison below.
+
+## Fine-tune and compare the small transformer
+
+After preparing real-mail-v2 and baseline v2 with the commands above:
+
+```sh
+uv sync --locked --extra pretrained
+uv run --frozen --extra pretrained phishguard finetune fetch
+uv run --frozen --extra pretrained phishguard finetune verify
+uv run --frozen --extra pretrained phishguard finetune train
+uv run --frozen --extra pretrained phishguard finetune evaluate
+uv run --frozen --extra pretrained phishguard finetune predict --file tests/fixtures/email.json
+```
+
+The verified download is about 18 MB. Training fine-tunes all weights of Google's BERT-Tiny encoder and a new phishing head locally on CPU; it needs no account or paid API. The existing `pretrained` extra supplies the shared neural runtime. Training writes `models/finetuned-v1/`; comparison writes `artifacts/finetuned-evaluation-v1/`. Existing output directories are refused. The [fine-tuning guide](docs/finetuned.md) covers separate reproduction, the frozen selection reference, hardware limits and model provenance. Exact comparison requires the committed selected model identity; training on a different platform can differ numerically and must not silently replace the reference.
+
+Training uses 3,261 rows only; 745 validation rows select epoch 5 and threshold 0.69. It never reads benchmark/reserve text. Comparison uses the unchanged baseline v2 at 0.31 on identical inputs, excluding the entire earlier reviewed family. Historical accuracy is **98.82% baseline / 98.58% transformer** across 423 rows. On the mainly synthetic 2,000-row challenge, accuracy is **80.10% / 80.80%**, false-positive rate **37.20% / 29.80%**, and phishing recall **97.40% / 91.40%**. Fewer false alarms come with more missed phishing; this is not a general model-quality victory or production-ready filter. The previously scored cohorts are retrospective benchmarks, while 703 reserve messages remain unscored.
+
+Inference right-truncates to 256 tokens with explicit length metadata. It does not save or transmit pasted text. All raw data, model weights and per-example predictions stay local; text-free reports, source/protocol manifests and the selected identity are versioned. Stage 6 has not started.
 
 ## Run checks and build
 
@@ -136,7 +155,7 @@ uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The 249 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
+The 267 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Fine-tuning checks add actual encoder updates, deterministic selection/reload, reviewed-family exclusion and separate fitting/evaluation read boundaries. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
 
 ## Documentation
 
@@ -152,12 +171,12 @@ The 249 offline tests cover contracts, malformed JSON, input limits, mappings, t
 - [Generalization audit and external results](docs/generalization-audit.md)
 - [External pre-score label review](docs/external-label-audit.md)
 - [Data refresh, baseline v2 and remaining limits](docs/baseline-refresh.md)
+- [Fine-tuned transformer, reproduction and measured trade-offs](docs/finetuned.md)
 
-The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit, data refresh and local inference. Web-demo commands will be added when the UI is implemented.
+The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit, data refresh, fine-tuning and local inference. Web-demo commands will be added when the UI is implemented.
 
 ## Planned deliverables
 
-- A fine-tuned small transformer to compare with the implemented classical baseline.
 - A controlled text-perturbation runner and a robustness improvement experiment.
 - A local pasted-email demo with model identity, score and explanation.
 - A comparative report and final presentation.

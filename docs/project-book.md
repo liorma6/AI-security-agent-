@@ -1,10 +1,10 @@
 # PhishGuard - Initial Project Book
 
-Revision 1.4b - November 13, 2026 - Data refresh and baseline re-evaluation
+Revision 1.5 - November 14, 2026 - Fine-tuned detector and preserved baseline comparison
 
 Team: Lior and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
 
-Status: STAGE 4b DATA REFRESH COMPLETED. Stages 0-4 and checkpoints 4a/4b are implemented at their stated scope. A separate real-mail-trained baseline v2 improves the historical benchmark but still raises many false alarms on a separate challenge. The original model/data and 703 unscored reserved messages are preserved. Stage 5 has not started; transformer fine-tuning, adversarial experiments, defense and the web demo remain planned. This book is the canonical specification and records both completed evidence and future requirements.
+Status: STAGE 5 FINE-TUNED DETECTOR COMPLETED. Stages 0-5 and checkpoints 4a/4b are implemented at their stated scope. A locally fine-tuned BERT-Tiny is compared with the unchanged real-mail baseline v2: fewer challenge false alarms, but more missed phishing. Prior models/data and 703 unscored reserve messages are preserved. Stage 6 has not started; adversarial experiments, defense, the web demo and final evaluation remain planned. This book is the canonical specification and records both completed evidence and future requirements.
 
 ## 1. Background
 
@@ -48,12 +48,12 @@ The main objective is to build a phishing-email detector and measure how control
 | Establish a reproducible dataset | Licensed source manifest, label definition, deduplication and frozen grouped train/validation/test splits |
 | Build the required baseline | TF-IDF plus logistic regression, reproducible configuration and held-out metrics |
 | Compare a pretrained Hugging Face classifier | Documented checkpoint, revision, compatible label mapping and comparison on the same test protocol |
-| Fine-tune a small transformer | Training configuration, seeds, checkpoint manifest and evaluation; DistilBERT is a proposed candidate |
+| Fine-tune a small transformer | Training configuration, seeds, checkpoint manifest and evaluation; stage 5 implements Google BERT-Tiny |
 | Measure evasion | Offline perturbation harness, validity review, fixed budget and paired clean/perturbed predictions |
 | Evaluate a defense | Training-only augmentation or another declared defense, with clean and attacked evaluations |
 | Deliver an understandable demo and report | Pasted-email workflow, bounded input, evidence-based explanation and comparative presentation |
 
-Stages 3-4 provide measured baseline/pretrained comparisons. Stage 4a adds an external generalization audit in chapter 6; it is a cross-source stress test, not a representative contemporary-inbox study. Stage 4b adds real-mail development data and a separately frozen baseline v2, with an independent challenge and explicit generalization limits. Adversarial robustness remains unmeasured. Thresholds are selected using validation data only; report trade-offs and unsuccessful experiments without choosing conclusions in advance.
+Stages 3-4 provide measured baseline/pretrained comparisons. Stage 4a adds an external generalization audit in chapter 6; it is a cross-source stress test, not a representative contemporary-inbox study. Stage 4b adds real-mail development data and a separately frozen baseline v2, with an independent challenge and explicit generalization limits. Stage 5 adds the fine-tuned transformer and paired clean-text comparison. Adversarial robustness remains unmeasured. Thresholds are selected using validation data only; report trade-offs and unsuccessful experiments without choosing conclusions in advance.
 
 ### 2.1 Experimental questions and metrics
 
@@ -67,7 +67,7 @@ For the defense comparison, report results on fixed saved variants and the same 
 
 ### 3.1 Requirements from the supplied brief
 
-The PG requirements describe the complete assignment. Stages 1-4 supply the environment, contracts, PG02 dataset evidence, the trained/evaluated PG03 baseline and the PG04 pretrained comparison. PG09 has local CLI inference; its web UI and explanation remain pending. No completed robustness experiment is claimed. PG01's task-specific learning continues alongside implementation. The remaining end-to-end acceptance evidence is planned.
+The PG requirements describe the complete assignment. Stages 1-5 supply the environment, contracts, PG02 dataset evidence, the trained/evaluated PG03 baseline, the PG04 pretrained comparison and the PG05 fine-tuned detector. PG09 has local CLI inference; its web UI and explanation remain pending. No completed robustness experiment is claimed. PG01's task-specific learning continues alongside implementation. The remaining end-to-end acceptance evidence is planned.
 
 | ID | Requirement | Verification |
 | --- | --- | --- |
@@ -99,7 +99,7 @@ Stage 2 selected synthetic E-PhishLLM with a pinned publisher MIT declaration, e
 | Q01 | Trace every dataset/model/experiment revision | Manifest with source revision, digest, seed, configuration and split IDs |
 | Q02 | Prevent leakage | No group or derived variant crosses splits; training alone fits transformations |
 | Q03 | Preserve email privacy | No raw pasted email logging or storage by default; licensed/redacted fixtures only |
-| Q04 | Bound resource use | Implemented 20,000-code-point combined email and 262,144-byte JSON limits, with rejection and no truncation; pretrained inference enforces 512 tokens with disclosed truncation and batches of eight; web concurrency controls remain planned |
+| Q04 | Bound resource use | Implemented 20,000-code-point combined email and 262,144-byte JSON limits, with rejection and no truncation; pretrained inference enforces 512 tokens/batches of eight, while fine-tuned inference uses 256 tokens/batches of 16, both with disclosed truncation; web concurrency controls remain planned |
 | Q05 | Treat email content as inert data | Render escaped text; do not open links, send mail or execute attachments/instructions |
 | Q06 | Load reviewed model artifacts | Pin revisions, verify manifests and disable unreviewed remote code; avoid untrusted serialized executables |
 | Q07 | Explain uncertainty | Display a model score, threshold and model identity; do not claim a calibrated probability without calibration evidence |
@@ -140,7 +140,7 @@ The versioned protocol was committed before research training. Training reads th
 
 The model is stored as strictly validated JSON vocabulary, numerical weights, threshold and provenance, with a separate SHA-256 manifest. Loading reconstructs scoring without deserializing executable objects. Missing or invalid artifacts return explicit errors/unavailable results. Inference neither saves pasted email nor follows its links. Model scores are not calibrated probabilities. [R14]
 
-The [baseline guide](baseline.md) contains verified commands, the complete protocol, measured reports and limitations. Chapter 6 records the observed result; later transformer and robustness experiments remain separate work.
+The [baseline guide](baseline.md) contains verified commands, the complete protocol, measured reports and limitations. Chapter 6 records the observed result and the subsequent transformer comparisons; robustness experiments remain separate future work.
 
 ### 3.7 Implemented pretrained adapter and comparison
 
@@ -148,7 +148,7 @@ Stage 4 uses the externally trained two-class DistilBERT `dima806/phishing-email
 
 The source manifest verifies card/configuration/vocabulary/safetensors bytes. The local loader disables remote code, rejects incomplete classification heads and reconstructs a cased tokenizer from the supplied vocabulary and pinned base-tokenizer settings. Input uses the baseline's marker removal; token lengths and right truncation at 512 are disclosed. Weights stay fixed. Validation-only threshold selection is separate from final evaluation and bound by digests to model, dataset and baseline versions. Evaluation checks identical test IDs and reproduces the published baseline counts before comparing predictions.
 
-The [pretrained guide](pretrained.md) records selection reasons, source limitations, commands and CPU resource conditions. This comparison is implemented; fine-tuning those or other weights is a separate stage.
+The [pretrained guide](pretrained.md) records selection reasons, source limitations, commands and CPU resource conditions. This comparison preserves external weights; section 3.10 describes our separate fine-tuning of a general BERT encoder.
 
 ### 3.8 Implemented generalization audit
 
@@ -166,6 +166,16 @@ The real-mail-v2 manifest binds 3,261 training, 745 validation, 425 historical t
 
 A committed model-selection reference anchors weights, threshold, dataset and protocol before evaluation. Both models receive identical prepared inputs. Evaluation opens only test/challenge files and reports each separately with source subgroups, paired outcomes and group intervals. Baseline prediction selects v2 explicitly; v1 remains available. See the [refresh guide](baseline-refresh.md). Chapter 6 discloses a one-row inspection-boundary deviation and its sensitivity check; held-out-from-fitting is not synonymous with never inspected.
 
+### 3.10 Implemented fine-tuned detector
+
+Stage 5 fine-tunes Google's English uncased BERT-Tiny encoder, revision `30b0a37ccaaa32f332884b96992754e246e48c5f`, with publisher Apache-2.0 terms. It has two layers, hidden width 128 and two attention heads. A newly initialized legitimate/phishing head gives 4,386,178 trainable parameters. All encoder and head weights update locally; this is our task-specific fine-tuning of a general pretrained encoder, not the downloaded stage-4 phishing classifier. Its small size suits the existing CPU environment. The brief permits a small transformer and gives DistilBERT as an example. [R20]
+
+The fixed protocol uses seed 42, five epochs, batches of 16, CPU float32 with four threads, AdamW at 0.00005 learning rate, 10% linear warmup/decay and gradient clipping at 1.0. The fixed uncased tokenizer right-truncates at 256 tokens, including special tokens, and reports original lengths. Baseline v2 retains full accepted text; the comparison therefore includes representation/pretraining/length differences, not architecture alone. No hyperparameter sweep or test-driven retry was performed.
+
+Task fitting reads only the frozen 3,261 real-mail-v2 training rows. The 745 validation rows select the lowest-cross-entropy epoch, then its threshold using the existing F1 grid. A text-free selection reference was committed before benchmark scoring. Safetensors/configuration/vocabulary, source/protocol/data digests and development fingerprints bind the saved detector; safe loading validates numerical tensors, label mapping and files. Reloaded validation scores are identical. The selected encoder digest differs from the starting encoder, confirming actual fine-tuning.
+
+The reviewed-ID registry excludes the complete two-row historical group containing the earlier inspected message. Both compared models receive the same remaining 423 rows. The separate challenge remains 2,000 rows. These previously scored cohorts are retrospective research benchmarks; neither contributes to gradients, epoch selection or threshold selection. The 703-message reserve remains unopened by training/evaluation and unscored. Before stage 9, freeze final detector, threshold, attack, defense and evaluation decisions; do not use final outcomes for retuning. Upstream pretraining membership and complete semantic non-overlap cannot be proven. See the [fine-tuning protocol, commands and model limitations](finetuned.md).
+
 ## 4. STRIDE threat analysis
 
 This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public errors. Stage 2 adds pinned source/file integrity, frozen splits, lineage checks and controlled source-only downloading. Stage 3 adds train-only fitting, held-out threshold selection, numerical JSON model validation, artifact digest checks and input-private prediction. Stage 4 adds reviewed safetensors-only loading, explicit model labels, checked tokenizer reconstruction, token/batch limits and digest-bound validation decisions. The broader controls below remain planned unless linked to implemented evidence in the stage log. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
@@ -173,6 +183,8 @@ This threat model covers the intended PhishGuard system. Stage 1 implements boun
 Stage 4a additionally bounds raw messages and expanded archives, rejects unsafe archive members without extracting files, keeps HTML inert, verifies external membership and refuses a different model/threshold. Its evaluation loader does not open the reserve file. These controls address integrity, disclosure, resource exhaustion and unintended execution; they do not establish that publisher labels are correct.
 
 Stage 4b adds bounded streaming source verification, protected-corpus overlap exclusion, separate model/selection references and tests proving that fitting does not open test/challenge and evaluation does not open development/reserve files. Its pre-fit leakage guard stopped an inconsistent split; the documented review-boundary deviation motivates a reviewed-ID registry for future regeneration.
+
+Stage 5 adds a pinned general-encoder source, safetensors-only checkpoints, finite tensor/configuration checks, validation-only selection, a reviewed-family exclusion registry and fixed baseline identities. Training and evaluation have separate read boundaries, tested with forbidden partitions absent. Reproduction verifies preserved reserve/model bytes without parsing reserve content.
 
 ### 4.1 Assets, actors and trust boundaries
 
@@ -199,15 +211,17 @@ Residual risks include dataset bias, incomplete campaign grouping, novel attack 
 
 ### 5.1 Current verification status
 
-The repository contains the specification, contracts, dataset pipeline, classical baseline, pretrained comparison and generalization audit. The automated suite contains 249 tests: 80 foundation, 44 dataset, 51 baseline, 26 pretrained, 26 audit and 22 refresh checks. The stage log records the executed local, installed-package and CI outcomes. They cover synthetic fixtures, input limits, malformed JSON, provenance, mappings, score/threshold consistency, grouping, leakage, artifact integrity and private errors. Audit tests add MIME/HTML extraction, unsafe archives, deterministic English filtering, broader similarity checked against brute force, exclusion of relatives of every internal split, fixed model/threshold enforcement and evaluation with the reserve file absent and model fitting disabled. Documentation checks cover English content, links, tables, chapters and diagrams. The [stage log](stage-log.md) records verification and CI evidence.
+The repository contains the specification, contracts, dataset pipeline, classical baseline, pretrained comparison and generalization audit. The automated suite contains 267 tests: 80 foundation, 44 dataset, 51 baseline, 26 pretrained, 26 audit, 22 refresh and 18 fine-tuning checks. The stage log records the executed local, installed-package and CI outcomes. They cover synthetic fixtures, input limits, malformed JSON, provenance, mappings, score/threshold consistency, grouping, leakage, artifact integrity and private errors. Audit tests add MIME/HTML extraction, unsafe archives, deterministic English filtering, broader similarity checked against brute force, exclusion of relatives of every internal split, fixed model/threshold enforcement and evaluation with the reserve file absent and model fitting disabled. Documentation checks cover English content, links, tables, chapters and diagrams. The [stage log](stage-log.md) records verification and CI evidence.
 
 Baseline tests cover train-only vocabulary/IDF fitting, threshold selection, exact metric counts, non-convergence, leakage, JSON model integrity, save/load numerical agreement and private predictions. Measured research-corpus results appear in chapter 6 and the linked reports. Passing tests and measured benchmark accuracy are distinct evidence.
 
 Refresh tests cover inert extraction repairs, preserved ordinary text/attachments, strict ham-only ingestion, source integrity, partial-file preservation, transitive known families, the literal-subject grouping boundary, publisher marker removal, protected-corpus exclusion, audit/challenge separation, partition tampering, train/evaluation read boundaries, frozen-selection mismatch and private CLI errors.
 
+Fine-tuning checks use an invented tiny BERT fixture with no model downloads. They verify actual encoder updates, training with test/challenge absent, validation selection, deterministic repeats, reload agreement, family exclusion, frozen comparison without fitting, artifact tampering, tokenizer truncation, bounded downloads and private CLI failures.
+
 ### 5.2 Planned PhishGuard unit-test matrix
 
-The matrix below describes the final test goals. Stage 1 implements the input-validation parts of U01/U02, text-preservation part of U03, metadata-mapping part of U06, record-level threshold checks in U07, unavailable-result shape in U11 and CLI privacy part of U12. Stage 2 adds U03 grouping and U04 duplicate/derived-lineage separation checks. Stage 3 implements U05 feature leakage checks, baseline mapping/loading in U06/U11, actual thresholded inference in U07, classification metrics in U10 and baseline CLI privacy in U12. Stage 4 adds transformer label direction, actual tiny-transformer inference, unchanged-weight checks, token truncation, safetensors loading policy, validated selection and comparison checks for U06/U07/U10/U11/U12. Perturbations, ASR and HTML output remain pending. Use small offline fixtures; full-corpus evaluation belongs to separate experiment checks.
+The matrix below describes the final test goals. Stage 1 implements the input-validation parts of U01/U02, text-preservation part of U03, metadata-mapping part of U06, record-level threshold checks in U07, unavailable-result shape in U11 and CLI privacy part of U12. Stage 2 adds U03 grouping and U04 duplicate/derived-lineage separation checks. Stage 3 implements U05 feature leakage checks, baseline mapping/loading in U06/U11, actual thresholded inference in U07, classification metrics in U10 and baseline CLI privacy in U12. Stage 4 adds transformer label direction, actual tiny-transformer inference, unchanged-weight checks, token truncation, safetensors loading policy, validated selection and comparison checks for U06/U07/U10/U11/U12. Stage 5 adds train/validation read boundaries and actual fine-tuning/reload/frozen evaluation coverage to U04/U06/U07/U10/U11/U12. Perturbations, ASR and HTML output remain pending. Use small offline fixtures; full-corpus evaluation belongs to separate experiment checks.
 
 | ID | Unit and input | Expected result | Owner |
 | --- | --- | --- | --- |
@@ -228,13 +242,13 @@ For U10, a fixture with TP=3, FP=1, TN=4 and FN=2 must produce accuracy 0.7, pre
 
 ### 5.3 Integration and experiment checks
 
-Implemented a tiny train/save/load/predict/evaluate cycle on invented fixtures. Numerical round-trip agreement is checked within 1e-12. An independent full-corpus retraining produced identical model, manifest and test-prediction bytes; confusion counts were separately recomputed. Student review of fixtures remains open. Stage 4 adds frozen external-checkpoint loading, complete validation/test runs, independent count reconstruction and reload/repeatability checks on invented messages. CI uses a tiny random local transformer and never downloads research weights. Future checks cover fine-tuning, the pasted-email UI and the complete attack/defense evaluation.
+Implemented a tiny train/save/load/predict/evaluate cycle on invented fixtures. Numerical round-trip agreement is checked within 1e-12. An independent full-corpus retraining produced identical model, manifest and test-prediction bytes; confusion counts were separately recomputed. Student review of fixtures remains open. Stage 4 adds frozen external-checkpoint loading, complete validation/test runs, independent count reconstruction and reload/repeatability checks on invented messages. CI uses a tiny random local transformer and never downloads research weights. Stage 5 adds full same-seed fine-tuning reproduction and independent benchmark recounts. Future checks cover the pasted-email UI and the complete attack/defense evaluation.
 
 Stage 4a independently repeated external preparation and scoring: prepared files/manifests and prediction bytes were identical. Independent confusion counts agreed, model bytes remained unchanged, and no reserve IDs appeared in scored predictions. The reserve was hashed without parsing for integrity verification. Keep unit-test pass counts separate from model-quality measurements. A passing test suite cannot establish that the detector generalizes to real mail.
 
 ## 6. Summary and conclusions
 
-PhishGuard now has a working classical detector, a measured pretrained comparison, an external generalization audit, reproducible data preparation, strict contracts and local inference. The external audit exposes a gap between synthetic-benchmark performance and transferred performance. The broader project still aims to fine-tune a transformer, measure controlled evasion, evaluate a defense and provide a web demo.
+PhishGuard now has a working classical detector, a measured pretrained comparison, an external generalization audit, reproducible data preparation, strict contracts and local inference. The external audit exposes a gap between synthetic-benchmark performance and transferred performance. Stage 5 adds a reproduced fine-tuned transformer with measured benefits and costs. The broader project still aims to measure controlled evasion, evaluate a defense, provide a web demo and complete final evaluation.
 
 ### 6.1 Measured baseline result
 
@@ -281,7 +295,7 @@ The pretrained model did not outperform the baseline on this benchmark under the
 
 No test input exceeded 512 tokens; none was truncated or excluded. Original token length reached 345. On CPU with one numerical-library thread, pretrained scoring took 457.82 seconds (265.40 ms per email amortized); the baseline rerun took 0.275 seconds. Pretrained scoring includes tokenization and uses batches of eight. Loading/imports/disk I/O are excluded; timings are not single-request latency or peak-memory measurements. Runtime versions are PyTorch 2.15.0+cpu, Transformers 4.57.6 and safetensors 0.8.0.
 
-Aggregate evidence: [validation report](reports/pretrained-validation.json), [same-test comparison](reports/pretrained-test.json) and [verification/reload report](reports/pretrained-reproduction.json). The verification independently recounts confusion/paired counts from saved predictions and checks repeated loading/scoring on invented fixtures; it is not a second full-corpus transformer evaluation. Fine-tuning, evasion and defense measurements remain future work. Stage 5 will fine-tune a small transformer using training data only.
+Aggregate evidence: [validation report](reports/pretrained-validation.json), [same-test comparison](reports/pretrained-test.json) and [verification/reload report](reports/pretrained-reproduction.json). The verification independently recounts confusion/paired counts from saved predictions and checks repeated loading/scoring on invented fixtures; it is not a second full-corpus transformer evaluation. This stage-4 report preceded fine-tuning. Section 6.6 records the subsequent training-only fine-tuning experiment; evasion and defense remain unmeasured.
 
 ### 6.4 Generalization audit and revised interpretation
 
@@ -311,7 +325,7 @@ Phishing recall was 87.78% on Nazario 2024 and 89.37% on 2025. False-positive ra
 
 The generalization concern is supported: the same model performs worse under this external source/era/extraction shift. This does not prove that excessive training caused the decline, and the small internal gap alone does not establish robust generalization. The 98.43% score remains valid only for its declared synthetic benchmark. The baseline is useful for comparison but is not established as a production security filter.
 
-Evidence: [audit protocol and interpretation](generalization-audit.md), [internal report](reports/generalization-internal.json), [external report](reports/generalization-external.json), [independent verification](reports/generalization-verification.json). The scored audit is now development evidence. Before stage 5, declare training sources, extraction/label policy, validation objective and a fresh final-evaluation protocol. The unscored reserve can support a precommitted future evaluation, but shares the same source limitations. More representative data with both classes is needed for stronger real-inbox claims. Stage 5 has not started.
+Evidence: [audit protocol and interpretation](generalization-audit.md), [internal report](reports/generalization-internal.json), [external report](reports/generalization-external.json), [independent verification](reports/generalization-verification.json). The scored audit is now development evidence. Before stage 5, declare training sources, extraction/label policy, validation objective and a fresh final-evaluation protocol. The unscored reserve can support a precommitted future evaluation, but shares the same source limitations. More representative data with both classes is needed for stronger real-inbox claims. Those stage-4a gates were subsequently implemented in stages 4b and 5 below.
 
 ### 6.5 Data refresh: improvement and remaining generalization limits
 
@@ -329,7 +343,7 @@ New source eligibility produced 1,784 MeAJOR legitimate and 1,404 historical Naz
 
 The first training attempt stopped before fitting because eight development components violated the original literal-subject grouping guard. Both relation systems were then united and the dataset regenerated before successful fitting/scoring. Final protocol correction was committed at `941a4b7`, corrected data at `818372e`, and v2 model identity/threshold at `8d519e9` before held-out inference. The original baseline artifact and source histories were not rewritten.
 
-V2 uses the same TF-IDF/logistic-regression hyperparameters as v1 and 30,000 features, converging in eight solver iterations. Training accuracy is 99.57%; validation accuracy 97.85%, with eight false positives and eight false negatives. Validation alone selects threshold 0.31; v1 keeps 0.44. This is our locally trained classical baseline, not a downloaded Hugging Face model. No transformer fine-tuning or stage-5 work occurred.
+V2 uses the same TF-IDF/logistic-regression hyperparameters as v1 and 30,000 features, converging in eight solver iterations. Training accuracy is 99.57%; validation accuracy 97.85%, with eight false positives and eight false negatives. Validation alone selects threshold 0.31; v1 keeps 0.44. This is our locally trained classical baseline, not a downloaded Hugging Face model. No transformer fine-tuning occurred during stage 4b; section 6.6 reports the separate stage-5 run.
 
 | Measure | Historical v1 | Historical v2 | Challenge v1 | Challenge v2 |
 | --- | --- | --- | --- | --- |
@@ -351,17 +365,47 @@ The improvement is useful research evidence, with several limits. Historical tes
 
 A complete repeated preparation, fit and scoring produced identical data, manifest, model and prediction bytes. Independent recounts matched all class/subgroup/paired counts and repeated group intervals. Baseline v1, original synthetic files and the 703 reserve messages remain byte-identical. The reserve was neither scored nor manually reviewed. Evidence: [protocol and source review](baseline-refresh.md), [training](reports/refresh-training.json), [comparison](reports/refresh-evaluation.json), [verification](reports/refresh-verification.json).
 
-Stage 4b is complete as a data/baseline experiment; generalization remains an open research problem. Stage 5 has not started. A requested fine-tuning stage must freeze its data/validation and reviewed-ID policies, use existing scored cohorts as benchmarks rather than untouched final evidence, and precommit final evaluation across later model/attack/defense choices. More representative contemporary data with both classes is needed for stronger deployment claims. Baseline v2 remains a separate research candidate, not an automatically deployed mail filter.
+Stage 4b is complete as a data/baseline experiment; generalization remains an open research problem. The subsequent stage 5 freezes its data/validation and reviewed-ID policies and uses existing scored cohorts as retrospective benchmarks, as described below. Final stage-9 scoring requires a separate precommitment after later model/attack/defense decisions are frozen. More representative contemporary data with both classes is needed for stronger deployment claims. Baseline v2 remains a separate research candidate, not an automatically deployed mail filter.
+
+### 6.6 Fine-tuned transformer: measured trade-off
+
+Protocol/code were committed at `91314b9` before fitting; selected artifact/threshold at `de53248` before benchmark scoring. Both initial reports record clean commits. The one declared seed/configuration ran all five epochs. Mean validation cross-entropy fell from 0.22198 to 0.07340; the predeclared rule selected epoch 5 and validation threshold 0.69. Training accuracy is 99.63%; validation accuracy 98.26%, with four false alarms and nine missed phishing records. The threshold is an experimental F1 choice, not a calibrated probability or company blocking policy. [R20]
+
+| Measure | Historical baseline v2 | Historical BERT-Tiny | Challenge baseline v2 | Challenge BERT-Tiny |
+| --- | --- | --- | --- | --- |
+| Rows | 423 | 423 | 2,000 | 2,000 |
+| Threshold | 0.31 | 0.69 | 0.31 | 0.69 |
+| Accuracy | 98.82% | 98.58% | 80.10% | 80.80% |
+| Balanced accuracy | 98.93% | 98.38% | 80.10% | 80.80% |
+| Phishing precision | 97.58% | 98.75% | 72.36% | 75.41% |
+| Phishing recall | 99.38% | 97.53% | 97.40% | 91.40% |
+| Phishing F1 | 98.47% | 98.14% | 83.03% | 82.64% |
+| Legitimate false-positive rate | 1.53% | 0.77% | 37.20% | 29.80% |
+| TP / FP / TN / FN | 161 / 4 / 257 / 1 | 158 / 2 / 259 / 4 | 974 / 372 / 628 / 26 | 914 / 298 / 702 / 86 |
+
+The historical comparison excludes the entire previously reviewed family before stage-5 scoring: two legitimate rows, leaving 261 legitimate and 162 phishing messages in 339 groups. Earlier 425/424-row reports remain intact. The transformer makes one additional total error. On the challenge it removes 74 false alarms but adds 60 missed phishing messages, a net 14 additional correct predictions out of 2,000. Paired outcomes favor BERT alone on 120 challenge rows and baseline alone on 106. This is a trade-off, not an overall superior detector; phishing F1 declines slightly. The baseline remains available without automatic replacement.
+
+The 1,900 generated challenge rows have 81.05% baseline versus 81.74% transformer accuracy. On the 100 original records of unverified provenance, accuracy is 62% versus 63%; transformer false alarms remain 37/77 legitimate records, and both models detect all 23 phishing-labeled records. At the predeclared diagnostic threshold 0.50, transformer challenge accuracy is 80.10%, recall 92.60% and false-positive rate 32.40%. That diagnostic did not change the selected 0.69 threshold.
+
+Whole-group 95% accuracy intervals are 97.55-99.75% for the historical baseline and 97.19-99.55% for the transformer; challenge intervals are 70.51-88.18% and 71.61-88.61%. These 1,000 seeded group resamples describe conditional uncertainty. They do not establish a significant improvement, correct source bias or make 91 challenge groups independent contemporary inboxes. Existing source/era confounding, synthetic templates and publisher-label uncertainty remain.
+
+Token truncation affects 1,545/3,261 training, 379/745 validation and 202/423 historical benchmark rows, versus zero challenge rows. Three of four historical transformer misses are truncated, but this association is not evidence that truncation caused them. The short challenge's errors cannot be explained by the length cap. A deterministic post-score review inspected 17 excerpts: five historical errors, six challenge errors and six correct controls. Historical false alarms involve ordinary account/setup messages; misses include promotional/context-dependent content and a markup-heavy account lure. Challenge false alarms include routine document/travel messages; misses include gift-card, invoice and secure-message lures. Correct controls contain overlapping topics, so no simple keyword rule or causal explanation is established. Labels, weights and threshold stayed unchanged; excerpts remain local and review is AI-assisted.
+
+Initial fit/validation work took 263.15 seconds on the local Ryzen 5 3600X CPU with four neural threads, Python 3.13.16, PyTorch 2.15.0+cpu and Transformers 4.57.6. Historical/challenge batched scoring took 1.285/1.084 seconds for BERT and 0.150/0.080 seconds for baseline v2, excluding imports, loading and disk I/O. These are amortized batch timings, not single-request latency or a memory benchmark. No cloud service, GPU runtime change or paid inference was used.
+
+A complete repeated same-seed training/scoring run produced byte-identical selected weights, manifests, validation history and predictions. Independent recounts matched class, subgroup, paired and default-threshold results; prior model/data/source files and reserve bytes remained unchanged. This verifies reproducibility in the same environment, not robustness across seeds/platforms. Stage 5 supplies the required fine-tuned detector and honest comparison; it does not resolve generalization or measure adversarial robustness. Stage 6 has not started.
+
+Evidence: [fine-tuning guide and model limitations](finetuned.md), [training report](reports/finetuned-training.json), [paired evaluation](reports/finetuned-evaluation.json), [independent verification](reports/finetuned-verification.json), [text-free error review](reports/finetuned-error-review.json).
 
 ## 7. Architecture - UML
 
-The component UML marks implemented baseline v1/v2 training, pretrained comparison, generalization audit and data refresh, inference adapters, reviewed artifacts, contracts and internal/external preparation. Frozen data includes internal train/validation/test, external audit/reserve and real-mail-v2 development/test/challenge cohorts. Audit evaluation reads only audit rows; refresh evaluation reads only historical test/challenge. Both leave the reserve unscored. The sequence diagram remains the target web-demo interaction: both classifiers provide CLI prediction, while the UI and explanation are planned.
+The component UML marks implemented baseline v1/v2 training, pretrained comparison, generalization audit, data refresh and transformer fine-tuning, inference adapters, reviewed artifacts, contracts and internal/external preparation. Frozen data includes internal train/validation/test, external audit/reserve and real-mail-v2 development/test/challenge cohorts. Audit evaluation reads only audit rows; refresh evaluation reads only historical test/challenge. Fine-tuning reads train/validation only; its separate comparison reads the eligible historical/challenge rows only. All leave the reserve unscored. The sequence diagram remains the target web-demo interaction: all implemented detectors provide CLI prediction, while the UI and explanation are planned.
 
 ### 7.1 UML component diagram
 
 ![Proposed PhishGuard UML component diagram](diagrams/phishguard-components.svg)
 
-Rectangles marked component are software components; rectangles marked artifact are files. Dashed open-arrow dependencies point from a component to the component/artifact it uses. Green components/artifacts are implemented: CLI, validator, preparation, frozen data, experiment runner, model artifacts, both inference adapters and reports. The CLI calls the selected local scorer; the offline runner separates baseline fitting, external-model threshold selection and final evaluation. Pale components are planned: web UI, explanation and advanced experiments. These are logical Python modules within the application.
+Rectangles marked component are software components; rectangles marked artifact are files. Dashed open-arrow dependencies point from a component to the component/artifact it uses. Green components/artifacts are implemented: CLI, validator, preparation, frozen data, experiment runner, model artifacts, classical/pretrained/fine-tuned adapters and reports. The CLI calls the selected local scorer; the offline runner separates baseline/transformer fitting, validation selection and frozen benchmark evaluation. Pale components are planned: web UI, explanation and advanced experiments. These are logical Python modules within the application.
 
 The planned Gradio UI will call the Python inference function. Offline training can run on a workstation or Colab; exported reviewed artifacts feed local inference. Model/dataset downloads occur in the reviewed preparation workflow, not in response to pasted message instructions.
 
@@ -402,7 +446,7 @@ Both students participate in all topics. Each has five review-lead sessions. Pyt
 
 ### 8.3 Two-semester milestones and ownership
 
-Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05 pretrained comparison, stage 4a generalization audit and stage 4b data refresh/baseline re-evaluation are implemented and measured; individual student review remains open. W06-W10 implementation has not started. Stages 0-4 plus checkpoints 4a/4b are complete (seven of twelve milestones); stages 5-9 remain.
+Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05 pretrained comparison, stage 4a generalization audit and stage 4b data refresh/baseline re-evaluation are implemented and measured; individual student review remains open. W06 fine-tuning, comparison, reproduction and bounded error review are implemented; individual student review remains open. W07-W10 implementation has not started. Stages 0-5 plus checkpoints 4a/4b are complete (eight of twelve milestones); stages 6-9 remain.
 
 | Package / period | Lior - 5 units | Sharon Elimelech - 5 units | Completion evidence |
 | --- | --- | --- | --- |
@@ -411,7 +455,7 @@ Relative milestones avoid inventing semester dates. Attach submission dates when
 | W03 / Semester A data | Source/license manifest and dataset ingestion | Label audit, deduplication and grouped split validator | Frozen dataset manifest; each reviews the other's output |
 | W04 / Semester A baseline | TF-IDF/logistic-regression training and save/load pipeline | Baseline metrics, threshold selection and leakage tests | Reproducible baseline and reviewed report |
 | W05 / Semester A comparison and data studies | Pretrained adapter; source review, downloads, MIME repairs, refresh ingestion and separate model artifacts | Label compatibility; relatedness/splits, marker/quality checks, metrics, uncertainty, review-boundary trace and reproduction | Pretrained comparison, external audit and reproduced baseline-v2 study; 703 messages reserved unscored |
-| W06 / Semester B detector | Fine-tuning script, environment and configuration | Tokenization/training-data checks, reproducibility and error analysis | Reviewed small-transformer checkpoint and model card |
+| W06 / Semester B detector | Fine-tuning runner, environment/configuration and checkpoint artifacts | Tokenization/data boundaries, paired comparison, reproduction and error analysis | Implemented BERT-Tiny, fixed selection, preserved baseline, reproduced measurements and model limitations; student review open |
 | W07 / Semester B evasion | Bounded perturbation operations and query-budget harness | Label-preservation review, paired metrics and attack test fixtures | Offline attack artifact set and baseline degradation report |
 | W08 / Semester B defense | Integrate defended inference and measure clean-performance costs | Implement training-only adversarial augmentation and defense training | Fixed-variant and fresh-search comparison under equal budgets |
 | W09 / Semester B demo | Pasted-email UI, input limits and local packaging | Evidence-based explanation, privacy/error tests and usability review | Demonstrable classifier with model identity and limitations |
@@ -421,7 +465,7 @@ Totals: Lior 10 x 5 = 50 units; Sharon Elimelech 10 x 5 = 50 units. The asymmetr
 
 ### 8.4 Contribution evidence and stage completion
 
-The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts and an offline validator. Stage 2 adds pinned-source acquisition, a sample label audit, deduplication, frozen grouped splits and dataset tests. The documents, code and initial audit were developed with AI assistance for both students to review. Stage 3 adds the trained baseline, safe model artifacts, measured evaluation and local inference. Stage 4 adds a reviewed pretrained transformer, paired comparison and local inference. Stage 4a adds the frozen external audit, internal diagnostics, unchanged-model verification and an unscored reserve. Stage 4b adds reviewed real-mail development data, targeted corpus repairs, separate baseline v2, fixed held-out comparisons, reproduction and a disclosed review-boundary sensitivity check. Transformer fine-tuning, perturbation/defense experiments and the web demo remain incomplete; stage 5 has not started.
+The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts and an offline validator. Stage 2 adds pinned-source acquisition, a sample label audit, deduplication, frozen grouped splits and dataset tests. The documents, code and initial audit were developed with AI assistance for both students to review. Stage 3 adds the trained baseline, safe model artifacts, measured evaluation and local inference. Stage 4 adds a reviewed pretrained transformer, paired comparison and local inference. Stage 4a adds the frozen external audit, internal diagnostics, unchanged-model verification and an unscored reserve. Stage 4b adds reviewed real-mail development data, targeted corpus repairs, separate baseline v2, fixed held-out comparisons, reproduction and a disclosed review-boundary sensitivity check. Stage 5 adds actual small-transformer fine-tuning, validation-only selection, review-aware paired comparison, same-seed reproduction and error analysis. Perturbation/defense experiments and the web demo remain incomplete; stage 6 has not started.
 
 Lior owns the input/result contracts, dataset ingestion, baseline training, model adapters, fine-tuning runner, perturbation operations and demo integration listed in section 8.3. Sharon Elimelech owns validation fixtures, dataset quality and splits, evaluation and leakage checks, tokenization/reproducibility checks, perturbation validity, defense training and explanation/privacy checks. Each implementation package also includes tests and peer review; the weights in section 8.3 include that work.
 
@@ -455,3 +499,5 @@ The primary course reference is the student-supplied Project2_PhishGuard.docx, t
 
 - [R18 - MeAJOR v2.0 data record and publisher terms](https://zenodo.org/records/18471483)
 - [R19 - Phishing validation emails v3 and provenance metadata](https://zenodo.org/records/23954793)
+
+- [R20 - Google BERT-Tiny: pinned source, architecture and publisher model card](https://huggingface.co/google/bert_uncased_L-2_H-128_A-2/tree/30b0a37ccaaa32f332884b96992754e246e48c5f)
