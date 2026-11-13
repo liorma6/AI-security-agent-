@@ -1,0 +1,48 @@
+{
+  "attribution": "Google BERT Miniatures; Turc et al., Well-Read Students Learn Better (2019). Publisher Apache-2.0 declaration.",
+  "configuration": {
+    "attention_probs_dropout_prob": 0.1,
+    "hidden_act": "gelu",
+    "hidden_dropout_prob": 0.1,
+    "hidden_size": 128,
+    "initializer_range": 0.02,
+    "intermediate_size": 512,
+    "layer_norm_eps": 1e-12,
+    "max_position_embeddings": 512,
+    "model_type": "bert",
+    "num_attention_heads": 2,
+    "num_hidden_layers": 2,
+    "pad_token_id": 0,
+    "type_vocab_size": 2,
+    "vocab_size": 30522
+  },
+  "files": {
+    "README.md": {
+      "bytes": 4617,
+      "sha256": "d13a54d652a2a54fbbc50e063b465fb273295870867821e1b06baba1d49d68a9"
+    },
+    "config.json": {
+      "bytes": 382,
+      "sha256": "508e1f01aae55d73355cbdd82609be2f43ba5a0d3428837adbe56cf8391f8b39"
+    },
+    "model.safetensors": {
+      "bytes": 17739144,
+      "sha256": "7fb69ad9f6866d8983183c930e33828f326470bf6ad8bbb2ad4ed957a92e9414"
+    },
+    "vocab.txt": {
+      "bytes": 231508,
+      "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    }
+  },
+  "homepage": "https://huggingface.co/google/bert_uncased_L-2_H-128_A-2",
+  "license": "Apache-2.0",
+  "limits": [
+    "Upstream pretraining membership is unavailable; no verified non-overlap claim.",
+    "Small capacity and right truncation can miss important context.",
+    "No knowledge-distillation teacher is used in this study."
+  ],
+  "model_id": "google/bert_uncased_L-2_H-128_A-2",
+  "reviewed": "2026-11-13",
+  "revision": "30b0a37ccaaa32f332884b96992754e246e48c5f",
+  "role": "English uncased pretrained BERT encoder. Discard MLM/NSP heads; initialize a new two-class head and fine-tune every encoder/head parameter. No upstream phishing classifier is assumed."
+}

@@ -87,7 +87,14 @@ def main(argv: list[str] | None = None) -> int:
     from phishguard.refresh.cli import register as register_refresh
 
     register_refresh(commands)
+    from phishguard.finetune.cli import register as register_finetune
+
+    register_finetune(commands)
     args = parser.parse_args(argv)
+    if args.command == "finetune":
+        from phishguard.finetune.cli import run
+
+        return run(args)
     if args.command == "refresh":
         from phishguard.refresh.cli import run
 

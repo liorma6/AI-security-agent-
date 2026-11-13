@@ -1,0 +1,44 @@
+{
+  "baseline_v2_revision": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480",
+  "baseline_v2_threshold": 0.31,
+  "benchmark_status": "Previously scored data; retrospective comparison only. No fresh final-test or contemporary-inbox claim. Keep every inspected family outside benchmark scoring. No split regeneration.",
+  "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+  "excluded_benchmark_groups": [
+    {
+      "group_id": "group-4eb17677c4154815ed3c9b27",
+      "members": [
+        "meajor-trec7-081259",
+        "meajor-trec7-082202"
+      ],
+      "split": "test"
+    }
+  ],
+  "expected_rows": {
+    "challenge": 2000,
+    "test": 423,
+    "train": 3261,
+    "validation": 745
+  },
+  "reserve_policy": "Original 703 rows stay byte-identical, unscored and unopened by train/evaluate. Before stage 9 freeze all model/threshold/attack/defense decisions and the final evaluation protocol; report reserve once without using it to choose a model or retune. Repeated technical reproduction is not a new independent test. Reserve remains source/era biased.",
+  "review_trace_sha256": "6b4c3b86410a9ffcddca06d4ee0f61c2a1bf5bfb92cf402eadb8baae96e84b98",
+  "reviewed_ids": [
+    "external-easy-ham-2-000161",
+    "external-easy-ham-2-001007",
+    "external-hard-ham-000037",
+    "external-hard-ham-000057",
+    "external-nazario-2024-000307",
+    "external-nazario-2024-000394",
+    "external-nazario-2025-000102",
+    "external-nazario-2025-000136",
+    "meajor-trec5-010689",
+    "meajor-trec5-014503",
+    "meajor-trec6-056426",
+    "meajor-trec6-061001",
+    "meajor-trec7-081259",
+    "meajor-trec7-101200",
+    "nazario-2007-000026",
+    "nazario-2007-000141"
+  ],
+  "stage6_status": "Not started; no perturbation generation, attacks, augmentation or defense.",
+  "version": "stage5-fixed-study-v1"
+}
