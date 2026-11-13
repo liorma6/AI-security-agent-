@@ -84,7 +84,14 @@ def main(argv: list[str] | None = None) -> int:
     from phishguard.audit.cli import register
 
     register(commands)
+    from phishguard.refresh.cli import register as register_refresh
+
+    register_refresh(commands)
     args = parser.parse_args(argv)
+    if args.command == "refresh":
+        from phishguard.refresh.cli import run
+
+        return run(args)
     if args.command == "audit":
         from phishguard.audit.cli import run
 

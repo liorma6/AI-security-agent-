@@ -1,0 +1,48 @@
+{
+  "attribution": [
+    "Cardoso, Vitorino, Mendes, Maia and Praca; MeAJOR v2.0, DOI 10.5281/zenodo.18471483. Only TREC publisher ham labels used.",
+    "Jose Nazario, Phishing Corpus, phishing3.mbox; publisher CC BY 4.0 README/LICENSE.",
+    "Miltchev, Rangelov and Genchev; Phishing validation emails v3, DOI 10.5281/zenodo.23954793."
+  ],
+  "files": {
+    "Phishing_validation_emails_v3.csv": {
+      "bytes": 378741,
+      "sha256": "d09536161bc6d0e94c98f6c9bb24c0c2898ba94bf28eed8f89367297276eb320",
+      "url": "https://zenodo.org/api/records/23954793/files/Phishing_validation_emails_v3.csv/content"
+    },
+    "README.md": {
+      "bytes": 12292,
+      "sha256": "b2264da9ac00879acc81312ed688f1c41b82a4543bff236e161ebe7e7e0d6a2b",
+      "url": "https://zenodo.org/api/records/23954793/files/README.md/content"
+    },
+    "data_dictionary.md": {
+      "bytes": 3890,
+      "sha256": "95267aa8a98cd073ae2455bdd09dc8b24c20606e6b1353d2d28a202b5ef9107a",
+      "url": "https://zenodo.org/api/records/23954793/files/data_dictionary.md/content"
+    },
+    "meajor_cleaned_preprocessed.csv": {
+      "bytes": 191121228,
+      "sha256": "5bf5371897ab4e4aa7ac6d8f499869e6c32e4456ed09636731e4069947b69f4f",
+      "url": "https://zenodo.org/api/records/18471483/files/meajor_cleaned_preprocessed.csv/content"
+    },
+    "nazario-2007.mbox": {
+      "bytes": 20067215,
+      "sha256": "b29336d2e31c2dff19639415e98ed2aced5b4d63675ea5e29bea1a7d4e452841",
+      "url": "https://monkey.org/~jose/phishing/phishing3.mbox"
+    },
+    "phishing_v3_metadata.csv": {
+      "bytes": 119412,
+      "sha256": "f1c10cd1dce580c7877ca450a2069007c561781b8d408da07ccd756f07a16732",
+      "url": "https://zenodo.org/api/records/23954793/files/phishing_v3_metadata.csv/content"
+    }
+  },
+  "license": "CC-BY-4.0",
+  "limits": [
+    "MeAJOR file inspection found only trec5/trec6/trec7 rows despite broader landing-page description. Label 1 is excluded; generic spam is not phishing ground truth.",
+    "Mail dates and source remain confounded; additional historical ham/phishing is not representative contemporary inbox data.",
+    "Zenodo v3 is 95 percent template-generated. The 100 original records are described as inbox/SMS communications but provenance is marked unverified in the dictionary. Report these separately.",
+    "Raw texts and learned vocabulary stay local. Publisher licenses and labels are not an independent rights or authenticity audit."
+  ],
+  "reviewed": "2026-11-13",
+  "version": "refresh-sources-v1"
+}

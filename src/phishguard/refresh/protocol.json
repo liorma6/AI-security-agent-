@@ -1,0 +1,37 @@
+{
+  "baseline_algorithm": "Reuse unchanged baseline-v1 TF-IDF/logistic-regression hyperparameters and validation F1 threshold policy. Train a separate artifact on real-mail development data only; no synthetic training rows, no transformer.",
+  "bootstrap": {
+    "repetitions": 1000,
+    "seed": 42
+  },
+  "error_review": "All 117 old errors receive automated profiles and subject/body excerpt triage; inspect a deterministic 24-correct control sample. Record limitations, not causal diagnoses.",
+  "evaluation": "Freeze protocol and dataset before fitting; freeze the saved v2 model/threshold before reading test/challenge for scoring. Compare old and new models on identical prepared inputs. Report new historical test and Zenodo challenge separately, including origin/source subgroups, class counts, FPR, F1, balanced accuracy, group intervals and paired correctness. No tuning after test/challenge. These are stage-4b benchmarks, not untouched final project evidence.",
+  "external_manifest_sha256": "0fe63a922df2fc61df665f3d8d6ddaea8cafcc9c3cf9abb9297e892e8b23ff36",
+  "extraction": "Preserve stage-4a extraction except exact plain placeholders (HTML-viewing notice, normal, no-reply) use a valid inline HTML alternative when available; HTML rooted in html/body/script/doctype inside plain text becomes inert visible text. No link fetching, attachment execution, Unicode attack repair or label edits. Retain valid original MIME text if a proposed repair is unusable.",
+  "final_reserve": "The original 703 records remain byte-identical and unscored. A final protocol covering later model/attack/defense selection must be committed before final use; reserve source bias remains.",
+  "internal_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+  "labels": "Publisher labels retained. Ambiguity is recorded without relabeling predictions. Exclude conflicting exact labels. Exact cleaned-input duplicates collapsed before split.",
+  "meajor_label": "0.0",
+  "meajor_max_per_source": 600,
+  "meajor_sources": [
+    "trec5",
+    "trec6",
+    "trec7"
+  ],
+  "nazario_max": 1800,
+  "old_audit_splits": {
+    "train": 0.8,
+    "validation": 0.2
+  },
+  "old_model_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "relatedness": "Reuse 0.70 exact word-trigram/body/subject/template transitive relations. Also unite old group IDs and declared Zenodo template IDs. Exclude candidate components touching any original internal row or any of the 703 reserve records. Reserve text is machine-read solely for overlap protection, never reviewed, fitted or scored.",
+  "sampling": "Lowest SHA-256 of refresh-sample:<example_id>, without model scores. MeAJOR: schema and publisher-language components all en, sample at most 600 per source, then seeded language filter. Nazario: extraction and seeded language filter first, then sample at most 1800. No replacement after later exclusions.",
+  "seed": 20261113,
+  "split_policy": "Groups containing inspected audit data are development-only (80/20). New historical groups receive 70/15/15 splits balancing source/label strata. Test contains new sources only. Zenodo challenge is always held out; any challenge component touching development or protected rows is excluded.",
+  "splits": {
+    "test": 0.15,
+    "train": 0.7,
+    "validation": 0.15
+  },
+  "version": "real-mail-v2"
+}

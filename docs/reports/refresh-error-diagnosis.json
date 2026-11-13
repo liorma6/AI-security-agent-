@@ -1,0 +1,1696 @@
+{
+  "audit_manifest_sha256": "0fe63a922df2fc61df665f3d8d6ddaea8cafcc9c3cf9abb9297e892e8b23ff36",
+  "control_rows": 24,
+  "counts": {
+    "control": {
+      "account_words": 9,
+      "financial_words": 4,
+      "html_root_in_body": 2,
+      "quoted_reply": 10,
+      "technical_or_list_words": 13,
+      "unicode_format_character": 1,
+      "url": 18
+    },
+    "error": {
+      "account_words": 21,
+      "financial_words": 8,
+      "html_root_in_body": 3,
+      "plain_placeholder": 3,
+      "quoted_reply": 29,
+      "short_body_under_80": 5,
+      "technical_or_list_words": 60,
+      "unicode_format_character": 3,
+      "url": 80
+    }
+  },
+  "error_rows": 117,
+  "limitations": [
+    "Indicators are overlapping text associations, not causal diagnoses.",
+    "Excerpt triage does not independently validate whole-message labels."
+  ],
+  "phase": "stage4b-old-error-diagnosis",
+  "predictions_sha256": "8621889616332d1b5c249c8fa2b2c3e74f232b8c053d7c22087ce2d09c6bdc6e",
+  "profiles": [
+    {
+      "body_characters": 1668,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000084",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 520,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000091",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 776,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000166",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 389,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000180",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 433,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000181",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 325,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000184",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 457,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000222",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1492,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000263",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 677,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000272",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1251,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000316",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 698,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000352",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 825,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000355",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 542,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000381",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 378,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000486",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 392,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000491",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 383,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000493",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 397,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000495",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1794,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000529",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 497,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000566",
+      "indicators": [
+        "quoted_reply",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 611,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000568",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1179,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000616",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 2765,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000623",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 3111,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000624",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1160,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000630",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 336,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000739",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 636,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000740",
+      "indicators": [
+        "url",
+        "technical_or_list_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 793,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000741",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 514,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000783",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 349,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000845",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 2057,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-000962",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1068,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001004",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 555,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001136",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 804,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001175",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 243,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001205",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 412,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001213",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 833,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001214",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1247,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001215",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 804,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001216",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1270,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001227",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 469,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001250",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1453,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001255",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 940,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001259",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 3728,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001278",
+      "indicators": [
+        "url",
+        "technical_or_list_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1260,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001289",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 1978,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001299",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 534,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001312",
+      "indicators": [],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 3761,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001350",
+      "indicators": [
+        "url",
+        "technical_or_list_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 834,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001358",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 293,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001360",
+      "indicators": [
+        "quoted_reply"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 887,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001383",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 425,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001385",
+      "indicators": [
+        "url",
+        "quoted_reply"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 164,
+      "decision": "phishing",
+      "example_id": "external-easy-ham-2-001388",
+      "indicators": [],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 3843,
+      "decision": "phishing",
+      "example_id": "external-hard-ham-000097",
+      "indicators": [
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 4246,
+      "decision": "phishing",
+      "example_id": "external-hard-ham-000178",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 7533,
+      "decision": "phishing",
+      "example_id": "external-hard-ham-000183",
+      "indicators": [
+        "url",
+        "technical_or_list_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 1318,
+      "decision": "phishing",
+      "example_id": "external-hard-ham-000204",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 1634,
+      "decision": "phishing",
+      "example_id": "external-hard-ham-000222",
+      "indicators": [
+        "url",
+        "technical_or_list_words",
+        "financial_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 3188,
+      "decision": "phishing",
+      "example_id": "external-hard-ham-000243",
+      "indicators": [
+        "technical_or_list_words",
+        "financial_words"
+      ],
+      "kind": "error",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 6,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000018",
+      "indicators": [
+        "short_body_under_80",
+        "plain_placeholder"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 1686,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000030",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 1003,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000056",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 913,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000060",
+      "indicators": [
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 2589,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000064",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 2766,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000077",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 6,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000095",
+      "indicators": [
+        "short_body_under_80",
+        "plain_placeholder"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 8,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000101",
+      "indicators": [
+        "short_body_under_80",
+        "plain_placeholder",
+        "unicode_format_character"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 2655,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000136",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 2676,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000156",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 1502,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000182",
+      "indicators": [
+        "unicode_format_character",
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 604,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000201",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 313,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000216",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 567,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000222",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 805,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000236",
+      "indicators": [
+        "html_root_in_body",
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 799,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000239",
+      "indicators": [
+        "html_root_in_body",
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 799,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000240",
+      "indicators": [
+        "html_root_in_body",
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 348,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000243",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 909,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000246",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 910,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000251",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 6172,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000254",
+      "indicators": [
+        "technical_or_list_words",
+        "financial_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 2520,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000297",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 450,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000306",
+      "indicators": [
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 1139,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000307",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 1162,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000358",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 1178,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000360",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 209,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2024-000398",
+      "indicators": [
+        "unicode_format_character"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 2909,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000012",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 3672,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000018",
+      "indicators": [
+        "url",
+        "financial_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 4109,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000029",
+      "indicators": [
+        "financial_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 433,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000032",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 261,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000057",
+      "indicators": [
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 483,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000072",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 463,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000128",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 183,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000137",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 881,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000150",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 2419,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000172",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 904,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000217",
+      "indicators": [
+        "financial_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 1047,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000222",
+      "indicators": [
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 34,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000238",
+      "indicators": [
+        "short_body_under_80"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 1156,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000244",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 4636,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000257",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 1013,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000292",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 3694,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000315",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 1800,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000318",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 1714,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000319",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 1128,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000320",
+      "indicators": [
+        "url"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 973,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000355",
+      "indicators": [
+        "financial_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 854,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000356",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 300,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000362",
+      "indicators": [
+        "technical_or_list_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 157,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000363",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 130,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000367",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 130,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000370",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 191,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000384",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 410,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000430",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 481,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000464",
+      "indicators": [
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 2023,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000466",
+      "indicators": [
+        "url",
+        "financial_words",
+        "account_words"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 500,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000470",
+      "indicators": [],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 50,
+      "decision": "legitimate",
+      "example_id": "external-nazario-2025-000474",
+      "indicators": [
+        "short_body_under_80"
+      ],
+      "kind": "error",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 260,
+      "decision": "phishing",
+      "example_id": "external-nazario-2025-000024",
+      "indicators": [
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 556,
+      "decision": "phishing",
+      "example_id": "external-nazario-2025-000126",
+      "indicators": [
+        "unicode_format_character",
+        "financial_words"
+      ],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 203,
+      "decision": "phishing",
+      "example_id": "external-nazario-2024-000071",
+      "indicators": [],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 726,
+      "decision": "phishing",
+      "example_id": "external-nazario-2024-000399",
+      "indicators": [
+        "technical_or_list_words",
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 2342,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-000017",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 800,
+      "decision": "phishing",
+      "example_id": "external-nazario-2025-000114",
+      "indicators": [],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 10049,
+      "decision": "legitimate",
+      "example_id": "external-hard-ham-000239",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words",
+        "financial_words",
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 1018,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-000339",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 3038,
+      "decision": "phishing",
+      "example_id": "external-nazario-2025-000422",
+      "indicators": [
+        "url",
+        "technical_or_list_words",
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 1517,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-000145",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 547,
+      "decision": "phishing",
+      "example_id": "external-nazario-2025-000042",
+      "indicators": [
+        "financial_words",
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 459,
+      "decision": "phishing",
+      "example_id": "external-nazario-2025-000438",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 652,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-001073",
+      "indicators": [
+        "url",
+        "quoted_reply"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 556,
+      "decision": "phishing",
+      "example_id": "external-nazario-2025-000081",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2025"
+    },
+    {
+      "body_characters": 447,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-000502",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 2099,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-000268",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 10727,
+      "decision": "legitimate",
+      "example_id": "external-hard-ham-000113",
+      "indicators": [
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 1038,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-000815",
+      "indicators": [
+        "url",
+        "quoted_reply"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 19140,
+      "decision": "legitimate",
+      "example_id": "external-hard-ham-000251",
+      "indicators": [
+        "url",
+        "financial_words",
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 4452,
+      "decision": "legitimate",
+      "example_id": "external-hard-ham-000040",
+      "indicators": [
+        "html_root_in_body",
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 493,
+      "decision": "phishing",
+      "example_id": "external-nazario-2024-000131",
+      "indicators": [
+        "url",
+        "account_words"
+      ],
+      "kind": "control",
+      "label": "phishing",
+      "source_id": "nazario-2024"
+    },
+    {
+      "body_characters": 2457,
+      "decision": "legitimate",
+      "example_id": "external-hard-ham-000060",
+      "indicators": [
+        "html_root_in_body",
+        "url",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham"
+    },
+    {
+      "body_characters": 923,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-000046",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    },
+    {
+      "body_characters": 872,
+      "decision": "legitimate",
+      "example_id": "external-easy-ham-2-001273",
+      "indicators": [
+        "url",
+        "quoted_reply",
+        "technical_or_list_words"
+      ],
+      "kind": "control",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2"
+    }
+  ],
+  "reserve_rows_read": 0
+}
