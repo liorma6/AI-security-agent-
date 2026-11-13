@@ -1,0 +1,59 @@
+{
+  "version": "generalization-audit-v1",
+  "baseline_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "baseline_threshold": 0.44,
+  "internal_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+  "runtime": {
+    "langdetect": "1.0.9",
+    "truststore": "0.10.5"
+  },
+  "model_policy": "Load the exact stage-3 baseline and threshold. No fitting, feature/threshold tuning or stage-5 work. Do not evaluate the stage-4 pretrained model in this audit.",
+  "raw_message_bytes": 1048576,
+  "archive_expanded_bytes": 134217728,
+  "max_archive_members": 10000,
+  "language": {
+    "name": "langdetect",
+    "seed": 0,
+    "accept": "en",
+    "minimum_probability": 0.9
+  },
+  "mime": "Parse offline. Decode subject and select inline plain text, falling back to HTML text. Ignore attachments and embedded messages, script/style/head/noscript and comments; do not follow links or execute/render HTML. Strict declared charset decoding; fallback UTF-8 replacement is excluded if replacement characters remain. Remove repeated leading [SPAM]/[PHISHING] subject flags. Reject unusable/overlong text rather than truncate.",
+  "system_subjects": [
+    "DON'T DELETE THIS MESSAGE -- FOLDER INTERNAL DATA"
+  ],
+  "relatedness": {
+    "near_body_jaccard": 0.7,
+    "shingle_words": 3,
+    "minimum_body_words": 10,
+    "exact": "canonical preprocessed subject/body; exact body at least 20 characters",
+    "subject": "casefold/whitespace, remove leading Re/Fw/Fwd prefixes; at least 15 characters and 3 words",
+    "template": "remove complete synthetic markers; mask square placeholders, URLs, email addresses and digits",
+    "closure": "transitive components; exact duplicate inputs collapsed, conflicting exact labels excluded. Entire external components touching ANY internal train/validation/test row excluded."
+  },
+  "external_split": {
+    "audit": 0.7,
+    "reserve": 0.3,
+    "seed": 20261113,
+    "rule": "Deterministic whole-group allocation minimizing class-wise squared target deviation; reserve never scored or manually reviewed. Preparation reads it only for quality, language and grouping."
+  },
+  "audit_label_review": {
+    "per_label": 8,
+    "selection": "Lowest SHA-256 of stage4a-label-review:<example_id> in audit partition, before scores; retain labels, report ambiguity."
+  },
+  "internal_diagnostics": [
+    "Rescore frozen train/validation/test, compare published test counts.",
+    "Recheck declared grouping at 0.90 and exploratory broader similarity at 0.70; report cross-split relations without modifying data.",
+    "Report coefficients and training document frequencies for 12 top terms per direction; coefficients are associations, not causal explanations.",
+    "Count fixed text-pattern indicators by label; no feature removal or retuning based on outcomes."
+  ],
+  "evaluation": [
+    "Report all eligible audit rows, per-source metrics, class counts, balanced accuracy, confusion, precision/recall/F1/FPR and exclusions.",
+    "Record model/dataset/protocol digests and local text-free predictions.",
+    "Independent group bootstrap, 1000 resamples, seed 42, percentile 95% intervals; intervals do not address source bias or label errors.",
+    "The audit cohort becomes development evidence after inspection. Keep reserve unscored and require a new precommitted protocol before any future final use."
+  ],
+  "bootstrap": {
+    "repetitions": 1000,
+    "seed": 42
+  }
+}

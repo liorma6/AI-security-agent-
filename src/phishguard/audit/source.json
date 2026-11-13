@@ -1,0 +1,71 @@
+{
+  "version": "external-mail-v1",
+  "retrieved": "2026-11-13",
+  "attribution": [
+    "Jose Nazario, Phishing Corpus, 2024 and 2025 mailboxes, CC-BY-4.0.",
+    "Apache SpamAssassin public corpus / Justin Mason and original message authors, February 2003 easy_ham_2 and hard_ham."
+  ],
+  "terms": "Nazario explicitly declares CC-BY-4.0. SpamAssassin offers its public corpus for filtering research/testing, retains sender copyright and states no standardized open-data license. Raw messages are used only locally and are not redistributed. No independent rights or privacy audit is claimed.",
+  "files": {
+    "nazario-readme.txt": {
+      "url": "https://monkey.org/~jose/phishing/README.txt",
+      "bytes": 961,
+      "sha256": "4589b63a4149bff0b65e82c2110baaebee36e5d9219009a31cc78bb6ab597fab",
+      "kind": "terms"
+    },
+    "nazario-license.txt": {
+      "url": "https://monkey.org/~jose/phishing/LICENSE.txt",
+      "bytes": 18657,
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+      "kind": "terms"
+    },
+    "nazario-2024.mbox": {
+      "url": "https://monkey.org/~jose/phishing/phishing-2024",
+      "bytes": 15457816,
+      "sha256": "60afa40a2757170093a2bde31ec9cda4e54d33992203ce04bfbbc86d2e5e5b99",
+      "kind": "mbox",
+      "label": "phishing",
+      "source_id": "nazario-2024",
+      "license": "CC-BY-4.0"
+    },
+    "nazario-2025.mbox": {
+      "url": "https://monkey.org/~jose/phishing/phishing-2025",
+      "bytes": 18769863,
+      "sha256": "f1fa7e0fe35c9a16f36d9aa20ade7e1d3908d1d0c1d917b8c53c8aa799ec1c8f",
+      "kind": "mbox",
+      "label": "phishing",
+      "source_id": "nazario-2025",
+      "license": "CC-BY-4.0"
+    },
+    "spamassassin-readme.html": {
+      "url": "https://spamassassin.apache.org/old/publiccorpus/readme.html",
+      "bytes": 4566,
+      "sha256": "9f8cc0c8be6f32b25226d3ece26da775a6e008581b8fb061a679e3acee6b64be",
+      "kind": "terms"
+    },
+    "easy-ham-2.tar.bz2": {
+      "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_easy_ham_2.tar.bz2",
+      "bytes": 1077892,
+      "sha256": "b4bd3dc5ae5b40f38e99a0e41ad7d16b428b56e818e3a6ffa07330d62004dd38",
+      "kind": "tar-bz2",
+      "label": "legitimate",
+      "source_id": "spamassassin-easy-ham-2",
+      "license": "Publisher-offered filtering research corpus; original senders retain copyright"
+    },
+    "hard-ham.tar.bz2": {
+      "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_hard_ham.tar.bz2",
+      "bytes": 1029898,
+      "sha256": "ce2ce67880643dbde65ea7f85bffbfe4417349c4bd80b6b0de56262ae6b0a9c9",
+      "kind": "tar-bz2",
+      "label": "legitimate",
+      "source_id": "spamassassin-hard-ham",
+      "license": "Publisher-offered filtering research corpus; original senders retain copyright"
+    }
+  },
+  "limits": [
+    "Sources and eras differ by label; this is a cross-source stress test, not a contemporary-inbox prevalence sample.",
+    "Nazario represents one personal inbox with hand labels that may contain errors. Ham means publisher non-spam, not independently authenticated safe mail.",
+    "MIME text extraction cannot assess attachments, images, sender identity or destinations.",
+    "Language identification and heuristic grouping may make mistakes."
+  ]
+}

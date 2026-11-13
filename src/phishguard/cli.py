@@ -81,7 +81,14 @@ def main(argv: list[str] | None = None) -> int:
         if action == "predict":
             command.add_argument("--selection", type=Path, help="Use a frozen validation threshold")
             command.add_argument("--file", required=True, help="UTF-8 JSON email, or - for stdin")
+    from phishguard.audit.cli import register
+
+    register(commands)
     args = parser.parse_args(argv)
+    if args.command == "audit":
+        from phishguard.audit.cli import run
+
+        return run(args)
     if args.command == "pretrained":
         from phishguard.pretrained.cli import run
 
