@@ -48,6 +48,10 @@ Fetched the public source through the implemented downloader into a fresh cache 
 
 Updated the operational README, dataset guide, sample audit, project-book revision 1.2, contracts and component UML. W03 assigns provenance/ingestion to Lior and labels/deduplication/split validation to Sharon Elimelech with equal planning weight. Code and initial review were AI-assisted; no completed individual student review is asserted.
 
+All four GitHub Actions combinations passed: Windows/Linux with Python 3.11/3.13. Each ran locked installation, lint/format checks, the 124 tests, documentation validation, package build and a CLI fixture check. [Verified implementation](https://github.com/liorma6/AI-security-agent-/commit/af9df084f276e85538c8c34b956b49180c36c483) and [verification run](https://github.com/liorma6/AI-security-agent-/actions/runs/43422755491).
+
+Regenerated the local English Word and PDF books from revision 1.2. The PDF has 17 pages; Word has eight chapter headings, nine tables and two embedded UML diagrams. Both exports passed language/content checks, PDF text stayed within page bounds, and the dataset/architecture pages were visually reviewed. Distribution inspection confirmed that neither the source archive nor wheel contains raw or processed research emails.
+
 Next functional stage: stage 3, TF-IDF/logistic regression with training-only feature fitting and the documented shortcut mitigation. Stages 0-2 are implemented; stages 3-9 remain planned.
 
 ## Contribution record format
