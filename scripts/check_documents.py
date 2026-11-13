@@ -102,7 +102,8 @@ def main() -> int:
         "table structure, eight chapters and two UML diagrams."
     )
     print(
-        "Contracts and dataset preparation are implemented; model experiments and demo are pending."
+        "Contracts, data preparation and the measured baseline are implemented; "
+        "later experiments/UI are pending."
     )
     return 0
 

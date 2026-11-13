@@ -1,6 +1,6 @@
 # Research dataset: E-PhishLLM v1
 
-Stage 2 prepares an English-flagged subset of **synthetic** emails. It provides reproducible research input, not evidence of real-mail detection quality. No classifier has been trained or evaluated.
+Stage 2 prepares an English-flagged subset of **synthetic** emails. It provides reproducible research input, not evidence of real-mail detection quality. The [stage-3 baseline](baseline.md) is now trained and evaluated on this frozen dataset; the data-quality checks below remain distinct from model measurements.
 
 ## Source, license and provenance
 
@@ -66,7 +66,7 @@ Two independent local preparations, one using a fresh download through the imple
 
 The [sample audit](dataset-label-audit.md) covers 24 deterministically selected rows, 12 per class, reviewed with AI assistance. Twelve legitimate examples and five phishing examples were compatible with their labels from their visible wording; seven phishing examples required missing sender/link/attachment context. Labels were retained, not silently corrected. Compatibility is not authentication of the sender, proof of intent or a full-corpus accuracy estimate. Student review remains open.
 
-The corpus contains a substantial shortcut: `<<` placeholders occur in **3,609 phishing messages and zero legitimate messages**. Some placeholder names explicitly describe malicious content. Raw-text accuracy could reward detection of a generation artifact. **Before stage 3 training**, implement and freeze a label-independent policy removing the contents of synthetic `<<...>>` markers from model input, preserve originals, and report a training/validation shortcut diagnostic. Any raw-text comparison must be clearly identified as artifact-sensitive. Do not use final-test outcomes to choose preprocessing.
+The corpus contains a substantial shortcut: `<<` placeholders occur in **3,609 phishing messages and zero legitimate messages**. Some placeholder names explicitly describe malicious content. Raw-text accuracy could reward detection of a generation artifact. **Implemented in stage 3:** a precommitted label-independent policy removes complete `<<...>>` spans from model input, preserves originals and records training/validation shortcut diagnostics. Any raw-text comparison must be clearly identified as artifact-sensitive. Do not use final-test outcomes to choose preprocessing.
 
 Additional limits are synthetic writing style, possible label ambiguity, missing profile IDs, mixed-language subjects, and semantic relatives that the similarity heuristic misses. Group separation is verified for the declared rules only. There is no independent real-inbox evaluation or assurance of no overlap with a future pretrained model's training set. Later reports must state these limits; deployment-quality claims would require separately licensed real-message evaluation.
 

@@ -4,11 +4,11 @@ PhishGuard is a course project on phishing-email classification and adversarial 
 
 ## Current status
 
-Stages 1-2 provide an installable Python package, strict data contracts, an offline JSON validator and a reproducible dataset-preparation pipeline with grouped training/validation/test splits. Classifiers, training, perturbation experiments and the web demo are **not implemented yet**. These commands do not classify new email or produce a risk score.
+PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. Hugging Face comparison, transformer fine-tuning, adversarial experiments and the web demo remain planned.
 
 ## Install
 
-Use Python 3.11-3.13 and [uv](https://docs.astral.sh/uv/getting-started/installation/). Python 3.13 is the development default in `.python-version`; the local environment was verified with Python 3.13.16 and uv 0.13.1. The selected training libraries will be checked separately when model work begins.
+Use Python 3.11-3.13 and [uv](https://docs.astral.sh/uv/getting-started/installation/). Python 3.13 is the development default in `.python-version`; the local environment was verified with Python 3.13.16 and uv 0.13.1. The baseline uses scikit-learn 1.9.1 with numerical dependencies pinned in `uv.lock`. Transformer-library compatibility will be checked separately.
 
 From the repository root:
 
@@ -55,7 +55,21 @@ uv run --frozen phishguard data verify --reference data/manifests/ephishllm-v1.j
 
 The downloader retrieves a pinned public E-PhishLLM file and publisher license card, verifies their digests and caches them locally. No account or paid service is needed. Preparation and verification then run offline. The selected corpus is **synthetic**, with 11,502 English-flagged messages: 8,052 training, 1,725 validation and 1,725 test examples.
 
-The raw and processed message files remain in ignored local `data/raw/` and `data/processed/` folders. Only a text-free split manifest is tracked in Git. Preparation refuses an existing output directory; see the [dataset guide](docs/dataset.md) for separate reproductions, options, label audit and limitations. Synthetic placeholders create a known shortcut that must be addressed before model training.
+The raw and processed message files remain in ignored local `data/raw/` and `data/processed/` folders. Only a text-free split manifest is tracked in Git. Preparation refuses an existing output directory; see the [dataset guide](docs/dataset.md) for separate reproductions, options, label audit and limitations. The baseline removes complete synthetic angle-bracket markers from model input while preserving the original records.
+
+## Train, evaluate and predict
+
+```sh
+uv run --frozen phishguard baseline train
+uv run --frozen phishguard baseline evaluate
+uv run --frozen phishguard baseline predict --file tests/fixtures/email.json
+```
+
+Run these after dataset preparation. Training writes the model and training report to `models/baseline-v1/`; evaluation loads that model and writes final-test results to `artifacts/baseline-test-v1/`. Both directories stay local and are ignored by Git. Existing outputs are never overwritten; see [separate reproduction commands](docs/baseline.md).
+
+To check your own message, supply a UTF-8 JSON file with `body` and optional `subject`, or use `--file -` for JSON standard input. Prediction returns the score, threshold, decision and model identity without saving or echoing the email. It uses the trained local model; no network or paid API is involved. A missing/invalid model returns `unavailable` with no score. This score is not a calibrated probability or proof that a message is safe.
+
+The frozen synthetic test set produced **98.43% accuracy, 99.11% phishing recall and 2.30% legitimate false-positive rate**: 891 detected phishing messages, eight missed phishing messages, 807 correct legitimate decisions and 19 false alarms. These results do not establish real-inbox or adversarial performance. [Protocol, measured results and limitations](docs/baseline.md).
 
 ## Run checks and build
 
@@ -67,7 +81,7 @@ uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The offline tests cover contracts, malformed JSON, input limits, label mappings, threshold decisions, data ingestion, grouping, split leakage, frozen-file integrity, downloader failures and CLI privacy/errors. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs the checks on Windows and Linux with Python 3.11 and 3.13. These are foundation checks, not measurements of detection accuracy. Builds are written to the ignored `dist` directory.
+The offline tests cover contracts, malformed JSON, input limits, label mappings, threshold decisions, data ingestion, grouping, split leakage, frozen-file integrity, downloader failures and CLI privacy/errors. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs the checks on Windows and Linux with Python 3.11 and 3.13. The 175 tests include small training/save/load/inference checks and leakage protections. Research-corpus metrics are recorded separately in the baseline reports. Builds are written to the ignored `dist` directory.
 
 ## Documentation
 
@@ -78,12 +92,13 @@ The offline tests cover contracts, malformed JSON, input limits, label mappings,
 - [Implemented contracts](docs/contracts.md)
 - [Dataset source, preparation and limits](docs/dataset.md)
 - [Label sample audit](docs/dataset-label-audit.md)
+- [Classical baseline and measured results](docs/baseline.md)
 
-The project book is the canonical specification. It distinguishes implemented behavior from future work. Training, evaluation and demo commands will be added when their implementations are available and verified.
+The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover implemented data preparation, baseline training/evaluation and local inference. Web-demo commands will be added when the UI is implemented.
 
 ## Planned deliverables
 
-- A baseline detector and a fine-tuned small transformer, with reproducible evaluation.
+- A fine-tuned small transformer to compare with the implemented classical baseline.
 - A comparison against a suitable pretrained Hugging Face classifier.
 - A controlled text-perturbation runner and a robustness improvement experiment.
 - A local pasted-email demo with model identity, score and explanation.

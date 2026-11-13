@@ -1,6 +1,6 @@
 # Classical phishing baseline
 
-Stage 3 implements TF-IDF plus logistic regression. This document first records the protocol before research-corpus training; measured results are added only after execution. The [packaged protocol](../src/phishguard/baseline/protocol.json) is the machine-readable specification.
+Stage 3 implements and evaluates TF-IDF plus logistic regression. The protocol and code were committed before research-corpus training at [3cd54fb](https://github.com/liorma6/AI-security-agent-/commit/3cd54fb3cfaffc38acaaf75ac7d61afefb5f5c78); both initial training and final evaluation recorded a clean working tree. The [packaged protocol](../src/phishguard/baseline/protocol.json) is the machine-readable specification.
 
 ## Protocol fixed before evaluation
 
@@ -37,6 +37,32 @@ uv run --frozen phishguard baseline predict --file tests/fixtures/email.json
 Training writes `models/baseline-v1/model.json`, `manifest.json` and `training-report.json`. Evaluation writes `artifacts/baseline-test-v1/report.json` and text-free per-example predictions. These directories are ignored by Git. The measured aggregate reports are published under `docs/reports/` after execution. Neither command overwrites an existing output directory.
 
 For a separate reproducibility check, use `baseline train --output models/baseline-reproduction`, then `baseline evaluate --model models/baseline-reproduction --output artifacts/baseline-reproduction`. Both accept `--dataset PATH` and `--reference PATH`; the model must reference that same frozen dataset digest. Prediction accepts `--model PATH` and `--file -` for JSON standard input. Exit codes: 0 success, 1 validation/model error or unavailable prediction, 2 file-access/usage error.
+
+## Measured results - November 13, 2026
+
+Trained on 8,052 messages with 30,000 TF-IDF features. LIBLINEAR converged in nine iterations. Validation selected threshold **0.44**; the model was then frozen before final-test evaluation. No protocol, hyperparameter or threshold was changed after viewing test results.
+
+| Metric | Validation, selected 0.44 | Final test, frozen 0.44 |
+| --- | --- | --- |
+| Rows | 1,725 | 1,725 |
+| Accuracy | 98.67% | 98.43% |
+| Phishing precision | 98.56% | 97.91% |
+| Phishing recall | 98.89% | 99.11% |
+| Phishing F1 | 98.72% | 98.51% |
+| Legitimate false-positive rate | 1.57% | 2.30% |
+| TP / FP / TN / FN | 889 / 13 / 813 / 10 | 891 / 19 / 807 / 8 |
+
+At the default threshold 0.50, validation had five false alarms and 19 misses; at the selected 0.44 it had 13 false alarms and ten misses. The declared F1 objective accepted more false alarms to reduce misses. This threshold is a research choice, not a validated operating policy for a company. Selecting a stricter operational policy would require a new declared validation-only procedure.
+
+The training-majority comparator always predicts phishing. On the final set it achieved 52.12% accuracy, 100% recall and 100% false-positive rate, illustrating why recall alone is insufficient. Exact counts, full-precision values and all threshold candidates are in the [training report](reports/baseline-training.json) and [test report](reports/baseline-test.json).
+
+The marker-only diagnostic detected 2,500 training and 568 validation phishing rows with zero legitimate matches. It achieved 80.81% validation accuracy without learning any language patterns, confirming the source shortcut. After preprocessing, no complete synthetic markers remained in those inputs. This is not an ablation quantifying how much a raw-text trained classifier would improve or degrade, and does not remove all dataset bias.
+
+Execution used Windows AMD64, Python 3.13.16, scikit-learn 1.9.1, NumPy 2.5.4 and SciPy 1.18.1 on CPU, requesting one numerical-library thread; the machine reports 12 logical CPUs. Fit/validation computation took 3.02 seconds after input/boundary preprocessing. A final-test batch of 1,725 emails took 0.311 seconds (0.180 ms amortized per email), excluding imports, model loading and file I/O. This is not single-request latency or a service throughput benchmark; no peak-memory measurement is claimed.
+
+Independent retraining produced byte-identical model and manifest files, identical validation results, and identical final-test prediction bytes. Test confusion counts were also recomputed independently from the predictions. The deterministic test rerun was a reproduction check, not retuning. See the [reproduction evidence](reports/baseline-reproduction.json). Cross-platform tests use numerical tolerances; byte identity across different environments is not promised.
+
+Model SHA-256: `a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703`. The full model stays in the ignored local model directory, since its vocabulary is learned from the corpus. Git contains aggregate results and reproduction metadata only.
 
 ## Verification and responsibility
 

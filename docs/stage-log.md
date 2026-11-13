@@ -58,6 +58,24 @@ Next functional stage: stage 3, TF-IDF/logistic regression with training-only fe
 
 Implemented the classical baseline runner, safe JSON artifacts, separate evaluation and private inference CLI. The fixed protocol specifies marker removal, training-only TF-IDF/logistic-regression fitting, validation-only threshold selection and independent final evaluation. The initial 172 offline tests passed, including 48 baseline checks. This entry precedes research-corpus training; no measured research accuracy is claimed yet. W04 assigns training/artifacts to Lior and evaluation/leakage checks to Sharon Elimelech, with AI assistance and individual student review still open.
 
+## Stage 3 - Classical baseline results - November 13, 2026
+
+Completed research training and final evaluation under the protocol committed at `3cd54fb3cfaffc38acaaf75ac7d61afefb5f5c78`, with a clean working tree recorded for both runs. Trained on 8,052 messages using 30,000 word unigram/bigram TF-IDF features and L2 logistic regression. Only training data fitted vocabulary, IDF and coefficients. Validation selected threshold 0.44 using the declared F1 objective; final-test text was not opened during training. Complete synthetic markers were removed identically for all inputs without changing source records.
+
+Final-test counts on 1,725 messages: TP=891, FP=19, TN=807, FN=8. Accuracy=98.43%, phishing precision=97.91%, recall=99.11%, F1=98.51%, legitimate false-positive rate=2.30%. The training-majority comparator scored 52.12% accuracy and 100% false-positive rate. These are synthetic-benchmark measurements, not real-inbox or adversarial results. The lower selected threshold trades fewer misses for more false alarms, as recorded in the validation comparison.
+
+The marker-only rule achieved 80.81% validation accuracy before cleanup, demonstrating the source shortcut. Zero complete markers remained in transformed training/validation data. This diagnostic does not prove removal of all synthetic cues or quantify a raw-model ablation. Context-dependent source labels and incomplete campaign identity remain limitations.
+
+Independent retraining produced byte-identical model/manifest files and identical final-test prediction bytes. Independently recounted confusion values agreed. Numerical reconstruction from validated JSON matched scikit-learn scores exactly locally, within the required 1e-12 tolerance. Model digest: `a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703`. No test-driven changes were made to the protocol, parameters or threshold. Aggregate training, test and reproduction reports are committed under docs/reports; learned model state and per-example predictions remain in ignored local folders.
+
+Verification: 175 offline tests passed locally (80 foundation, 44 dataset, 51 baseline), including non-convergence, no test-file access during training, train-only IDF/vocabulary, exact confusion arithmetic, cleaned-text leakage, malformed/tampered model state and private inference. Lint and formatting passed. CPU environment: Windows AMD64, Python 3.13.16, scikit-learn 1.9.1, NumPy 2.5.4, SciPy 1.18.1, one requested numerical-library thread. Measured fit/validation computation was 3.02 seconds and test batch scoring was 0.311 seconds, excluding the overhead described in the baseline guide.
+
+Updated book revision 1.3, README startup commands, baseline guide, implementation plan, contracts and UML to distinguish implemented baseline inference from the pending web demo, explanation and advanced experiments. W04 ownership remains evenly allocated: Lior leads training/artifacts; Sharon Elimelech leads metrics, threshold selection and leakage/reproducibility checks. The implementation and reports are AI-assisted; individual student review remains open.
+
+Built source and wheel distributions, confirmed that the protocol is bundled and learned models/raw email are excluded, and reran all 175 tests against the installed wheel. Loaded the research model through the installed console command and obtained the same fixture prediction. Restored the locked editable environment. Dependency-lock and 55-file English documentation checks passed.
+
+Next functional stage: stage 4, reviewed pretrained Hugging Face classifier comparison. Stages 0-3 are implemented; six stages (4-9) remain.
+
 ## Contribution record format
 
 For each completed activity record the package ID, student, date, actual work, artifact or commit, peer review status and verification results. Reference the ownership plan without treating assigned responsibility as evidence of historical authorship.

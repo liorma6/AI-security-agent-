@@ -1,0 +1,22 @@
+{
+  "dataset_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+  "first_fit_seconds": 3.019310100004077,
+  "first_test_batch_seconds": 0.31090389998280443,
+  "independently_counted_test_confusion": {
+    "fn": 8,
+    "fp": 19,
+    "tn": 807,
+    "tp": 891
+  },
+  "interpretation": "Independent retraining and deterministic evaluation rerun for verification; no protocol or threshold retuning after test inspection.",
+  "manifest_bytes_identical": true,
+  "model_bytes_identical": true,
+  "model_sha256": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "protocol_sha256": "7ce4e2cabd820f8320794afe7d310da1d210ac410ba8862c843e3cf986e2a963",
+  "repeat_fit_seconds": 3.1942326000134926,
+  "repeat_test_batch_seconds": 0.32017890000133775,
+  "same_local_environment": true,
+  "test_metrics_identical": true,
+  "test_predictions_identical": true,
+  "validation_metrics_identical": true
+}

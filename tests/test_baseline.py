@@ -371,3 +371,42 @@ def test_cli_train_and_evaluate(prepared, tmp_path, capsys):
         == 0
     )
     assert json.loads(capsys.readouterr().out)["status"] == "evaluated"
+
+
+def test_non_convergence_aborts_before_artifact_creation(prepared, tmp_path, monkeypatch):
+    import warnings
+
+    from sklearn.exceptions import ConvergenceWarning
+
+    def not_converged(*args, **kwargs):
+        warnings.warn("PRIVATE-MARKER", ConvergenceWarning, stacklevel=2)
+
+    monkeypatch.setattr(model_module.LogisticRegression, "fit", not_converged)
+    directory, reference = prepared
+    output = tmp_path / "model"
+    with pytest.raises(BaselineError, match="training_not_converged"):
+        train_baseline(directory, reference, output)
+    assert not output.exists()
+
+
+def test_evaluation_rejects_another_dataset(prepared, tmp_path, fitted):
+    directory, reference = prepared
+    save_model(fitted, tmp_path / "model")
+    with pytest.raises(BaselineError, match="model_dataset_mismatch"):
+        evaluate_baseline(directory, reference, tmp_path / "model", tmp_path / "result")
+    assert not (tmp_path / "result").exists()
+
+
+def test_evaluation_rejects_cleaned_development_test_overlap(prepared, corpus, tmp_path, fitted):
+    directory, reference = prepared
+    state = fitted.state.model_copy(
+        update={
+            "dataset_sha256": digest(reference.read_bytes()),
+            "development_text_hashes": fitted.state.development_text_hashes
+            + [model_module.text_hash(corpus["test"][0].email)],
+        }
+    )
+    save_model(model_module.Baseline.from_state(state), tmp_path / "model")
+    with pytest.raises(BaselineError, match="preprocessed_test_leakage"):
+        evaluate_baseline(directory, reference, tmp_path / "model", tmp_path / "result")
+    assert not (tmp_path / "result").exists()

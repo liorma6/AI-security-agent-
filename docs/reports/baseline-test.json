@@ -1,0 +1,76 @@
+{
+  "amortized_ms_per_email": 0.18023414491756778,
+  "batch_inference_seconds": 0.31090389998280443,
+  "code": {
+    "commit": "3cd54fb3cfaffc38acaaf75ac7d61afefb5f5c78",
+    "working_tree_dirty": false
+  },
+  "dataset_manifest_sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+  "environment": {
+    "architecture": "AMD64",
+    "logical_cpus": 12,
+    "os": "Windows",
+    "packages": {
+      "numpy": "2.5.4",
+      "phishguard": "0.3.0",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "threadpoolctl": "3.8.0"
+    },
+    "processor": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD",
+    "python": "3.13.16",
+    "requested_numeric_threads": 1
+  },
+  "limitations": [
+    "Synthetic publisher-English benchmark, not real-inbox performance.",
+    "Publisher labels can require missing sender/link/attachment context.",
+    "Declared grouping does not prove complete campaign independence.",
+    "Scores are uncalibrated; no adversarial robustness has been evaluated."
+  ],
+  "metrics": {
+    "accuracy": 0.9843478260869565,
+    "confusion": {
+      "fn": 8,
+      "fp": 19,
+      "tn": 807,
+      "tp": 891
+    },
+    "f1": 0.9850746268656716,
+    "false_positive_rate": 0.023002421307506054,
+    "labels": {
+      "legitimate": 826,
+      "phishing": 899
+    },
+    "precision": 0.9791208791208791,
+    "recall": 0.9911012235817576,
+    "rows": 1725,
+    "threshold": 0.44
+  },
+  "model_id": "tfidf-logistic-regression",
+  "model_revision": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703",
+  "phase": "final-test",
+  "predictions_sha256": "c1af56f55256fb8fde2dc9d84c91aa073697083d2d51f3238715ec47da3f7b1d",
+  "protocol_sha256": "7ce4e2cabd820f8320794afe7d310da1d210ac410ba8862c843e3cf986e2a963",
+  "report_version": "1.0",
+  "test_ids_sha256": "bbd08f06b89639017c05586e789613464504c7262b3c0ea78d665f18a901620f",
+  "timing_scope": "One CPU batch: preprocessing, TF-IDF transform and scoring; excludes loading, imports and disk I/O. Not single-request latency.",
+  "training_majority_baseline": {
+    "accuracy": 0.5211594202898551,
+    "confusion": {
+      "fn": 0,
+      "fp": 826,
+      "tn": 0,
+      "tp": 899
+    },
+    "f1": 0.6852134146341463,
+    "false_positive_rate": 1.0,
+    "labels": {
+      "legitimate": 826,
+      "phishing": 899
+    },
+    "precision": 0.5211594202898551,
+    "recall": 1.0,
+    "rows": 1725,
+    "threshold": 0.5
+  }
+}
