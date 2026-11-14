@@ -1,0 +1,9 @@
+{
+  "baseline_revision": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480",
+  "dataset_sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+  "protocol_sha256": "13ab323e05a056979b215b3cfd71deb68d321161ac4d2643020098f325803bf7",
+  "schema_version": "1.0",
+  "source_sha256": "7dc6e2912af1fe36b1563be5f96eba5bd3f7c64ffe2b0f55c9af966efb837a40",
+  "threshold": 0.45,
+  "validation_report_sha256": "d3c12e25ef9758330c7b865de03c5254f99608a205d438684f2aebeb82da96c7"
+}
