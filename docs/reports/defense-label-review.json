@@ -1,0 +1,64 @@
+{
+  "decisions": [
+    {
+      "cohort": "test",
+      "decision": "supported",
+      "observation": "Readable typos preserve the tax-refund request, amount and form-access call to action.",
+      "operation": "duplicate_letter",
+      "parent_id": "nazario-2007-002273",
+      "variant_id": "ev6-ba69c53fb7eaf9ab732ca6d8"
+    },
+    {
+      "cohort": "test",
+      "decision": "ambiguous",
+      "observation": "The short extracted body is uninformative and lacks a recoverable phishing request. The student-word typo is readable, but semantic validation of a phishing evasion is ambiguous despite the unchanged publisher label and subject.",
+      "operation": "swap_letters",
+      "parent_id": "nazario-2007-000059",
+      "variant_id": "ev6-c1c2c17104444b519aea240e"
+    },
+    {
+      "cohort": "test",
+      "decision": "supported",
+      "observation": "Calculation/deadline typos preserve the same tax-refund lure and requested action.",
+      "operation": "swap_letters",
+      "parent_id": "nazario-2007-002273",
+      "variant_id": "ev6-96ae8f11498348db763f649b"
+    },
+    {
+      "cohort": "challenge",
+      "decision": "supported",
+      "observation": "Readable customs/thanks typos retain the parcel-fee request, amount and target URL.",
+      "operation": "duplicate_letter",
+      "parent_id": "zenodo-v3-0086",
+      "variant_id": "ev6-28cbdf0ac17e773ce474bf77"
+    },
+    {
+      "cohort": "challenge",
+      "decision": "supported",
+      "observation": "Readable payment-word typos retain the overdue-invoice request, amount, urgency and target URL.",
+      "operation": "duplicate_letter",
+      "parent_id": "zenodo-v3-0542",
+      "variant_id": "ev6-3646f06a4cd94475be66d4cc"
+    },
+    {
+      "cohort": "challenge",
+      "decision": "supported",
+      "observation": "Readable typos preserve the secure-message login/transaction request, amount and target URL.",
+      "operation": "swap_letters",
+      "parent_id": "zenodo-v3-1838",
+      "variant_id": "ev6-1229116107c092351b3cee61"
+    },
+    {
+      "cohort": "challenge",
+      "decision": "supported",
+      "observation": "Readable account/suspension typos preserve the urgent fraud-line call, number and time limit.",
+      "operation": "swap_letters",
+      "parent_id": "zenodo-v3-1953",
+      "variant_id": "ev6-55afb912c62bb866f1a1cccd"
+    }
+  ],
+  "limitations": "Six supported variants from five originals; one ambiguous historical original. Publisher labels and all candidate counts remain unchanged. This bounded sample is not exhaustive certification or sender authentication.",
+  "predictions_sha256": "eef791e2f4dbd607b51bd4e077cc960a8e1274c1eef537c8a53ada475f76bc2e",
+  "reviewer": "AI-assisted contextual review; individual student review remains open",
+  "scope": "Full original subject/body for all seven selected variants, plus every before/after edit and local context. No link following or message delivery."
+}

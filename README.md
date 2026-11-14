@@ -1,10 +1,10 @@
 # PhishGuard
 
-PhishGuard is a course project on phishing-email classification and adversarial robustness. It compares a TF-IDF/logistic-regression baseline, a reviewed Hugging Face classifier and a locally fine-tuned small transformer. A bounded offline experiment measures the effect of controlled text changes. A robustness defense remains planned. A local web demo will accept pasted email text and show a risk score and explanation.
+PhishGuard is a course project on phishing-email classification and adversarial robustness. It compares a TF-IDF/logistic-regression baseline, a reviewed Hugging Face classifier and a locally fine-tuned small transformer. A bounded offline experiment measures the effect of controlled text changes. A separately trained augmentation defense is compared with the preserved models. A local web demo will accept pasted email text and show a risk score and explanation.
 
 ## Current status
 
-PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison, external generalization audit and separately trained real-mail baseline v2 are available. Stage 5 adds reproduced BERT-Tiny fine-tuning and a preserved-baseline comparison. Stage 6 adds fixed-bank controlled evasion with unchanged models, explicit budgets and bounded semantic review. Defense and the web demo remain planned; stage 7 has not started.
+PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison, external generalization audit and separately trained real-mail baseline v2 are available. Stage 5 adds reproduced BERT-Tiny fine-tuning and a preserved-baseline comparison. Stage 6 adds fixed-bank controlled evasion with unchanged models, explicit budgets and bounded semantic review. Stage 7 adds a separately trained augmentation defense and fixed/fresh robustness comparisons. The web demo remains planned; stage 8 has not started.
 
 ## Install
 
@@ -160,7 +160,23 @@ The training-only preview scores no model. Preparation creates a deterministic l
 
 The measured bank contains 19,969 variants for 2,423 benchmark originals. On the mainly synthetic challenge, constraint-pass candidates evade **8/974 (0.82%)** initially detected phishing messages for baseline v2 and **95/914 (10.39%)** for BERT. On the common 909 initially detected originals, counts are **4/909 versus 91/909**. These are candidate-ASR measurements under automatic constraints; only a bounded semantic sample was reviewed. They are not percentages of all email or guarantees against other attacks. The historical benchmark yields zero/one new misses. Known-cohort, source, template and truncation limitations remain; baseline's clean challenge false-positive rate is still 37.20%.
 
-Models, thresholds and earlier data are preserved. The 703-message reserve remains unscored. Variants, original text and detailed predictions stay in ignored local artifact folders; only text-free manifests, reviews and aggregate reports enter Git. Stage 7 has not started.
+Models, thresholds and earlier data are preserved. The 703-message reserve remains unscored. Variants, original text and detailed predictions stay in ignored local artifact folders; only text-free manifests, reviews and aggregate reports enter Git. The separate stage-7 defense is described below.
+
+## Train and compare the augmentation defense
+
+After completing stages 5/6 and reviewing the [defense protocol](docs/robustness-defense.md):
+
+```sh
+uv run --frozen phishguard defense prepare
+uv run --frozen --extra pretrained phishguard defense train
+uv run --frozen phishguard defense prepare-fresh
+uv run --frozen --extra pretrained phishguard defense evaluate
+uv run --frozen --extra pretrained phishguard defense predict --file tests/fixtures/email.json
+```
+
+The guide explains the committed augmentation/review/selection references enforced between commands, and separate paths for reproductions. Training continues the preserved BERT checkpoint into `models/defended-v1/`, using training-only clean/copied views. Validation alone selects its checkpoint and threshold (0.07). Evaluation compares three models on the fixed stage-6 bank and a separately seeded equal-budget bank. All previous models remain available; no new download or paid API is needed. Existing outputs are refused.
+
+On the mainly synthetic challenge, original/defended clean accuracy is **80.80%/80.80%**, phishing recall **91.40%/92.10%**, and false-positive rate **29.80%/30.50%**. Fresh-search candidate ASR is **95/914 (10.39%)/93/921 (10.10%)**. ASR is conditional on automatic constraints and a partial semantic review. These known-cohort results do not establish universal robustness or production readiness. The 703-message reserve remains unscored; stage 8 has not started.
 
 ## Run checks and build
 
@@ -172,7 +188,7 @@ uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The 292 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Fine-tuning checks add actual encoder updates, deterministic selection/reload, reviewed-family exclusion and separate fitting/evaluation read boundaries. Evasion tests add protected edit spans, lineage/replay, query caps, zero/empty cases, ASR denominators and scoring without training files or updates. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
+The 310 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Fine-tuning checks add actual encoder updates, deterministic selection/reload, reviewed-family exclusion and separate fitting/evaluation read boundaries. Evasion tests add protected edit spans, lineage/replay, query caps, zero/empty cases, ASR denominators and scoring without training files or updates. Defense tests add training-only augmentation/review gates, separate artifacts, validation selection, deterministic repetition and fixed/fresh inference without development files. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
 
 ## Documentation
 
@@ -190,12 +206,12 @@ The 292 offline tests cover contracts, malformed JSON, input limits, mappings, t
 - [Data refresh, baseline v2 and remaining limits](docs/baseline-refresh.md)
 - [Fine-tuned transformer, reproduction and measured trade-offs](docs/finetuned.md)
 - [Controlled evasion, budgets and measured limits](docs/controlled-evasion.md)
+- [Augmentation defense, fixed/fresh comparisons and limits](docs/robustness-defense.md)
 
-The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit, data refresh, fine-tuning, controlled evasion and local inference. Web-demo commands will be added when the UI is implemented.
+The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, baseline training/evaluation, pretrained comparison, external audit, data refresh, fine-tuning, controlled evasion, augmentation defense and local inference. Web-demo commands will be added when the UI is implemented.
 
 ## Planned deliverables
 
-- A robustness defense experiment with clean, fixed-variant and fresh-search comparisons.
 - A local pasted-email demo with model identity, score and explanation.
 - A comparative report and final presentation.
 

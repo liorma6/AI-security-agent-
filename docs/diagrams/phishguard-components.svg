@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1010" viewBox="0 0 1200 1010">
-<title>PhishGuard components after stage 6</title>
+<title>PhishGuard components after stage 7</title>
 <defs><marker id="open" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#28616b" stroke-width="1.5"/></marker></defs>
 <rect width="1200" height="1010" fill="white"/>
 <g font-family="Arial,sans-serif" fill="#18373e">
 <text x="600" y="36" text-anchor="middle" font-size="25" font-weight="bold">PhishGuard - component UML</text>
-<text x="600" y="62" text-anchor="middle" font-size="16">Stage 6: green = implemented; pale = planned</text>
+<text x="600" y="62" text-anchor="middle" font-size="16">Stage 7: green = implemented; pale = planned</text>
 <rect x="40" y="100" width="280" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="180.0" y="124" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
 <text x="180.0" y="151" text-anchor="middle" font-size="18">Research CLI</text>
-<text x="180.0" y="175" text-anchor="middle" font-size="15">data / models / audit / evasion</text>
+<text x="180.0" y="175" text-anchor="middle" font-size="15">data / models / evasion / defense</text>
 <rect x="450" y="100" width="300" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="600.0" y="124" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
 <text x="600.0" y="151" text-anchor="middle" font-size="18">Contracts / validation</text>
@@ -25,13 +25,13 @@
 <text x="600.0" y="374" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
 <text x="600.0" y="401" text-anchor="middle" font-size="18">Local inference adapters</text>
 <text x="600.0" y="425" text-anchor="middle" font-size="15">TF-IDF / DistilBERT / BERT-Tiny</text>
-<text x="600.0" y="446" text-anchor="middle" font-size="15">fixed preprocessing / limits</text>
+<text x="600.0" y="446" text-anchor="middle" font-size="15">original + defended BERT / limits</text>
 <rect x="870" y="350" width="290" height="130" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="1015.0" y="374" text-anchor="middle" font-size="14">&lt;&lt;artifact&gt;&gt;</text>
 <text x="1015.0" y="401" text-anchor="middle" font-size="18">Reviewed model artifacts</text>
 <text x="1015.0" y="425" text-anchor="middle" font-size="15">baseline v1 / v2 numerical JSON</text>
 <text x="1015.0" y="446" text-anchor="middle" font-size="15">HF safetensors + vocabulary</text>
-<text x="1015.0" y="467" text-anchor="middle" font-size="15">source / selection manifests</text>
+<text x="1015.0" y="467" text-anchor="middle" font-size="15">parent / source / selection manifests</text>
 <rect x="40" y="590" width="280" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="180.0" y="614" text-anchor="middle" font-size="14">&lt;&lt;artifact&gt;&gt;</text>
 <text x="180.0" y="641" text-anchor="middle" font-size="18">Frozen data + variants</text>
@@ -48,10 +48,10 @@
 <text x="1015.0" y="641" text-anchor="middle" font-size="18">Model acquisition</text>
 <text x="1015.0" y="665" text-anchor="middle" font-size="15">pinned HTTPS source</text>
 <text x="1015.0" y="686" text-anchor="middle" font-size="15">size and SHA-256 verification</text>
-<rect x="40" y="840" width="280" height="110" rx="4" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<rect x="40" y="840" width="280" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="180.0" y="864" text-anchor="middle" font-size="14">&lt;&lt;component&gt;&gt;</text>
 <text x="180.0" y="891" text-anchor="middle" font-size="18">Robustness defense</text>
-<text x="180.0" y="915" text-anchor="middle" font-size="15">training-only defense study</text>
+<text x="180.0" y="915" text-anchor="middle" font-size="15">train-only copies / validation</text>
 <rect x="450" y="840" width="300" height="110" rx="4" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="600.0" y="864" text-anchor="middle" font-size="14">&lt;&lt;artifact&gt;&gt;</text>
 <text x="600.0" y="891" text-anchor="middle" font-size="18">Reports and predictions</text>
@@ -90,6 +90,8 @@
 <polyline points="1150,210 1180,210 1180,895 1160,895" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
 <text x="1125" y="793" text-anchor="middle" font-size="14">explains</text>
 <polyline points="320,895 450,895" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="385" y="882" text-anchor="middle" font-size="14">uses reports</text>
+<text x="385" y="882" text-anchor="middle" font-size="14">writes results</text>
+<polyline points="180,840 180,700" fill="none" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="246" y="780" text-anchor="middle" font-size="14">reads train / validation</text>
 <text x="600" y="990" text-anchor="middle" font-size="16">Dashed open arrows show dependencies between logical Python modules and artifacts.</text>
 </g></svg>

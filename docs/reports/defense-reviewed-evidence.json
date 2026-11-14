@@ -1,0 +1,17 @@
+{
+  "status": "verified",
+  "reviewed_variants": 7,
+  "cohorts": {
+    "test": {
+      "distinct_supported_originals": 1,
+      "eligible_clean_detected_phishing": 159,
+      "review_supported_lower_bound": 0.006289308176100629
+    },
+    "challenge": {
+      "distinct_supported_originals": 4,
+      "eligible_clean_detected_phishing": 921,
+      "review_supported_lower_bound": 0.004343105320304018
+    }
+  },
+  "limitation": "Bounded AI-assisted contextual review, not exhaustive human semantic certification."
+}

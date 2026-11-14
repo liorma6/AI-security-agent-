@@ -1,6 +1,6 @@
 # Stage 7 - Separate augmentation defense
 
-This stage preserves all earlier models and trains a separate BERT-Tiny continuation with perturbed training copies. The [packaged protocol](../src/phishguard/defense/protocol.json) is fixed before development-copy generation and training. Implementation checks precede real experiments; measured outcomes will be added after execution. Stage 8 is outside this stage.
+This stage preserves all earlier models and trains a separate BERT-Tiny continuation with perturbed training copies. The [packaged protocol](../src/phishguard/defense/protocol.json) is fixed before development-copy generation and training. Implementation, real training/comparison, complete reproduction and independent verification are complete. Stage 8 is outside this stage.
 
 ## Method and data boundaries
 
@@ -60,3 +60,40 @@ uv run --frozen python scripts/review_defense.py verify
 The verifier independently checks preserved files, repeated preparation/weights/selection/predictions, earlier fixed-bank scores, confusion/ASR/common/transfer/query counts and repeated group intervals. It expects local artifacts from both complete runs. The review selector writes text-free IDs to a new local folder; contextual review is a separate step before verification. Prediction returns model identity, score/decision and truncation metadata without saving/echoing the email.
 
 W08 retains five planning units each: Lior leads defended inference, integration and clean-cost comparison; Sharon Elimelech leads training-only augmentation, defense training and verification. Both review interpretation. Implementation and initial review are AI-assisted; actual student contributions/review must be recorded when performed. Stage 8 has not started.
+
+## Measured outcome
+
+Stage 7 continues the preserved stage-5 checkpoint into a separate artifact. Code/protocol were frozen at `b1b6bb7`, and development-copy membership plus pre-fit review at `550f438`. The initial training report records clean commit `550f438`. Three epochs were declared in advance; validation selected epoch 1 and clean-validation F1 selected threshold 0.07. No historical/challenge score influenced epoch or threshold selection. The original model and baseline remain unchanged and available.
+
+The 3,261 training parents contribute 6,522 fit views: one original plus one deterministic copy each. Of those copies, 3,193 contain constrained changes and 68 are clean fallbacks. All 745 validation parents similarly provide clean and separate perturbed views for checkpoint selection, with 13 clean fallbacks; none are fitted. Twelve selected training pairs were reviewed before fitting, with supported contextual preservation and explicit grammar/quoted-identifier caveats. Source labels are retained without claiming independent authenticity verification.
+
+| Measure - 2,000-row challenge | Baseline v2 | Original BERT-Tiny | Defended BERT-Tiny |
+| --- | --- | --- | --- |
+| Threshold | 0.31 | 0.69 | 0.07 |
+| Clean accuracy | 80.10% | 80.80% | 80.80% |
+| Clean phishing recall | 97.40% | 91.40% | 92.10% |
+| Clean legitimate false-positive rate | 37.20% | 29.80% | 30.50% |
+| Clean phishing F1 | 83.03% | 82.64% | 82.75% |
+| Clean TP / FP / TN / FN | 974 / 372 / 628 / 26 | 914 / 298 / 702 / 86 | 921 / 305 / 695 / 79 |
+| Fixed-bank candidate ASR | 8/974 (0.82%) | 95/914 (10.39%) | 98/921 (10.64%) |
+| Fresh-search candidate ASR | 10/974 (1.03%) | 95/914 (10.39%) | 93/921 (10.10%) |
+| Fresh-search phishing-only accuracy | 79.60% | 76.05% | 76.15% |
+| Fresh-search phishing-only recall | 96.40% | 81.90% | 82.80% |
+| Fixed-bank first-corruption accuracy | 80.20% | 80.25% | 80.70% |
+| Parent-selected fixed-bank transfer accuracy | 79.95% | 76.05% | 75.95% |
+
+Relative to the original BERT, defended clean challenge accuracy changes by +0.00 percentage points, recall by +0.70 points and false-positive rate by +0.70 points. Counts, not a single headline accuracy, expose the cost of the defense. On the common 910 clean-detected challenge phishing parents, fresh-search successes are 92 for original BERT and 84 for the defense. This common denominator controls the different initial detection sets, but does not correct corpus bias.
+
+Historical clean accuracy is 98.82% / 98.58% / 98.82% for baseline/original/defended BERT. Historical fresh candidate ASR is 0/161 (0.00%) / 0/158 (0.00%) / 2/159 (1.26%). These 423 historical rows preserve the original two-row reviewed-family exclusion. The challenge is still mainly synthetic, with only 91 groups and uncertain provenance for its 100 original records. Both cohorts are already-inspected retrospective benchmarks, not a fresh final test.
+
+The fixed bank has 19,969 variants; the fresh seed-43 bank has 19,970. Of the fresh variants, 1,094 have the same parent/text as a fixed candidate. Fresh search means newly seeded candidate ranking and selection against each model's own scores; it does not imply disjoint messages or entirely new text. Each bank independently uses at most twelve candidates plus one clean prediction per parent/model. Do not pool the banks into a nominal 13-query attack. First-corruption metrics perturb both classes; directed phishing-only views leave legitimate originals clean by definition. Parent-selected transfer scores the same input chosen by the original BERT under all models.
+
+Defended fresh challenge candidate-ASR group-bootstrap interval is 4.51%-17.02%. This is a 1,000-resample, seed-42 whole-group interval conditional on these cohorts and finite constraints. Candidate ASR includes no-candidate clean detections and assumes contextual label preservation under automatic constraints. A deterministic post-score review inspected 7 successful fresh variants; it remains bounded AI-assisted evidence, not exhaustive human certification. The challenge reviewed-supported lower bound is 4/921, reported separately from all candidate successes. The sample contains six supported variants from five originals and one ambiguous historical example with an uninformative extracted body. Its publisher label and automatic candidate count remain unchanged; it is excluded from reviewed-supported evidence. See the review for all decisions.
+
+The old 0.69 threshold and default 0.50 are prespecified diagnostics only; the selected threshold stays 0.07. At 0.69 the defense's clean challenge accuracy is 82.30% and fresh candidate ASR is 117/884 (13.24%). Continued fitting and augmentation were not separated by a clean-only continuation control, so observed differences cannot be attributed solely to augmentation. One seed and this limited model-independent search do not establish universal robustness or deployment readiness.
+
+Full repeated preparation, training and scoring produced byte-identical copies, selected model files, fresh bank and predictions, with identical validation history. Independent recounts match confusion, ASR, shared eligibility, transfer and query counts; the original fixed-bank model scores match stage 6 exactly. All 75 preserved model/data/stage-6 artifact files remain unchanged. Reserve integrity is checked by hashing, without parsing or scoring any of its 703 messages. Training/evaluation have separate read boundaries. Evidence: [defense protocol and commands](robustness-defense.md), [training](reports/defense-training.json), [comparison](reports/defense-evaluation.json), [verification](reports/defense-verification.json), [pre-fit review](reports/defense-preflight-review.json), [post-score review](reports/defense-label-review.json).
+
+The defense does not consistently improve robustness: aggregate fixed-bank challenge ASR rises slightly, fresh-search ASR falls slightly, and historical fresh evasion increases. Common-eligible challenge counts improve modestly, while clean accuracy stays unchanged and false alarms increase. This is a completed defense experiment, not evidence for automatically replacing the original model. Stage 7 is complete at this experimental scope. Stage 8 has not started. Final stage-9 evaluation requires a separately frozen protocol after all model, threshold, attack and defense decisions; do not use reserve outcomes for further tuning.
+
+Resource conditions: the first full fit/validation run took 414.59 seconds on the existing Ryzen 5 3600X CPU with four neural threads. The first comparison overlapped the separately fixed reproduction-training process, so its recorded times are instrumentation, not a controlled speed benchmark. Reproduction verifies result bytes rather than elapsed-time equality. Zero-event bootstrap intervals can degenerate to zero and do not establish zero future risk.
