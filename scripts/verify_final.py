@@ -32,10 +32,14 @@ def main():
     report = read(primary / "report.json")
     repeat = read(repeated / "report.json")
     preregistration = "77c4a17777d92abf653d7fd13746ba4e384eeb5a"
-    assert report["code"] == repeat["code"] == {
-        "commit": preregistration,
-        "working_tree_dirty": False,
-    }
+    assert (
+        report["code"]
+        == repeat["code"]
+        == {
+            "commit": preregistration,
+            "working_tree_dirty": False,
+        }
+    )
     for name, key in [("predictions.jsonl", "predictions_sha256"), ("bank.jsonl", None)]:
         payload = (primary / name).read_bytes()
         assert payload == (repeated / name).read_bytes(), name
