@@ -96,7 +96,14 @@ def main(argv: list[str] | None = None) -> int:
     from phishguard.defense.cli import register as register_defense
 
     register_defense(commands)
+    from phishguard.comparison import register as register_comparison
+
+    register_comparison(commands)
     args = parser.parse_args(argv)
+    if args.command == "compare":
+        from phishguard.comparison import run
+
+        return run(args)
     if args.command == "defense":
         from phishguard.defense.cli import run
 
