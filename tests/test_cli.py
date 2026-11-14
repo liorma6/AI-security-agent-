@@ -69,4 +69,4 @@ def test_cli_schema_and_version():
     assert json.loads(schema.stdout)["discriminator"]["propertyName"] == "status"
     version = run_cli("--version")
     assert version.returncode == 0
-    assert version.stdout.strip() == b"PhishGuard 0.7.0"
+    assert version.stdout.strip() == b"PhishGuard 0.8.0"

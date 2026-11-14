@@ -99,7 +99,14 @@ def main(argv: list[str] | None = None) -> int:
     from phishguard.comparison import register as register_comparison
 
     register_comparison(commands)
+    from phishguard.demo.cli import register as register_demo
+
+    register_demo(commands)
     args = parser.parse_args(argv)
+    if args.command == "demo":
+        from phishguard.demo.cli import run
+
+        return run(args)
     if args.command == "compare":
         from phishguard.comparison import run
 
