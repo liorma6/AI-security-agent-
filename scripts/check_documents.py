@@ -103,7 +103,8 @@ def main() -> int:
     )
     print(
         "Contracts, datasets, classifiers, robustness experiments and local demo are implemented; "
-        "final evaluation/submission remain pending."
+        "final evaluation and submission materials are prepared; "
+        "personal review/submission remain open."
     )
     return 0
 

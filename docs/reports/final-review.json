@@ -1,0 +1,159 @@
+{
+  "attack_inspection_scope": "All three short original bodies and all edit traces were inspected with URLs/email addresses redacted. No sender or destination verification.",
+  "attack_review_count": 3,
+  "attacks": [
+    {
+      "example_id": "external-nazario-2024-000009",
+      "judgment": "ambiguous",
+      "meaning_preservation": "supported",
+      "model": "defended",
+      "note": "The bounded spelling edits leave the visible automated sharing/account-notification action intact. Sender authenticity and malicious intent cannot be established from the supplied text. This remains a publisher-label-dependent candidate evasion, not independently confirmed malicious evasion.",
+      "operation": "duplicate_letter",
+      "original_phishing_label": "ambiguous",
+      "variant_id": "ev6-45e6fd1e4a65a37a3be2ac3e"
+    },
+    {
+      "example_id": "external-nazario-2024-000010",
+      "judgment": "ambiguous",
+      "meaning_preservation": "supported",
+      "model": "defended",
+      "note": "The bounded spelling edits leave the visible automated sharing/account-notification action intact. Sender authenticity and malicious intent cannot be established from the supplied text. This remains a publisher-label-dependent candidate evasion, not independently confirmed malicious evasion.",
+      "operation": "swap_letters",
+      "original_phishing_label": "ambiguous",
+      "variant_id": "ev6-b8792b03ffb59975ab8bb797"
+    },
+    {
+      "example_id": "external-nazario-2024-000310",
+      "judgment": "ambiguous",
+      "meaning_preservation": "supported",
+      "model": "defended",
+      "note": "The bounded spelling edits leave the visible automated sharing/account-notification action intact. Sender authenticity and malicious intent cannot be established from the supplied text. This remains a publisher-label-dependent candidate evasion, not independently confirmed malicious evasion.",
+      "operation": "swap_letters",
+      "original_phishing_label": "ambiguous",
+      "variant_id": "ev6-ec921b925273c32a8fe4a818"
+    }
+  ],
+  "clean": [
+    {
+      "example_id": "external-easy-ham-2-000968",
+      "judgment": "supported",
+      "note": "Forwarded legal/news reporting; visible payment and security terms occur in reporting context. The excerpt does not establish sender authenticity."
+    },
+    {
+      "example_id": "external-easy-ham-2-001119",
+      "judgment": "supported",
+      "note": "Short topical discussion rather than a request to transfer money or disclose credentials."
+    },
+    {
+      "example_id": "external-hard-ham-000067",
+      "judgment": "supported",
+      "note": "Explicit product advertisement with prices and ordinary product descriptions; spam-like marketing is not itself phishing."
+    },
+    {
+      "example_id": "external-hard-ham-000173",
+      "judgment": "supported",
+      "note": "Newsletter with reporting, a subscription offer and advertisements; financial vocabulary alone does not establish phishing."
+    },
+    {
+      "example_id": "external-hard-ham-000234",
+      "judgment": "ambiguous",
+      "note": "Only browser-view and unsubscribe links remain after extraction; the substantive message and destination trust are not available in the inspected text."
+    },
+    {
+      "example_id": "external-hard-ham-000242",
+      "judgment": "supported",
+      "note": "Product-release announcement with purchase, trial and technical feature sections; content is consistent with the publisher ham label, without sender authentication."
+    },
+    {
+      "example_id": "external-nazario-2024-000032",
+      "judgment": "ambiguous",
+      "note": "Workplace performance/termination document-link notification; potentially deceptive, but sender and destination evidence are missing from this text-only view."
+    },
+    {
+      "example_id": "external-nazario-2024-000074",
+      "judgment": "ambiguous",
+      "note": "Membership-renewal subject and links followed by unrelated informational padding; suspicious mismatch, but the excerpt cannot independently establish malicious destination or sender."
+    },
+    {
+      "example_id": "external-nazario-2024-000076",
+      "judgment": "ambiguous",
+      "note": "Similar membership-renewal lure with unrelated padding; limited text/URL evidence prevents an independent phishing determination."
+    },
+    {
+      "example_id": "external-nazario-2024-000363",
+      "judgment": "ambiguous",
+      "note": "The extracted body is only an HTML-viewer placeholder. This is missing evidence for a text-only detector, not a confirmed safe message."
+    },
+    {
+      "example_id": "external-nazario-2025-000229",
+      "judgment": "ambiguous",
+      "note": "Only a short address-like fragment remains under an order-confirmation subject; essential message context is unavailable."
+    }
+  ],
+  "clean_inspection_scope": "Redacted subject and up to 1800 displayed body characters per selected record. Longer bodies were not fully read. Links and attachments were not opened.",
+  "clean_review_count": 11,
+  "conclusion": "All three reviewed defended successes preserve the visible notification meaning, but their original phishing labels are context-dependent. The reported 3/216 remains conditional on publisher labels and automatic constraints. No independently confirmed malicious-evasion lower bound above zero is established by this sample.",
+  "independently_supported_phishing_and_preserved_successes": 0,
+  "label_changes": 0,
+  "meaning_preserved_attack_cases": 3,
+  "phase": "Post-score review selected by the committed protocol; no model, label or threshold changes",
+  "protocol_sha256": "f22db7d069b14e33e56af0a3f9411e7733f909878172dcd35a35f179f3abf3be",
+  "reviewer": "AI-assisted review; independent student/human review remains open",
+  "selection": {
+    "attacks": [
+      {
+        "example_id": "external-nazario-2024-000009",
+        "model": "defended",
+        "operation": "duplicate_letter",
+        "variant_id": "ev6-45e6fd1e4a65a37a3be2ac3e"
+      },
+      {
+        "example_id": "external-nazario-2024-000010",
+        "model": "defended",
+        "operation": "swap_letters",
+        "variant_id": "ev6-b8792b03ffb59975ab8bb797"
+      },
+      {
+        "example_id": "external-nazario-2024-000310",
+        "model": "defended",
+        "operation": "swap_letters",
+        "variant_id": "ev6-ec921b925273c32a8fe4a818"
+      }
+    ],
+    "clean": {
+      "baseline_v2/false_negative": [
+        "external-nazario-2024-000076",
+        "external-nazario-2024-000074"
+      ],
+      "baseline_v2/false_positive": [
+        "external-hard-ham-000234",
+        "external-hard-ham-000242"
+      ],
+      "defended/false_negative": [
+        "external-nazario-2024-000363",
+        "external-nazario-2024-000076"
+      ],
+      "defended/false_positive": [
+        "external-easy-ham-2-000968",
+        "external-hard-ham-000067"
+      ],
+      "finetuned/false_negative": [
+        "external-nazario-2024-000363",
+        "external-nazario-2024-000076"
+      ],
+      "finetuned/false_positive": [
+        "external-easy-ham-2-000968",
+        "external-hard-ham-000067"
+      ],
+      "pretrained/false_negative": [
+        "external-nazario-2024-000032",
+        "external-nazario-2025-000229"
+      ],
+      "pretrained/false_positive": [
+        "external-hard-ham-000173",
+        "external-easy-ham-2-001119"
+      ]
+    }
+  },
+  "weights_or_threshold_changes": 0
+}

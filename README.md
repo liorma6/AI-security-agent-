@@ -4,7 +4,7 @@ PhishGuard is a course project on phishing-email classification and adversarial 
 
 ## Current status
 
-PhishGuard provides validated email records, reproducible grouped data splits, a trained TF-IDF/logistic-regression baseline and local prediction commands. Training learns from the training split only; validation selects the threshold. A pinned pretrained DistilBERT classifier, same-test comparison, external generalization audit and separately trained real-mail baseline v2 are available. Stage 5 adds reproduced BERT-Tiny fine-tuning and a preserved-baseline comparison. Stage 6 adds fixed-bank controlled evasion with unchanged models, explicit budgets and bounded semantic review. Stage 7 adds a separately trained augmentation defense and fixed/fresh robustness comparisons. Stage 8 adds the local four-model demo and extends the pretrained comparison to the same current historical/challenge cohorts. Final evaluation and presentation remain pending.
+The research prototype includes validated data contracts, frozen grouped datasets, classical and neural classifiers, controlled text perturbations, an augmentation defense and a four-model local demo. Training and validation are separate from evaluation. A preregistered final evaluation of 703 held-out messages is complete and independently reproduced with unchanged models and thresholds. Results depend strongly on the dataset and do not establish production-email accuracy. See the [final comparative report](docs/final-evaluation.md), [project book](docs/project-book.md) and [reproduction/submission guide](docs/submission.md).
 
 ## Install
 
@@ -120,7 +120,7 @@ uv run --frozen phishguard audit evaluate
 
 The downloader verifies pinned Nazario phishing and SpamAssassin legitimate-mail archives (about 36.4 MB). Review the [source terms and limitations](docs/generalization-audit.md) before downloading. Messages stay local. Offline preparation extracts inert MIME text, filters language, removes duplicates and groups relatives. The committed manifest binds 1,639 audit messages and 703 reserved messages. The evaluator loads the exact baseline and threshold, scores only the audit partition and does not open the reserve file. It performs no training.
 
-Results go to ignored `artifacts/generalization-internal-v1/` and `artifacts/generalization-external-v1/`; existing outputs are refused. Aggregate published reports include confusion counts, balanced accuracy, per-source metrics and group-bootstrap uncertainty. See [reproduction commands and interpretation](docs/generalization-audit.md). The inspected audit cohort is development evidence for future decisions; the reserve remains unscored.
+Results go to ignored `artifacts/generalization-internal-v1/` and `artifacts/generalization-external-v1/`; existing outputs are refused. Aggregate published reports include confusion counts, balanced accuracy, per-source metrics and group-bootstrap uncertainty. See [reproduction commands and interpretation](docs/generalization-audit.md). The inspected audit cohort is development evidence for future decisions; the reserve stayed unscored until the separately frozen final evaluation.
 
 ## Re-evaluate the baseline with improved data
 
@@ -135,7 +135,7 @@ uv run --frozen phishguard refresh evaluate
 uv run --frozen phishguard baseline predict --model models/baseline-v2 --file tests/fixtures/email.json
 ```
 
-Review the [source terms, protocol and reproduction guide](docs/baseline-refresh.md). New verified downloads total about 211.7 MB. Preparation adds reviewed historical legitimate/phishing mail, repairs specific extraction artifacts, removes declared publisher placeholders and protects earlier held-out groups. Training writes a separate model to `models/baseline-v2/`; results go to `artifacts/real-mail-v2-evaluation/`. Original data/model files are preserved. The 703-message reserve remains unscored. Existing outputs are refused; the guide provides separate reproduction paths.
+Review the [source terms, protocol and reproduction guide](docs/baseline-refresh.md). New verified downloads total about 211.7 MB. Preparation adds reviewed historical legitimate/phishing mail, repairs specific extraction artifacts, removes declared publisher placeholders and protects earlier held-out groups. Training writes a separate model to `models/baseline-v2/`; results go to `artifacts/real-mail-v2-evaluation/`. Original data/model files are preserved. The 703-message reserve was protected through development and evaluated only under the final protocol. Existing outputs are refused; the guide provides separate reproduction paths.
 
 On the 425-row historical benchmark, v1/v2 accuracy is 82.59%/98.82%; on the separate 2,000-row, mainly synthetic challenge it is 66.00%/80.10%. V2 still falsely flags 37.20% of legitimate challenge texts. Historical source families also occur in v2 development, and one previously reviewed message is disclosed in that test; the 424-row post-hoc sensitivity remains 98.82%. The challenge's 100 original records have unverified provenance and only 62% v2 accuracy. These are bounded research benchmarks, not production or universal accuracy claims. Stage 5 excludes that reviewed message and its full family for the subsequent comparison below.
 
@@ -154,7 +154,7 @@ uv run --frozen --extra pretrained phishguard finetune predict --file tests/fixt
 
 The verified download is about 18 MB. Training fine-tunes all weights of Google's BERT-Tiny encoder and a new phishing head locally on CPU; it needs no account or paid API. The existing `pretrained` extra supplies the shared neural runtime. Training writes `models/finetuned-v1/`; comparison writes `artifacts/finetuned-evaluation-v1/`. Existing output directories are refused. The [fine-tuning guide](docs/finetuned.md) covers separate reproduction, the frozen selection reference, hardware limits and model provenance. Exact comparison requires the committed selected model identity; training on a different platform can differ numerically and must not silently replace the reference.
 
-Training uses 3,261 rows only; 745 validation rows select epoch 5 and threshold 0.69. It never reads benchmark/reserve text. Comparison uses the unchanged baseline v2 at 0.31 on identical inputs, excluding the entire earlier reviewed family. Historical accuracy is **98.82% baseline / 98.58% transformer** across 423 rows. On the mainly synthetic 2,000-row challenge, accuracy is **80.10% / 80.80%**, false-positive rate **37.20% / 29.80%**, and phishing recall **97.40% / 91.40%**. Fewer false alarms come with more missed phishing; this is not a general model-quality victory or production-ready filter. The previously scored cohorts are retrospective benchmarks, while 703 reserve messages remain unscored.
+Training uses 3,261 rows only; 745 validation rows select epoch 5 and threshold 0.69. It never reads benchmark/reserve text. Comparison uses the unchanged baseline v2 at 0.31 on identical inputs, excluding the entire earlier reviewed family. Historical accuracy is **98.82% baseline / 98.58% transformer** across 423 rows. On the mainly synthetic 2,000-row challenge, accuracy is **80.10% / 80.80%**, false-positive rate **37.20% / 29.80%**, and phishing recall **97.40% / 91.40%**. Fewer false alarms come with more missed phishing; this is not a general model-quality victory or production-ready filter. The previously scored cohorts are retrospective benchmarks, while 703 reserve messages were held out until the final protocol was frozen.
 
 Inference right-truncates to 256 tokens with explicit length metadata. It does not save or transmit pasted text. All raw data, model weights and per-example predictions stay local; text-free reports, source/protocol manifests and the selected identity are versioned. Stage-6 measurements follow below.
 
@@ -173,7 +173,7 @@ The training-only preview scores no model. Preparation creates a deterministic l
 
 The measured bank contains 19,969 variants for 2,423 benchmark originals. On the mainly synthetic challenge, constraint-pass candidates evade **8/974 (0.82%)** initially detected phishing messages for baseline v2 and **95/914 (10.39%)** for BERT. On the common 909 initially detected originals, counts are **4/909 versus 91/909**. These are candidate-ASR measurements under automatic constraints; only a bounded semantic sample was reviewed. They are not percentages of all email or guarantees against other attacks. The historical benchmark yields zero/one new misses. Known-cohort, source, template and truncation limitations remain; baseline's clean challenge false-positive rate is still 37.20%.
 
-Models, thresholds and earlier data are preserved. The 703-message reserve remains unscored. Variants, original text and detailed predictions stay in ignored local artifact folders; only text-free manifests, reviews and aggregate reports enter Git. The separate stage-7 defense is described below.
+Models, thresholds and earlier data are preserved. The 703-message reserve was protected through development and evaluated only under the final protocol. Variants, original text and detailed predictions stay in ignored local artifact folders; only text-free manifests, reviews and aggregate reports enter Git. The separate stage-7 defense is described below.
 
 ## Train and compare the augmentation defense
 
@@ -189,7 +189,7 @@ uv run --frozen --extra pretrained phishguard defense predict --file tests/fixtu
 
 The guide explains the committed augmentation/review/selection references enforced between commands, and separate paths for reproductions. Training continues the preserved BERT checkpoint into `models/defended-v1/`, using training-only clean/copied views. Validation alone selects its checkpoint and threshold (0.07). Evaluation compares three models on the fixed stage-6 bank and a separately seeded equal-budget bank. All previous models remain available; no new download or paid API is needed. Existing outputs are refused.
 
-On the mainly synthetic challenge, original/defended clean accuracy is **80.80%/80.80%**, phishing recall **91.40%/92.10%**, and false-positive rate **29.80%/30.50%**. Fresh-search candidate ASR is **95/914 (10.39%)/93/921 (10.10%)**. ASR is conditional on automatic constraints and a partial semantic review. These known-cohort results do not establish universal robustness or production readiness. The 703-message reserve remains unscored. The local demo is available above; final evaluation remains separate.
+On the mainly synthetic challenge, original/defended clean accuracy is **80.80%/80.80%**, phishing recall **91.40%/92.10%**, and false-positive rate **29.80%/30.50%**. Fresh-search candidate ASR is **95/914 (10.39%)/93/921 (10.10%)**. ASR is conditional on automatic constraints and a partial semantic review. These known-cohort results do not establish universal robustness or production readiness. The 703-message reserve was protected through development and evaluated only under the final protocol. The local demo is available above; final evaluation remains separate.
 
 ## Run checks and build
 
@@ -235,3 +235,23 @@ No raw research emails or model checkpoints are included in Git. The internal sy
 ## Team
 
 Lior and Sharon Elimelech share planned responsibility equally. The project book records the allocation, the reported two-week learning period and how actual contributions will be recorded as work proceeds.
+
+## Frozen final evaluation and presentation
+
+After preparing the exact reviewed artifacts and committing a clean checkout:
+
+```sh
+uv run --frozen --extra pretrained phishguard final evaluate
+uv run --frozen --extra pretrained phishguard final evaluate --output artifacts/final-evaluation-repeat-v1
+uv run --frozen python scripts/verify_final.py
+```
+
+Existing outputs are refused. The evaluator enforces the committed code/protocol/file identities and uses all 703 reserve records; it never trains a model or selects a threshold. The full numerical repeat agrees. Final accuracy is 99.29% for baseline v2, 98.29% for original BERT, 98.15% for defended BERT and 95.16% for pretrained DistilBERT. These source-conditioned results coexist with 80.10%-87.25% challenge accuracy. The reserve is consumed evidence and must not be reused as a fresh test after tuning. [Protocol, error counts, review ambiguity and limitations](docs/final-evaluation.md).
+
+The [English presentation with speaker notes](docs/presentation.md) and [submission/demo walkthrough](docs/submission.md) explain the complete system and its limits. Generate editable slides and a printable HTML companion in a separate tools environment:
+
+```sh
+uv run --no-project --with python-pptx==1.0.2 python scripts/build_presentation.py --output outputs
+```
+
+This command reads committed aggregate reports and the synthetic demo screenshot; it needs no research email or learned weights and does not modify the pinned model environment. Print the resulting HTML to PDF or export the PPTX from a presentation editor.

@@ -1,0 +1,88 @@
+{
+  "bank_sha256": "757ee850079550282859582055894f14d8bb8a4d9066be6fc1a80ce09b7c4396",
+  "bank_variants": 5853,
+  "both_run_worktrees_clean": true,
+  "candidate_bank_identical": true,
+  "counts": {
+    "baseline_v2": {
+      "clean": {
+        "fn": 3,
+        "fp": 2,
+        "tn": 477,
+        "tp": 221
+      },
+      "fixed_perturbation": {
+        "fn": 3,
+        "fp": 2,
+        "tn": 477,
+        "tp": 221
+      },
+      "phishing_only_worst_of_budget": {
+        "fn": 3,
+        "fp": 2,
+        "tn": 477,
+        "tp": 221
+      }
+    },
+    "defended": {
+      "clean": {
+        "fn": 8,
+        "fp": 5,
+        "tn": 474,
+        "tp": 216
+      },
+      "fixed_perturbation": {
+        "fn": 8,
+        "fp": 5,
+        "tn": 474,
+        "tp": 216
+      },
+      "phishing_only_worst_of_budget": {
+        "fn": 11,
+        "fp": 5,
+        "tn": 474,
+        "tp": 213
+      }
+    },
+    "finetuned": {
+      "clean": {
+        "fn": 8,
+        "fp": 4,
+        "tn": 475,
+        "tp": 216
+      },
+      "fixed_perturbation": {
+        "fn": 9,
+        "fp": 4,
+        "tn": 475,
+        "tp": 215
+      },
+      "phishing_only_worst_of_budget": {
+        "fn": 13,
+        "fp": 4,
+        "tn": 475,
+        "tp": 211
+      }
+    },
+    "pretrained": {
+      "clean": {
+        "fn": 23,
+        "fp": 11,
+        "tn": 468,
+        "tp": 201
+      }
+    }
+  },
+  "evaluation_code_commit": "77c4a17777d92abf653d7fd13746ba4e384eeb5a",
+  "maximum_queries_per_parent": 13,
+  "models_or_thresholds_updated": false,
+  "predictions_identical": true,
+  "predictions_sha256": "5c3e94d536649a0bac1e26147ba731ae2b8b13790420c8f2a9be48fe6d27bd7a",
+  "preserved_files": 79,
+  "queries_per_robustness_model": 6556,
+  "repeated_metrics_intervals_and_review_selection_identical": true,
+  "reserve_groups": 432,
+  "reserve_rows": 703,
+  "scope": "Independent counts, lineage/replay, query caps, exact full-run repeat and file preservation; not new independent data or semantic certification.",
+  "status": "verified"
+}
