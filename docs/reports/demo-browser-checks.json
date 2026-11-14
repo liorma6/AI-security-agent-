@@ -1,0 +1,18 @@
+{
+  "checks": [
+    "blank input rejected",
+    "original BERT inference",
+    "HTML and links inert",
+    "overlength input rejected without shortening",
+    "truncation disclosed",
+    "clear resets input and result",
+    "mobile layout fits",
+    "TF-IDF + logistic regression | baseline v2 inference",
+    "BERT-Tiny | augmentation defense inference",
+    "DistilBERT | pretrained Hugging Face inference",
+    "upload, oversized request and artifact serving blocked"
+  ],
+  "externalRequests": [],
+  "pageErrors": [],
+  "status": "passed"
+}

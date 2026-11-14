@@ -1,0 +1,63 @@
+{
+  "confusion_counts": {
+    "challenge": {
+      "baseline_v2": {
+        "fn": 26,
+        "fp": 372,
+        "tn": 628,
+        "tp": 974
+      },
+      "defended": {
+        "fn": 79,
+        "fp": 305,
+        "tn": 695,
+        "tp": 921
+      },
+      "finetuned": {
+        "fn": 86,
+        "fp": 298,
+        "tn": 702,
+        "tp": 914
+      },
+      "pretrained": {
+        "fn": 136,
+        "fp": 119,
+        "tn": 881,
+        "tp": 864
+      }
+    },
+    "test": {
+      "baseline_v2": {
+        "fn": 1,
+        "fp": 4,
+        "tn": 257,
+        "tp": 161
+      },
+      "defended": {
+        "fn": 3,
+        "fp": 2,
+        "tn": 259,
+        "tp": 159
+      },
+      "finetuned": {
+        "fn": 4,
+        "fp": 2,
+        "tn": 259,
+        "tp": 158
+      },
+      "pretrained": {
+        "fn": 7,
+        "fp": 33,
+        "tn": 228,
+        "tp": 155
+      }
+    }
+  },
+  "predictions_sha256": "0c0b60fde1e330d36d65f9757d816d0b2a30933a64b16b5e4f008227617f070b",
+  "preserved_files": 79,
+  "prior_three_models_clean_metrics_reproduced": true,
+  "reserve_text_parsed_or_scored": false,
+  "rows": 2423,
+  "scope": "Independent counts and preservation; not a second full pretrained inference run.",
+  "status": "verified"
+}

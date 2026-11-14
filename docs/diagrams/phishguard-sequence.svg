@@ -3,11 +3,11 @@
 <defs><marker id="open" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#28616b" stroke-width="1.5"/></marker><marker id="closed" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L9 5 L0 10 Z" fill="#28616b"/></marker></defs>
 <rect width="1140" height="800" fill="white"/>
 <g font-family="Segoe UI,Arial,sans-serif" fill="#153c44">
-<text x="570" y="35" text-anchor="middle" font-size="25" font-weight="600">PhishGuard | UML sequence | Target web demo</text>
-<rect x="10" y="75" width="140" height="55" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<text x="570" y="35" text-anchor="middle" font-size="25" font-weight="600">PhishGuard | UML sequence | Implemented local demo</text>
+<rect x="10" y="75" width="140" height="55" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="80" y="108" text-anchor="middle" font-size="19" font-weight="600">Analyst</text>
 <line x1="80" y1="130" x2="80" y2="730" stroke="#78949a" stroke-dasharray="7 5"/>
-<rect x="230" y="75" width="140" height="55" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<rect x="230" y="75" width="140" height="55" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="300" y="108" text-anchor="middle" font-size="19" font-weight="600">Demo UI</text>
 <line x1="300" y1="130" x2="300" y2="730" stroke="#78949a" stroke-dasharray="7 5"/>
 <rect x="470" y="75" width="140" height="55" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
@@ -16,7 +16,7 @@
 <rect x="690" y="75" width="140" height="55" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="760" y="108" text-anchor="middle" font-size="19" font-weight="600">Model</text>
 <line x1="760" y1="130" x2="760" y2="730" stroke="#78949a" stroke-dasharray="7 5"/>
-<rect x="920" y="75" width="140" height="55" fill="#f4f9fa" stroke="#28616b" stroke-width="2"/>
+<rect x="920" y="75" width="140" height="55" fill="#d8f0df" stroke="#28616b" stroke-width="2"/>
 <text x="990" y="108" text-anchor="middle" font-size="19" font-weight="600">Explanation</text>
 <line x1="990" y1="130" x2="990" y2="730" stroke="#78949a" stroke-dasharray="7 5"/>
 <line x1="80" y1="175" x2="300" y2="175" stroke="#28616b" stroke-width="2" marker-end="url(#closed)"/>
@@ -45,5 +45,5 @@
 <text x="645.0" y="615" text-anchor="middle" font-size="16" font-weight="normal">evidence indicators + limitations</text>
 <line x1="300" y1="670" x2="80" y2="670" stroke="#28616b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#open)"/>
 <text x="190.0" y="660" text-anchor="middle" font-size="16" font-weight="normal">show result</text>
-<text x="570" y="775" text-anchor="middle" font-size="17" font-weight="normal">All detectors support local CLI prediction; web UI and explanations are planned.</text>
+<text x="570" y="775" text-anchor="middle" font-size="17" font-weight="normal">Local validation, frozen inference and evidence rendering; no training or link following.</text>
 </g></svg>
