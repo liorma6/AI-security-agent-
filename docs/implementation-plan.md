@@ -2,7 +2,7 @@
 
 Updated November 14, 2026. The [project book](project-book.md) defines the course scope, requirements, research protocol and equal Lior/Sharon ownership. The [stage log](stage-log.md) records completed work and actual checks.
 
-Stages 0-8 and additional checkpoints 4a/4b are complete at their stated scope: eleven completed milestones out of twelve including both checkpoints. Stage 9 (final evaluation and submission) remains and has not started. Complete one requested stage at a time, verify its acceptance criteria and commit it before starting the next stage. Student review and course approval remain separate from implementation status.
+Stages 0-8 and additional checkpoints 4a/4b are complete at their stated scope: eleven completed milestones out of twelve including both checkpoints. Stage 9 (final evaluation and submission) is in progress: its protocol is being committed before reserve scoring. Complete one requested stage at a time, verify its acceptance criteria and commit it before starting the next stage. Student review and course approval remain separate from implementation status.
 
 ## Stages and acceptance criteria
 
@@ -19,7 +19,7 @@ Stages 0-8 and additional checkpoints 4a/4b are complete at their stated scope: 
 | 6. Controlled evasion | Implement bounded typos, character swaps and substitutions; trace variants to originals; review label preservation; report paired clean/attacked results and attack budgets | Lior: transformations, lineage and query-budget runner. Sharon: validity review, fixtures, paired/ASR metrics and reproduction. W07 | Implemented and measured: 19,969 frozen variants, unchanged models, explicit conditional ASR and bounded review; student review open |
 | 7. Robustness defense | Train with reviewed training-only perturbations or another declared defense; compare clean cost, fixed variants and fresh equal-budget attacks without tuning on final test data | Lior: defended inference and clean-performance comparison. Sharon: augmentation and defense training. W08 | Implemented and reproduced: separate defended model, validation-only selection and fixed/fresh comparison; student review open |
 | 8. Local demo | Provide Gradio email-paste interface, score, decision, model identity and evidence-based explanation; verify limits, error states, escaped output and privacy; document startup | Lior: UI integration and packaging. Sharon: explanations, privacy and usability checks. W09 | Implemented and checked: four local models, grounded explanations, privacy/error states and desktop/mobile browser checks; student review open |
-| 9. Final evaluation and submission | Reproduce experiments; complete measured conclusions and current UML; deliver comparative report, runnable demo and final presentation | Lior: reproduction guide and demonstration. Sharon: comparative report and presentation. Both review all outputs. W10 | Planned |
+| 9. Final evaluation and submission | Reproduce experiments; complete measured conclusions and current UML; deliver comparative report, runnable demo and final presentation | Lior: reproduction guide and demonstration. Sharon: comparative report and presentation. Both review all outputs. W10 | In progress: protocol frozen before reserve scoring; no outcomes yet |
 
 The two-week security/AI learning record is W01 in the project book. Python, text processing and evaluation study continue alongside stages 1-3. Planning weights are 50 units per student; they are not assertions of logged hours or completed code.
 

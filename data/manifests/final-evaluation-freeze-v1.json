@@ -1,0 +1,422 @@
+{
+  "code_and_references": {
+    "artifacts/pretrained-real-selection-v1/manifest.json": "b428ea1d66caaf810062c4cd4974a8ee365e70d8d56711ff4102aae310ef1399",
+    "artifacts/pretrained-real-selection-v1/selection.json": "7c412af32f8f3f01a60999bc24f92536abb62e800108d1ceec4debe963e16112",
+    "artifacts/pretrained-real-selection-v1/validation-report.json": "d3c12e25ef9758330c7b865de03c5254f99608a205d438684f2aebeb82da96c7",
+    "data/manifests/baseline-v2-selection.json": "6f141ec73504b09868e0e87b66ffd83023da2eb109505cb8122413a3210028d7",
+    "data/manifests/defended-v1-selection.json": "549a9f1d64117baef12b9c3ca5730814b20e67e5a068c3ea629f97136d0a0dad",
+    "data/manifests/defense-augmentation-v1.json": "03e5165c555c2fc0207b69dbb97d85df787ccafb61d1ed11ef246ea039e43b0a",
+    "data/manifests/defense-fresh-bank-v1.json": "32ce2189e64c3cc32587bc3f0a4fbfbaf0fe19d3a1a57f33355abde201944327",
+    "data/manifests/defense-preserved-inputs-v1.json": "6b912a63557bdf8a79760f5eff9299a95d28def306730720775a81e12b9a4fd2",
+    "data/manifests/demo-preserved-inputs-v1.json": "1ea74c3e8870a9fdd26b98305cec6833f59f0cfa77265dbc499f828b6cb92e2f",
+    "data/manifests/ephishllm-v1.json": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d",
+    "data/manifests/evasion-preserved-inputs-v1.json": "08f90fe79e8b1dbeb6bfbe06ff1924fd6544cfe1db869abf6bee63a5133efc84",
+    "data/manifests/evasion-variants-v1.json": "5b1f9ca1cd803588cb86c60fa8f465205bba67bc13b199dccaa5187512bf02da",
+    "data/manifests/external-mail-v1.json": "0fe63a922df2fc61df665f3d8d6ddaea8cafcc9c3cf9abb9297e892e8b23ff36",
+    "data/manifests/finetuned-v1-selection.json": "5a0d7147a03b0fec43805521bd116ef7f1d378379552853240b504075fb1386d",
+    "data/manifests/pretrained-real-selection-v1.json": "7c412af32f8f3f01a60999bc24f92536abb62e800108d1ceec4debe963e16112",
+    "data/manifests/real-mail-v2.json": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb",
+    "pyproject.toml": "2474bff77214f562dc458d3b6d3519c13fbd4b11412cbe7c12d14ab2c57da4a6",
+    "src/phishguard/__init__.py": "8c258f40a8a9d180b97e713e75b6aed68f6e795c3ddd52fbfe5aab5e9668fc44",
+    "src/phishguard/__main__.py": "25c92f54b2b142d88d35f5fd2eb091d8f9a74fe671e4de11469592f018388430",
+    "src/phishguard/audit/__init__.py": "8bacaf196752ed58395d853c7069f109e521ecf4a216971403495839a6597885",
+    "src/phishguard/audit/cli.py": "6e9510362d4e99cf6a7ddd49e396e5d07d2c109e3d7eb369b57b5679971f164e",
+    "src/phishguard/audit/common.py": "f99f554a37f2dccf7bd742e6c9d926d09f374665d74bb126c511c2472713fa9f",
+    "src/phishguard/audit/data.py": "aee078439b669527e038873d0583b0280a44b737e3203b5649d19694ec4106b2",
+    "src/phishguard/audit/mime.py": "77c4bb735ca20a1e6ccc3a7a52665785c0ad6e5fe418276988f4fa4b82892093",
+    "src/phishguard/audit/protocol.json": "f2b0a6a9c6596d727304d3ce5d08b19668bcc5f477e436d93dc269e38cbe7395",
+    "src/phishguard/audit/runner.py": "84f96a9cb8d1d0a6517152b8054f462fb76745acd40bc63449d2b062f6ac5f66",
+    "src/phishguard/audit/similarity.py": "b13edb33594f1f1e7eaa5eed88a6fbf25251b59263997335447c4943c22f5efb",
+    "src/phishguard/audit/source.json": "be7455531ac66b1b114eed7ac37870e6a060c100ea00e3534aadd6d084b134dd",
+    "src/phishguard/baseline/__init__.py": "aad11dab1e59b7e3cf4394ad05da1be44e8d8185892f8b9f01f25d68fb5da845",
+    "src/phishguard/baseline/cli.py": "6accef5ffd205ec77174860d5cad4e3dc4e47c463e8e77123427172b1e091261",
+    "src/phishguard/baseline/common.py": "c1ae0579c535a69bd7eb54b1c952872936fc992cc3a6f47cc7a1354688476478",
+    "src/phishguard/baseline/data.py": "5645df63259270908fafc1abb92a4b69d3aafd29e27fee90693abf7b80dcc9e7",
+    "src/phishguard/baseline/metrics.py": "d08c802af4d9adf099107c71705187c5d6977a6e1fb60871d432529279473f1b",
+    "src/phishguard/baseline/model.py": "2bb8ba6cbfacc0e481610d35d79697fc666a698328850db7cb3a27b9742cfa47",
+    "src/phishguard/baseline/preprocessing.py": "e9ec05d3aedc3a571dd3d3d1b1de1123314ade237efbc26bda92b6d7fed9580c",
+    "src/phishguard/baseline/protocol.json": "96dd7c3a6e6eca52d12cd0c61679085ba4e1c6f4334fce47638439e9b24cfaed",
+    "src/phishguard/baseline/runner.py": "297dea13ed11ae213ccfd345d99f03fbf648eb59cf0f1cd3f5ef22058c2c62e6",
+    "src/phishguard/cli.py": "c5496da5ab9e8f36474129b5ae04b5d9a6f51bafe65164ef7c39a37a32a2671b",
+    "src/phishguard/comparison.py": "fe863868a7d5da49b112ca46036c2e7bdd9282a0d67065d9f6d63c0b7fd0cac2",
+    "src/phishguard/contracts.py": "6e12667a8caa25ed01d0029c2353b4937b0007cf670d92a247b4c90f2cafedde",
+    "src/phishguard/datasets/__init__.py": "e5ca0602bd16d035a44dd0d3373aa2ed802fff48602d1ae560a6906b7e7bae51",
+    "src/phishguard/datasets/grouping.py": "719333d4131e0db2a30efb2f1db886bfe26665a85a80b438ba30cba7fbab5e0c",
+    "src/phishguard/datasets/preparation.py": "f9c42bd173623ddb271a3489a84dbee5900059e612182f0909adb01679f16268",
+    "src/phishguard/datasets/source.json": "a6fcc48321ade40bdbc92452976becb226ea466bcca363d2b86a11897b07b634",
+    "src/phishguard/datasets/source.py": "eb68f4e9a0ab693752377e2d8111bd11497f6485cdf149350ab52e5b17199ba9",
+    "src/phishguard/datasets/verification.py": "9fe36fb34f21750b3e396ad86fad9b180d48c13532072a5f39022c517fecdfff",
+    "src/phishguard/defense/__init__.py": "f5602e17f44f58a535ae7e6c3696aed7959df0649c3c9b44cb3046199cf70753",
+    "src/phishguard/defense/cli.py": "de49885f8c6f6553c29e69383f984574db37149176622ac6d5ddb0279581dc36",
+    "src/phishguard/defense/common.py": "a7e5c136be1e15a3a6bb4ed1be210d78c257337b52e8f53800f05b7355591ecb",
+    "src/phishguard/defense/data.py": "6a48bf3cc8d60dd441e9545ba191def13e5a6a9622b39ef45c5ee91d4e1c0202",
+    "src/phishguard/defense/evaluation.py": "c51d4c44dd77064fe37b6141b3529b0f4167822781b61730012d0065252d21c2",
+    "src/phishguard/defense/model.py": "1f32955799a7dd22fc8ad7b6ff657ca6c52d4cd93ef6637da7dc3e8d24a7dcc7",
+    "src/phishguard/defense/protocol.json": "729fbdc670e2a5ca299e601e421156afdb91cd54bb374dddae93fdc7f83e4776",
+    "src/phishguard/defense/training.py": "a2ce0c89ff7f99ececb3a32c7228bd06c0861c353eb2fbe80bdad46babd9fb7c",
+    "src/phishguard/demo/__init__.py": "0906c5ab4cbe1369bc7230369a4ab291346a2ea0ca45dd69c14c9f04141a62f4",
+    "src/phishguard/demo/cli.py": "b1ab01e091acca94a9632936d7f95dd9b10b0079c7d06445be98517518e7fea4",
+    "src/phishguard/demo/service.py": "63983965a5dc8715d2e3d88f6d1ad0be29352e725918cabf66a60d4dc1724869",
+    "src/phishguard/demo/ui.py": "04cafd98cca5ebaba20962d27c22c1c5f07c7ef6fc41318978487f8f69f49deb",
+    "src/phishguard/evasion/__init__.py": "20ff17f77d1589497270b23d96c30ba204d1ebd3afb5da454e58ef340d962cdf",
+    "src/phishguard/evasion/cli.py": "0d9a00017f068b52dad230c534bd8e4cc759cfaafca77a7f0c61ad9ef72740f5",
+    "src/phishguard/evasion/common.py": "969facf58dc6e17960d7acc8d5521b1386e95077a82140a5919d6f204798efd7",
+    "src/phishguard/evasion/data.py": "5d012f2a8609fa81c2b88fa93d77b7a9991a90a2727b5339fe9baf0b859e67dc",
+    "src/phishguard/evasion/metrics.py": "9a1c6ff3c220f39b21c62053329e1af48e000bf0458205849af6bbad95c4f640",
+    "src/phishguard/evasion/perturbations.py": "393849eb6387ed8cb86bffc5173789eacf161ef585e9cb943740597298afa63e",
+    "src/phishguard/evasion/protocol.json": "cafe0b563b6d588de78f46309f22cf5cffc26cc3e228d5c642faa9eccc09ad4c",
+    "src/phishguard/evasion/runner.py": "65f4878228a0d9f50e44e3c69571a6eb38b09a6df7d1655f1ea1c6a4069a9b16",
+    "src/phishguard/final_evaluation.py": "bc928850a1e4e88f26f895b9f1701e64f5e3142f1a0507570dc29bd2a7c789f3",
+    "src/phishguard/final_protocol.json": "1a0b59ec9e96c11b2e8e2f11a54f1516c364324a90cfcf3ba8c1d1108b6888f3",
+    "src/phishguard/finetune/__init__.py": "20977fa38cf61a2d9847008cac8a62f38bf79a4a536da3007060ad0874ce92a5",
+    "src/phishguard/finetune/cli.py": "6bd1f7405f56e52bb6ec84cc7ecf3c735d096b0ea3952c2167938537193466f9",
+    "src/phishguard/finetune/common.py": "c66985119daeaa6ed836676dc08a07ddbda46b7d2d1299cf12846e0b1de40b77",
+    "src/phishguard/finetune/evaluation.py": "af7ce657562044874b8b2a78fa1c2ba5641897ebe61d1fc2df0b5a8db81de89f",
+    "src/phishguard/finetune/model.py": "b96916464ae8b836a78d0fd1b78955e37bbfb9b8d15cdf9d0f91301d9c7ab624",
+    "src/phishguard/finetune/protocol.json": "fb44414c60fd271c720da9b2669fdc7301067113fefac965b593ef2933b4fa8c",
+    "src/phishguard/finetune/source.json": "75627f870f06e159c8e48e30fc202b8062e49d1322729a32ba624357a248975a",
+    "src/phishguard/finetune/study.json": "62cb5eb33819328180643793d71ceae7b3f3365cd0a9240704cb8d9df73c8b02",
+    "src/phishguard/finetune/training.py": "bd65a427c065fa15fe3e90c43e57c647781f3cae3fe7455e77dbff628eb350bf",
+    "src/phishguard/pretrained/__init__.py": "2c3e5706da0dd6a7827371e3cc8c504ad59e00624afde287874e30df551244fb",
+    "src/phishguard/pretrained/adapter.py": "ca38f1a7440c5acefd897fe2a4ed64a98ed19387f7053ea2b663c881f382e6ef",
+    "src/phishguard/pretrained/cli.py": "a6e34538d068e92182c90638547b61584b291c0d40720ebf49623df07233a268",
+    "src/phishguard/pretrained/protocol.json": "ae8a60e14740cb4a23eee7a5f8c6b745ac3ba81f6d7bd2b95d5c50f911b7a139",
+    "src/phishguard/pretrained/runner.py": "5ab9dd0bb721296da6f60d46894abdcc3e1f945d302f273313061bd4281d85a4",
+    "src/phishguard/pretrained/selection.py": "5508cfee885a7911bea3002a4787fd6971b14e01c5bfbeb5df4199ec572c18cb",
+    "src/phishguard/pretrained/source.json": "ee12b9ed451618ae8f03e86f3a24eb62a2dcfc241019803390d247d2644388a7",
+    "src/phishguard/pretrained/source.py": "9403b3463f6d633f601dfb5c6bb65f38f8038bc50179350086611cef283d46cc",
+    "src/phishguard/refresh/__init__.py": "bd52ae97df0ab0ff38159a923dc161905eb28415553a602367c568c7eb95e0fa",
+    "src/phishguard/refresh/cli.py": "633d6473829b5a6360bfc76f59fa84f78136eaab0bdf95aab7912956a1f78adb",
+    "src/phishguard/refresh/common.py": "8ecd52692f94f691f076c98ffbfd0852f9525c87dd543f148fa70025f2e85b8d",
+    "src/phishguard/refresh/data.py": "15c3e1363bebf0f74d678ee67f2feb2af4d00bb358b2df83d60bda777a7f02bb",
+    "src/phishguard/refresh/diagnosis.py": "42d4ca9f8c5eeb6e33b4a1e238d69c71fefbee33a0d3d15ced98445e40f780e5",
+    "src/phishguard/refresh/protocol.json": "aa7449ee98a0dd87012fa70682cb56f730e3510b7dce57e8fb100a896439b76e",
+    "src/phishguard/refresh/runner.py": "6c7e20ed296682b20827a0749bcc9e848cd6542139bd4104d6af639aca599f86",
+    "src/phishguard/refresh/source.json": "6fc58c9acede7f755611813f36bc95edb8246c190e74205feaf5ae6624708def",
+    "src/phishguard/refresh/text.py": "9a2f21ac947d4607f15d0c972721cb568756eaa03a6f5481d4682684cd1fdb5a",
+    "src/phishguard/validation.py": "5fb3b56c4fb89cab8fc038f7e8e8ad94638fa674f9f99b13ed5787e514e6db77",
+    "uv.lock": "400659a97979992ae46970070ad0d350a0d441c8f6f31e061bbfefe355513d83"
+  },
+  "model_policy": "Existing weights and thresholds; no refit, recalibration or benchmark-selected replacement",
+  "preserved_inputs": {
+    "data/processed/ephishllm-v1/manifest.json": {
+      "bytes": 2059116,
+      "sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d"
+    },
+    "data/processed/ephishllm-v1/test.jsonl": {
+      "bytes": 1657068,
+      "sha256": "ff01f4d335076db72c1418e05b312f12433f586794b643b752c3a9371456b376"
+    },
+    "data/processed/ephishllm-v1/train.jsonl": {
+      "bytes": 7739949,
+      "sha256": "a8b648faf5742fcb6e207276f27ac11199fb039f2d39156e6285f2f1f47a8cef"
+    },
+    "data/processed/ephishllm-v1/validation.jsonl": {
+      "bytes": 1666330,
+      "sha256": "27160f935d619eb815219a71a065fb1c3d73062c70ec6475601a028a184f550d"
+    },
+    "data/processed/external-mail-reproduction/audit.jsonl": {
+      "bytes": 3484076,
+      "sha256": "46aa61a14b8e4ddd3d04266f1261af8e95110341db22b7aa49cb0f99148cec0a"
+    },
+    "data/processed/external-mail-reproduction/manifest.json": {
+      "bytes": 291222,
+      "sha256": "0fe63a922df2fc61df665f3d8d6ddaea8cafcc9c3cf9abb9297e892e8b23ff36"
+    },
+    "data/processed/external-mail-reproduction/reserve.jsonl": {
+      "bytes": 1556154,
+      "sha256": "cfedaf79d9ffd0dbc7aaa5831ca30add021b63b61cb08245091468d74cc19735"
+    },
+    "data/processed/external-mail-v1/audit.jsonl": {
+      "bytes": 3484076,
+      "sha256": "46aa61a14b8e4ddd3d04266f1261af8e95110341db22b7aa49cb0f99148cec0a"
+    },
+    "data/processed/external-mail-v1/manifest.json": {
+      "bytes": 291222,
+      "sha256": "0fe63a922df2fc61df665f3d8d6ddaea8cafcc9c3cf9abb9297e892e8b23ff36"
+    },
+    "data/processed/external-mail-v1/reserve.jsonl": {
+      "bytes": 1556154,
+      "sha256": "cfedaf79d9ffd0dbc7aaa5831ca30add021b63b61cb08245091468d74cc19735"
+    },
+    "data/processed/real-mail-v2-before-guard-fix/challenge.jsonl": {
+      "bytes": 1042614,
+      "sha256": "2319ec19bddee4480887bd05a2cd81625e9776021a2f39133f4672c933662600"
+    },
+    "data/processed/real-mail-v2-before-guard-fix/manifest.json": {
+      "bytes": 715492,
+      "sha256": "2d35bf4ae0f38d4c275cc9df08084d7cfc8d5ac246aaacffef2303733d3962a6"
+    },
+    "data/processed/real-mail-v2-before-guard-fix/test.jsonl": {
+      "bytes": 700066,
+      "sha256": "30cf60cb3632e5f3731473381ed48beabc7d58ffeaea41e096efd0622c795a17"
+    },
+    "data/processed/real-mail-v2-before-guard-fix/train.jsonl": {
+      "bytes": 6109838,
+      "sha256": "6ac56c3bad67888ae2756ac9d836182e11cf67660beac51412e270002cd70f7e"
+    },
+    "data/processed/real-mail-v2-before-guard-fix/validation.jsonl": {
+      "bytes": 1505012,
+      "sha256": "90306510fc8c340c7f15fa4e63b7e6f54cd40e9bba021e0512fc77120cd2400a"
+    },
+    "data/processed/real-mail-v2-reproduction/challenge.jsonl": {
+      "bytes": 1042614,
+      "sha256": "2319ec19bddee4480887bd05a2cd81625e9776021a2f39133f4672c933662600"
+    },
+    "data/processed/real-mail-v2-reproduction/manifest.json": {
+      "bytes": 713592,
+      "sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb"
+    },
+    "data/processed/real-mail-v2-reproduction/test.jsonl": {
+      "bytes": 692873,
+      "sha256": "c479091f562ed134057d6e7af4eab8fc48211111a72f4a609881fcc0cfa2a381"
+    },
+    "data/processed/real-mail-v2-reproduction/train.jsonl": {
+      "bytes": 5834556,
+      "sha256": "e22e5fb4e6c8bbcc7e9b35504e93a5707ac96779f4d66393c63d97ccecea8b91"
+    },
+    "data/processed/real-mail-v2-reproduction/validation.jsonl": {
+      "bytes": 1468653,
+      "sha256": "342ce22b4c68b07bd743e11533c86e16a6a7b6a90ba7a290a6beb21dfe6611af"
+    },
+    "data/processed/real-mail-v2/challenge.jsonl": {
+      "bytes": 1042614,
+      "sha256": "2319ec19bddee4480887bd05a2cd81625e9776021a2f39133f4672c933662600"
+    },
+    "data/processed/real-mail-v2/manifest.json": {
+      "bytes": 713592,
+      "sha256": "6f9a757dc2444607312ff9719a9f4f2a2ece5a2808231d28e8dfdb42a17159bb"
+    },
+    "data/processed/real-mail-v2/test.jsonl": {
+      "bytes": 692873,
+      "sha256": "c479091f562ed134057d6e7af4eab8fc48211111a72f4a609881fcc0cfa2a381"
+    },
+    "data/processed/real-mail-v2/train.jsonl": {
+      "bytes": 5834556,
+      "sha256": "e22e5fb4e6c8bbcc7e9b35504e93a5707ac96779f4d66393c63d97ccecea8b91"
+    },
+    "data/processed/real-mail-v2/validation.jsonl": {
+      "bytes": 1468653,
+      "sha256": "342ce22b4c68b07bd743e11533c86e16a6a7b6a90ba7a290a6beb21dfe6611af"
+    },
+    "data/processed/reproduction-check/manifest.json": {
+      "bytes": 2059116,
+      "sha256": "e2d33ec1688236caced98bcbb8440c16b49282e9614f7e42110274d610beae2d"
+    },
+    "data/processed/reproduction-check/test.jsonl": {
+      "bytes": 1657068,
+      "sha256": "ff01f4d335076db72c1418e05b312f12433f586794b643b752c3a9371456b376"
+    },
+    "data/processed/reproduction-check/train.jsonl": {
+      "bytes": 7739949,
+      "sha256": "a8b648faf5742fcb6e207276f27ac11199fb039f2d39156e6285f2f1f47a8cef"
+    },
+    "data/processed/reproduction-check/validation.jsonl": {
+      "bytes": 1666330,
+      "sha256": "27160f935d619eb815219a71a065fb1c3d73062c70ec6475601a028a184f550d"
+    },
+    "models/baseline-reproduction/manifest.json": {
+      "bytes": 510,
+      "sha256": "0ccfe59031ac8cfee6c5773f68ba5d26ac3bb24a7a4e464b65ee94be04f74ff0"
+    },
+    "models/baseline-reproduction/model.json": {
+      "bytes": 2755776,
+      "sha256": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703"
+    },
+    "models/baseline-reproduction/training-report.json": {
+      "bytes": 45297,
+      "sha256": "fe18b4f80ba612b88fbc3a24de77fc031090f0d2355813b12ffac2f1a90947ef"
+    },
+    "models/baseline-v1/manifest.json": {
+      "bytes": 510,
+      "sha256": "0ccfe59031ac8cfee6c5773f68ba5d26ac3bb24a7a4e464b65ee94be04f74ff0"
+    },
+    "models/baseline-v1/model.json": {
+      "bytes": 2755776,
+      "sha256": "a526bb2de383bbeb46282a6c2f0f8bca375310397945319d8b2e5d161f435703"
+    },
+    "models/baseline-v1/training-report.json": {
+      "bytes": 45296,
+      "sha256": "02b0e771bf2bd4f209bf9aa0f9e7fe93c038c8ca6646fc8ba37203005a81635e"
+    },
+    "models/baseline-v2-reproduction/manifest.json": {
+      "bytes": 510,
+      "sha256": "dfc443ac52db58c0e09e6b917f5d53df638384eb1ba95e0dd5ef16be19a03f1d"
+    },
+    "models/baseline-v2-reproduction/model.json": {
+      "bytes": 2277768,
+      "sha256": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480"
+    },
+    "models/baseline-v2-reproduction/selection.json": {
+      "bytes": 289,
+      "sha256": "6f141ec73504b09868e0e87b66ffd83023da2eb109505cb8122413a3210028d7"
+    },
+    "models/baseline-v2-reproduction/training-report.json": {
+      "bytes": 40895,
+      "sha256": "2ddcb20336dc6830c5a4133c3795483d8a7b65d5f109b96297bc8a8fc4ed955f"
+    },
+    "models/baseline-v2/manifest.json": {
+      "bytes": 510,
+      "sha256": "dfc443ac52db58c0e09e6b917f5d53df638384eb1ba95e0dd5ef16be19a03f1d"
+    },
+    "models/baseline-v2/model.json": {
+      "bytes": 2277768,
+      "sha256": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480"
+    },
+    "models/baseline-v2/selection.json": {
+      "bytes": 289,
+      "sha256": "6f141ec73504b09868e0e87b66ffd83023da2eb109505cb8122413a3210028d7"
+    },
+    "models/baseline-v2/training-report.json": {
+      "bytes": 40896,
+      "sha256": "1102930ce9e78b609773e029a32f94167246294354cd2f5783f909dadcea01ea"
+    },
+    "models/defended-reproduction-v1/config.json": {
+      "bytes": 2004,
+      "sha256": "81e1b4a23093843497bb1831370f6ee506d86494061c926dd556bc06fda47e41"
+    },
+    "models/defended-reproduction-v1/manifest.json": {
+      "bytes": 572246,
+      "sha256": "a72e94c60a11c46949b06b6b55ab59cd1d9e3c4255830632009645542d877cda"
+    },
+    "models/defended-reproduction-v1/model.safetensors": {
+      "bytes": 17549312,
+      "sha256": "5251d272c1205947c0a8bd610b42e2cb18f56b86742df3ee3133412c28654db3"
+    },
+    "models/defended-reproduction-v1/selection.json": {
+      "bytes": 689,
+      "sha256": "549a9f1d64117baef12b9c3ca5730814b20e67e5a068c3ea629f97136d0a0dad"
+    },
+    "models/defended-reproduction-v1/training-report.json": {
+      "bytes": 53889,
+      "sha256": "0a900103fe6afcd9233b8c06955328348fdf941fb732d457c9f4c4749f911491"
+    },
+    "models/defended-reproduction-v1/vocab.txt": {
+      "bytes": 231508,
+      "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "models/defended-v1/config.json": {
+      "bytes": 2004,
+      "sha256": "81e1b4a23093843497bb1831370f6ee506d86494061c926dd556bc06fda47e41"
+    },
+    "models/defended-v1/manifest.json": {
+      "bytes": 572246,
+      "sha256": "a72e94c60a11c46949b06b6b55ab59cd1d9e3c4255830632009645542d877cda"
+    },
+    "models/defended-v1/model.safetensors": {
+      "bytes": 17549312,
+      "sha256": "5251d272c1205947c0a8bd610b42e2cb18f56b86742df3ee3133412c28654db3"
+    },
+    "models/defended-v1/selection.json": {
+      "bytes": 689,
+      "sha256": "549a9f1d64117baef12b9c3ca5730814b20e67e5a068c3ea629f97136d0a0dad"
+    },
+    "models/defended-v1/training-report.json": {
+      "bytes": 53889,
+      "sha256": "3f7da00939a69bed23f47228524d1eef409a2fd95b4420681769d5a821cdc3be"
+    },
+    "models/defended-v1/vocab.txt": {
+      "bytes": 231508,
+      "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "models/finetune-source/google-30b0a37c/README.md": {
+      "bytes": 4617,
+      "sha256": "d13a54d652a2a54fbbc50e063b465fb273295870867821e1b06baba1d49d68a9"
+    },
+    "models/finetune-source/google-30b0a37c/config.json": {
+      "bytes": 382,
+      "sha256": "508e1f01aae55d73355cbdd82609be2f43ba5a0d3428837adbe56cf8391f8b39"
+    },
+    "models/finetune-source/google-30b0a37c/model.safetensors": {
+      "bytes": 17739144,
+      "sha256": "7fb69ad9f6866d8983183c930e33828f326470bf6ad8bbb2ad4ed957a92e9414"
+    },
+    "models/finetune-source/google-30b0a37c/vocab.txt": {
+      "bytes": 231508,
+      "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "models/finetuned-reproduction-v1/config.json": {
+      "bytes": 2004,
+      "sha256": "81e1b4a23093843497bb1831370f6ee506d86494061c926dd556bc06fda47e41"
+    },
+    "models/finetuned-reproduction-v1/manifest.json": {
+      "bytes": 289501,
+      "sha256": "c308d3672a5ae218d4515435dbae0f674957e41d2a2bf04de91717c83a6b064f"
+    },
+    "models/finetuned-reproduction-v1/model.safetensors": {
+      "bytes": 17549312,
+      "sha256": "9869894af19831a1a3fcf62afe4b7b4c27f20a6b8971ea0c4184fd88c45af835"
+    },
+    "models/finetuned-reproduction-v1/selection.json": {
+      "bytes": 487,
+      "sha256": "5a0d7147a03b0fec43805521bd116ef7f1d378379552853240b504075fb1386d"
+    },
+    "models/finetuned-reproduction-v1/training-report.json": {
+      "bytes": 53224,
+      "sha256": "88dc8148f2d7e1790ed352b51654c264311b8e136ac2f9a7a02f18cb4845a93e"
+    },
+    "models/finetuned-reproduction-v1/vocab.txt": {
+      "bytes": 231508,
+      "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "models/finetuned-v1/config.json": {
+      "bytes": 2004,
+      "sha256": "81e1b4a23093843497bb1831370f6ee506d86494061c926dd556bc06fda47e41"
+    },
+    "models/finetuned-v1/manifest.json": {
+      "bytes": 289501,
+      "sha256": "c308d3672a5ae218d4515435dbae0f674957e41d2a2bf04de91717c83a6b064f"
+    },
+    "models/finetuned-v1/model.safetensors": {
+      "bytes": 17549312,
+      "sha256": "9869894af19831a1a3fcf62afe4b7b4c27f20a6b8971ea0c4184fd88c45af835"
+    },
+    "models/finetuned-v1/selection.json": {
+      "bytes": 487,
+      "sha256": "5a0d7147a03b0fec43805521bd116ef7f1d378379552853240b504075fb1386d"
+    },
+    "models/finetuned-v1/training-report.json": {
+      "bytes": 53224,
+      "sha256": "c30082934e6e1257a3a851923a8b58c3ef30f61ee7a48f650bd8d43c952ce07e"
+    },
+    "models/finetuned-v1/vocab.txt": {
+      "bytes": 231508,
+      "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "models/pretrained/dima806-310a5602/README.md": {
+      "bytes": 295,
+      "sha256": "2b70ad8c07d2f1b94e8a3d711d4feb4b44414c28decde09e52c2b95892e2262b"
+    },
+    "models/pretrained/dima806-310a5602/config.json": {
+      "bytes": 706,
+      "sha256": "bfe567884c49794f4a6f5c600815a02355e00eabaee29f8b08960ed10a79ce39"
+    },
+    "models/pretrained/dima806-310a5602/model.safetensors": {
+      "bytes": 263144680,
+      "sha256": "45bb5e5608370c51e63ef9120627515093b1ef4d7cd6693e54301a894a2d910c"
+    },
+    "models/pretrained/dima806-310a5602/vocab.txt": {
+      "bytes": 213450,
+      "sha256": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "models/review/README.md": {
+      "bytes": 295,
+      "sha256": "2b70ad8c07d2f1b94e8a3d711d4feb4b44414c28decde09e52c2b95892e2262b"
+    },
+    "models/review/config.json": {
+      "bytes": 706,
+      "sha256": "bfe567884c49794f4a6f5c600815a02355e00eabaee29f8b08960ed10a79ce39"
+    },
+    "models/review/dima806-source-api.json": {
+      "bytes": 2606,
+      "sha256": "4f7fee11955f4bd7824219edd3bb960b8c804381473594a4c8f6e04165b4c650"
+    },
+    "models/review/vocab.txt": {
+      "bytes": 213450,
+      "sha256": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    }
+  },
+  "prior_reserve_status": "703 never-scored/unreviewed messages; known metadata only before this freeze",
+  "protocol_sha256": "f22db7d069b14e33e56af0a3f9411e7733f909878172dcd35a35f179f3abf3be",
+  "version": "final-freeze-v1"
+}

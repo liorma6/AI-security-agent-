@@ -102,7 +102,14 @@ def main(argv: list[str] | None = None) -> int:
     from phishguard.demo.cli import register as register_demo
 
     register_demo(commands)
+    from phishguard.final_evaluation import register as register_final
+
+    register_final(commands)
     args = parser.parse_args(argv)
+    if args.command == "final":
+        from phishguard.final_evaluation import run
+
+        return run(args)
     if args.command == "demo":
         from phishguard.demo.cli import run
 

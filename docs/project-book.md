@@ -4,7 +4,7 @@ Revision 1.8 - November 14, 2026 - Local demo and current pretrained comparison
 
 Team: Lior and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
 
-Status: STAGE 8 LOCAL DEMO COMPLETED. Stages 0-8 and checkpoints 4a/4b are implemented at their stated scope. Four preserved models are compared on identical current clean benchmarks and exposed through a local Gradio pasted-email demo. Prior models/data and 703 unscored reserve messages are preserved. Stage 9 final evaluation and submission remain planned. This canonical specification records completed evidence and future requirements.
+Status: STAGE 8 LOCAL DEMO COMPLETED. Stages 0-8 and checkpoints 4a/4b are implemented at their stated scope. Four preserved models are compared on identical current clean benchmarks and exposed through a local Gradio pasted-email demo. Prior models/data and 703 unscored reserve messages are preserved. Stage 9 is in progress with a [preregistered final protocol](final-evaluation.md); reserve scoring has not yet begun. This canonical specification records completed evidence and future requirements.
 
 ## 1. Background
 

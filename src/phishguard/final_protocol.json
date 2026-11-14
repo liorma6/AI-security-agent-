@@ -1,0 +1,36 @@
+{
+  "version": "final-reserve-v1",
+  "cohort": "final-reserve",
+  "rows": 703,
+  "groups": 432,
+  "labels": {"legitimate": 479, "phishing": 224},
+  "reserve_file": {"bytes": 1556154, "sha256": "cfedaf79d9ffd0dbc7aaa5831ca30add021b63b61cb08245091468d74cc19735"},
+  "models": {
+    "baseline_v2": {"revision": "a78643d919de806d170fec8cf303ac8be29e7866d0e30acb14650430009fe480", "threshold": 0.31},
+    "finetuned": {"revision": "2a49e59947fd081463a300c9b99d34e9ea609d6a671593c8f204cea02435d3d5", "threshold": 0.69},
+    "defended": {"revision": "4a682e807a00ed26860c8e9e282fceac13fafd69bec0ae7435a3538f8a2055ae", "threshold": 0.07},
+    "pretrained": {"revision": "310a5602280486e01dd60e37230980cfcc327b41", "threshold": 0.45}
+  },
+  "clean_models": ["baseline_v2", "finetuned", "defended", "pretrained"],
+  "robustness_models": ["baseline_v2", "finetuned", "defended"],
+  "inference": "Use each existing reviewed adapter unchanged, including preprocessing, label mapping, CPU float32 neural settings and 256/512-token limits. Baseline accepts full validated text. No downloads or training.",
+  "primary_clean": "All 703 originals with publisher labels: confusion counts, accuracy, balanced accuracy, precision, phishing recall, F1 and legitimate false-positive rate. Report per-source results and truncation; undefined class denominators remain null.",
+  "primary_robustness": "One fresh model-independent candidate bank with seed 9042. Reuse the unchanged stage-6 three transformations, protected spans and bounds: at most 12 candidates plus 1 clean query per parent/model, at most 3 changed words and 10 percent of body words, first 1500 body characters only. Same candidate texts for all three trained models; no early stopping or extra probes.",
+  "attack_seed": 9042,
+  "max_candidates": 12,
+  "max_queries_per_parent": 13,
+  "attack_selection": "Fixed corruption uses the first candidate for both classes (original if absent). Directed evasion selects the lowest phishing score including the original for phishing only; legitimate stays clean. ASR denominator is all clean-detected phishing, including no-candidate parents. Also report all-model and parent/defense common eligibility, source/family counts, query totals, effective token no-ops and parent-selected transfer. Pretrained clean comparison is separate; no pretrained robustness claim.",
+  "uncertainty": {"method": "Whole-group percentile bootstrap 95 percent", "seed": 42, "repetitions": 1000, "paired_contrast": "Defended minus original BERT clean accuracy, recall, false-positive rate and F1 using the same resampled groups; descriptive intervals, no multiplicity-adjusted superiority claim."},
+  "integrity": "Before scoring, require the committed freeze manifest, a clean tracked worktree, all frozen code/reference hashes and all 79 preserved file hashes. Validate the original reserve manifest, IDs, groups, sources, labels and bytes. Reject exact preprocessed training/validation overlap for originals or candidates; abort instead of dropping rows. Keep existing split/group membership on disk; use an in-memory test view for the frozen perturbation library. No cohort edits or label changes.",
+  "reproduction": "Run the complete frozen evaluation twice to new output directories; independently recount metrics/query budgets, compare prediction and bank bytes, check unchanged model/data files and in-memory weight digests. The repeat is numerical reproduction, not independent new evidence.",
+  "postscore_review": "After all scores are fixed, select up to two false positives and two false negatives per model by SHA256('final-clean-review-v1:'+example_id), union/deduplicate IDs. Review up to two successful defended worst-of-budget variants per operation, ranked by SHA256('final-attack-review-v1:'+example_id); when an operation has no defended successes, use original-BERT successes for that operation. Record supported/ambiguous/invalid without altering primary publisher labels, models, thresholds, attacks or counts. Keep raw excerpts local; publish text-free judgments only. Review is AI-assisted and bounded, not exhaustive human certification.",
+  "no_tuning": "Do not refit, recalibrate, replace models, choose thresholds, alter attacks, relabel or select a deployment winner based on reserve outcomes. Stop on integrity/boundary failure; disclose any implementation correction and its timing. Changes to experimental choices require a new external test cohort, not reuse of this reserve as fresh evidence.",
+  "limitations": [
+    "Reserve groups are held out from local development, but come from the same source families as earlier audits; this is not a contemporary representative inbox.",
+    "Legitimate mail is historical SpamAssassin and phishing is Nazario 2024/2025: source, era and class remain confounded.",
+    "Publisher labels and heuristic relatedness are imperfect; upstream pretrained training membership is unknown.",
+    "Different training histories, thresholds and token budgets prevent an architecture-controlled comparison.",
+    "Finite constraint-pass perturbations do not prove semantic preservation or universal robustness. The defense lacks a clean-only continuation control and multi-seed study.",
+    "Scores are not calibrated probabilities. Neither high test accuracy nor passing software tests establishes production readiness."
+  ]
+}
