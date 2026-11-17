@@ -1,6 +1,6 @@
 # PhishGuard - Project Book
 
-Revision 2.0 - November 17, 2026 - Final specification and complete submission sources
+Revision 2.1 - November 17, 2026 - Final specification with student learning and contribution calendar
 
 Team: **Lior Mashaich and Sharon Elimelech**.
 
@@ -684,7 +684,7 @@ The following images are actual desktop and mobile Chromium captures from the re
 
 The PhishGuard plan in section 8.3 assigns Lior Mashaich and Sharon Elimelech equal estimated responsibility: 50 planning units each, 100 total. Each work package allocates five units to each person. These are planning weights, not measured working hours. Rebalance responsibilities as actual effort becomes clear and keep the total responsibility balanced.
 
-Named ownership is an assignment of implementation, testing and explanation responsibility. It does not assert that planned code has already been written. Both students review each other's work, understand the full pipeline and record actual contributions with dates and artifacts. Development and documentation may use AI assistance; students remain responsible for validating and explaining the results.
+Named ownership assigns code, testing and explanation responsibility; it does not establish individual authorship of the implemented code. Both students are assigned to review each other's work, understand the full pipeline and record actual contributions with dates and artifacts. Development and documentation may use AI assistance; students remain responsible for validating and explaining the results.
 
 ### 8.2 Two-week learning record
 
@@ -707,7 +707,7 @@ Both students participate in all topics. Each has five review-lead sessions. Pyt
 
 ### 8.3 Two-semester milestones and ownership
 
-Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05 pretrained comparison, stage 4a generalization audit and stage 4b data refresh/baseline re-evaluation are implemented and measured; individual student review remains open. W06 fine-tuning, comparison, reproduction and bounded error review are implemented; individual student review remains open. W07 controlled transformations, frozen-bank comparison, bounded label review and reproduction are implemented; individual student review remains open. W08 augmentation defense, fixed/fresh comparison and reproduction are implemented; individual student review remains open. W09 local demo and current pretrained-comparison integration are implemented and checked; individual student review remains open. W10 final evaluation, full numerical repeat, independent verification, report and presentation preparation are complete with AI assistance. All twelve milestones (0-9 plus 4a/4b) are implemented at their stated scope. Personal student review, recorded contribution evidence and actual course submission remain open.
+W01-W10 are work-package identifiers, not calendar week numbers. Section 8.6 maps the student learning and review responsibilities to the confirmed November 2026-July 2027 calendar. This does not change the actual completed implementation chronology. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05 pretrained comparison, stage 4a generalization audit and stage 4b data refresh/baseline re-evaluation are implemented and measured; individual student review remains open. W06 fine-tuning, comparison, reproduction and bounded error review are implemented; individual student review remains open. W07 controlled transformations, frozen-bank comparison, bounded label review and reproduction are implemented; individual student review remains open. W08 augmentation defense, fixed/fresh comparison and reproduction are implemented; individual student review remains open. W09 local demo and current pretrained-comparison integration are implemented and checked; individual student review remains open. W10 final evaluation, full numerical repeat, independent verification, report and presentation preparation are complete with AI assistance. All twelve milestones (0-9 plus 4a/4b) are implemented at their stated scope. Personal student review, recorded contribution evidence and actual course submission remain open.
 
 | Package / period | Lior Mashaich - 5 units | Sharon Elimelech - 5 units | Completion evidence |
 | --- | --- | --- | --- |
@@ -730,7 +730,7 @@ The specification, STRIDE table, UML, test plan and ownership schedule are prese
 
 Lior Mashaich owns the input/result contracts, dataset ingestion, baseline training, model adapters, fine-tuning runner, perturbation operations and demo integration listed in section 8.3. Sharon Elimelech owns validation fixtures, dataset quality and splits, evaluation and leakage checks, tokenization/reproducibility checks, perturbation validity, defense training and explanation/privacy checks. Each implementation package also includes tests and peer review; the weights in section 8.3 include that work.
 
-For every completed contribution record the package ID, student, actual activity, date, artifact or commit, peer review and check results in the [stage log](stage-log.md). Keep assigned ownership, implemented behavior and completed personal review distinct. Update this book and its UML when behavior changes, and add measured conclusions after the experiments.
+For every completed contribution record the package ID, student, actual activity, date, artifact or commit, peer review and check results in the [personal contribution register](learning-and-contributions.md) and its [editable log](contribution-log.csv); keep project implementation outcomes in the [stage log](stage-log.md). Keep assigned ownership, implemented behavior and completed personal review distinct. Update this book and its UML when behavior changes, and add measured conclusions after the experiments.
 
 ### 8.5 Final submission coverage and review
 
@@ -738,7 +738,27 @@ The November 17 submission review adds a native one-page summary with team/super
 
 W10 keeps equal assigned responsibility: Lior Mashaich leads the system/use-case specification, screenshots, reproduction links and code packaging; Sharon Elimelech leads the One Pager, graphs, requirement-to-slide mapping and presentation review. These are responsibilities for AI-assisted outputs, not invented records of individual work. The remaining human items are actual learning dates/evidence, personal review and course submission. No recorded/published YouTube video is currently part of the verified package; the example's video link is not reused. See [submission coverage](submission-review.md).
 
-### 8.6 References and assignment provenance
+### 8.6 November-July student learning and contribution calendar
+
+The student confirmed the period as November 2026-July 2027 on November 17, 2026; exact institutional deadlines have not been supplied. This is the student learning, code-ownership, review and presentation calendar for already implemented AI-assisted outputs. It does not redocument the completed experiments as future work or invent past individual completion. November consolidates the reported two-week study; its original dates remain unconfirmed. All personal activities in this calendar are initially planned.
+
+| Month / package | Lior Mashaich - assigned contribution | Sharon Elimelech - assigned contribution |
+| --- | --- | --- |
+| November 2026 / W01-W02 | Five foundation reviews; requirements, component UML, setup and email/result contracts | Five foundation reviews; STRIDE, sequence UML, validation fixtures and error cases |
+| December 2026 / W03 | Source provenance, ingestion and MIME/text extraction walkthrough | Labels, deduplication, group splits and leakage-check walkthrough |
+| January 2027 / W04 | TF-IDF/logistic-regression training and artifact save/load explanation | Confusion metrics, validation threshold and leakage-test explanation |
+| February 2027 / W05 | Pretrained adapter, external sources and refreshed-model artifact review | Label compatibility, same-cohort comparison, relatedness and uncertainty review |
+| March 2027 / W06 | BERT-Tiny training runner, optimizer/seed settings and checkpoint identity | Tokenization, validation-only selection, evaluation and reproduction |
+| April 2027 / W07 | Bounded transformations, lineage and query-budget enforcement | Validity review, candidate ASR denominators, paired metrics and fixtures |
+| May 2027 / W08 | Defended inference, artifact separation and clean-performance costs | Training-only augmentation, defense training and verification |
+| June 2027 / W09 | UI/model integration, input limits, local setup and demo walkthrough | Explanation logic, error/privacy behavior and usability checklist |
+| July 2027 / W10 | Frozen protocol/verifier explanation, architecture/reproduction text and demo recording segment | Final comparisons, conclusions, One Pager, graphs, presentation and results recording segment |
+
+Allocation remains 50 units per student: ten each in November, then five each in each of the eight remaining months. Units are relative planned responsibility, not logged hours. Each five-unit package includes two code/system units, one testing/peer-review unit, one learning unit and one documentation/demo unit; W01 uses concept exercises instead of code. Both students study every topic and review each other's output. Rebalance remaining tasks using actual effort rather than assuming equal estimates prove equal work.
+
+The [detailed register](learning-and-contributions.md) specifies learning topics, individual deliverables, references and the ten foundation sessions. Its [editable contribution log](contribution-log.csv) contains eighteen planned rows, one per student per month. Actual dates, activity, reflection, artifact/commit, check result, AI assistance and peer review are filled when supplied. The existing code and reports establish project implementation; they do not establish who personally authored or reviewed each part. The final reserve remains consumed evidence and this calendar schedules no model retraining or test-based retuning.
+
+### 8.7 References and assignment provenance
 
 The primary course reference is the student-supplied Project2_PhishGuard.docx, titled Project 2 - PhishGuard: AI Phishing Detection & Adversarial Robustness. The eight-chapter structure and reported learning topics follow the course-book checklist supplied by the student. External references support definitions and methods; project-specific threats, limits and allocations are design choices. The assignment document is retained locally as the course reference.
 

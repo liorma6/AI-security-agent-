@@ -7,3 +7,5 @@ Current status: stages 0-9 and additional checkpoints 4a/4b completed. Python co
 Use the [implementation plan](implementation-plan.md) for stage order and acceptance criteria. Use the root [README](../README.md) for the capabilities and commands available in the current checkout. Update the project book as implementation proceeds; do not maintain a second competing specification here.
 
 Revision 2.0 adds confirmed team/supervisor/course details, formal use cases, current-state requirements traceability, measured graphs, actual screenshots and a labeled interface wireframe. See the [submission coverage review](submission-review.md) and [One Pager](one-pager.md).
+
+Revision 2.1 adds the confirmed November 2026-July 2027 [student learning and contribution register](learning-and-contributions.md), equal monthly allocation and an [editable evidence log](contribution-log.csv). Planned student activity remains distinct from completed implementation and reported past study.

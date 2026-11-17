@@ -234,7 +234,7 @@ No raw research emails or model checkpoints are included in Git. The internal sy
 
 ## Team
 
-Lior Mashaich and Sharon Elimelech share planned responsibility equally. The project book records the allocation, the reported two-week learning period and how actual contributions will be recorded as work proceeds.
+Lior Mashaich and Sharon Elimelech share planned responsibility equally. The project book and [November-July learning/contribution register](docs/learning-and-contributions.md) record equal assigned responsibility, the reported two-week study and the format for actual personal evidence.
 
 Supervisor: Zimon Roi. Institution: HIT. Course: AB- Ai Security.
 
