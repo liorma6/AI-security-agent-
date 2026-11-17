@@ -17,7 +17,7 @@ Reviewed November 17, 2026 against the supplied One Pager, specification and Pow
 | Source-code handoff | GitHub source exists | Local source-only ZIP from the final committed repository; no datasets, learned weights or private inputs |
 | Links handoff | Links distributed across README/docs | Local PhishGuard-Links.txt with repository, materials and local demo instructions |
 | Recorded/published video | No verified video/link | Still absent; no YouTube link is invented or copied from the example |
-| Student IDs and personal study evidence | IDs not supplied; learning dates/review evidence open | The supplied templates explicitly require IDs; local fields remain pending private completion. A November-July calendar and editable personal log are prepared; actual dated evidence remains student-supplied |
+| Student IDs and personal study evidence | IDs not supplied; learning dates/review evidence open | The supplied templates explicitly require IDs; local fields are completed privately and the values are excluded from Git. A November-July calendar and editable personal log are prepared; actual dated evidence remains student-supplied |
 
 The requested summary, specification and presentation are prepared for student review. This review does not assert supervisor approval, completed personal authorship or actual course submission. Figures retain source/label limitations, and no research model or threshold is changed to improve the displayed results. The PNG/SVG plots are built from the frozen reports by [the visual builder](../scripts/build_submission_visuals.py).
 

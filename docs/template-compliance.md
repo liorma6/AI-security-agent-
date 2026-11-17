@@ -27,7 +27,7 @@ The export starts from the actual supplied PPTX, retaining its slide masters, wh
 
 | Template topic | Completed slide coverage |
 | --- | --- |
-| Title, students, supervisor, IDs | Slide 1; full names and confirmed academic details, private IDs pending |
+| Title, students, supervisor, IDs | Slide 1; full names and confirmed academic details, private IDs completed in local exports |
 | Table of Contents | Slide 2 |
 | General software description: goals/processes/modules/products | Slides 3-5 |
 | Requirements from specification | Slides 6-7, PG01-PG10 with evidence |
@@ -43,10 +43,10 @@ The export starts from the actual supplied PPTX, retaining its slide masters, wh
 
 The original plan did not supply dated baseline deadlines. Slide 22 therefore compares planned scope and delivered outcomes without inventing schedule adherence. The November 2026-July 2027 student-learning calendar was added after implementation and is explicitly identified as such.
 
-## Remaining private field and verification scope
+## Private fields and verification scope
 
-Both templates request ID numbers. These have not been supplied, so the local exports visibly show ID: pending for each student. The builders accept an optional --private-profile JSON file containing a student_ids mapping keyed by full name. Keep it outside the repository. Only local Word/PowerPoint/HTML/PDF exports receive those values; public Markdown and logs do not.
+Both templates request ID numbers. The student supplied both values on November 17, 2026. They are included in the local submission exports and excluded from the public repository. The builders accept an optional --private-profile JSON file containing a student_ids mapping keyed by full name. Keep it outside the repository. Only local Word/PowerPoint/HTML/PDF exports receive those values; public Markdown and logs do not.
 
-Verified checks cover template-box geometry, retained branding, required sections, font settings, title/subtitle sizes, slide and PDF page counts, shape/page bounds, image loading and browser text overflow. Selected pages/slides were visually inspected. PDF companions render matching HTML in Chromium; this does not claim native Word/PowerPoint rendering. Student IDs remain the only unfilled template identity fields. Recorded video, personal contribution evidence and actual course submission remain separate open handoff items.
+Verified checks cover template-box geometry, retained branding, required sections, font settings, title/subtitle sizes, slide and PDF page counts, shape/page bounds, image loading and browser text overflow. Selected pages/slides were visually inspected. PDF companions render matching HTML in Chromium; this does not claim native Word/PowerPoint rendering. The template identity fields are completed in the local submission files; a public-source-only export without the private profile intentionally leaves the identifiers pending. Recorded video, personal contribution evidence and actual course submission remain separate open handoff items.
 
 The export filenames are unchanged. PhishGuard-Links.txt is regenerated to point to the new committed sources and to name the corresponding local Word/PDF/PowerPoint files in the submission folder.

@@ -898,7 +898,10 @@ for i, s in enumerate(slides, 1):
     else:
         md += ["- " + bullet for bullet in s["bullets"]]
     if cover:
-        md += ["- Student IDs: pending private completion; not included in public source."]
+        md += [
+            "- Student IDs: omitted from public source; "
+            "supplied through the private export profile."
+        ]
     if s["image"]:
         md += ["", f"![{s['title']}](../{Path(s['image']).relative_to(REPO).as_posix()})"]
     md += ["", "Speaker notes: " + s["note"], ""]

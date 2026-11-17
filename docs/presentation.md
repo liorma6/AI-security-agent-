@@ -10,7 +10,7 @@ Phishing detection and controlled adversarial robustness
 - Supervisor: Zimon Roi
 - HIT | AB- Ai Security | November 17, 2026
 - An academic research prototype with a local email demo.
-- Student IDs: pending private completion; not included in public source.
+- Student IDs: omitted from public source; supplied through the private export profile.
 
 Speaker notes: Introduce the research question and the two students. Development and documentation were AI-assisted; students must review and explain the implementation.
 

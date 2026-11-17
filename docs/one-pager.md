@@ -8,7 +8,7 @@
 
 **Project coordination:** Lior Mashaich and Sharon Elimelech
 
-**Student IDs:** Pending private completion; not stored in the public repository.
+**Student IDs:** Supplied privately for local submission exports; omitted from the public repository.
 
 ## Main points
 

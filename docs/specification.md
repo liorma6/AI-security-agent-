@@ -11,3 +11,5 @@ Revision 2.0 adds confirmed team/supervisor/course details, formal use cases, cu
 Revision 2.1 adds the confirmed November 2026-July 2027 [student learning and contribution register](learning-and-contributions.md), equal monthly allocation and an [editable evidence log](contribution-log.csv). Planned student activity remains distinct from completed implementation and reported past study.
 
 Revision 2.2 records alignment with the supplied Word and PowerPoint course templates, including required sections, institutional design, Calibri, progress comparison and pending private student-ID fields. See [template compliance](template-compliance.md).
+
+Revision 2.3 records completion of the privately supplied student-ID fields in local submission exports. The identifiers remain outside the public repository; the template content and research results are unchanged.
