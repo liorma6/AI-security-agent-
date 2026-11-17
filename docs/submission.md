@@ -7,7 +7,7 @@ All twelve implementation milestones (0-9 and checkpoints 4a/4b) are complete at
 | Item | Canonical source | Prepared local export |
 | --- | --- | --- |
 | One-page summary | [One Pager](one-pager.md) | PhishGuard-One-Pager.docx and .pdf |
-| Eight-chapter project book | [Project book](project-book.md) | PhishGuard-Project-Book.docx and .pdf, revision 2.1 |
+| Eight-chapter project book | [Project book](project-book.md) | PhishGuard-Project-Book.docx and .pdf, revision 2.2 |
 | Final protocol and comparative report | [Final evaluation](final-evaluation.md) | Included in the book and slides |
 | Machine-readable evidence | [Results](reports/final-evaluation.json), [verification](reports/final-verification.json), [review](reports/final-review.json) | Text-free aggregates; raw messages remain private |
 | Presentation and speaker notes | [Slide content and notes](presentation.md), [builder](../scripts/build_presentation.py) | PhishGuard-Final-Presentation.pptx, .html and .pdf |
@@ -61,3 +61,5 @@ W10 assigns five planning units to each student. Lior Mashaich leads reproductio
 The confirmed project identity is Lior Mashaich and Sharon Elimelech, supervised by Zimon Roi at HIT, course AB- Ai Security. The [coverage review](submission-review.md) maps each requested item to an artifact and distinguishes completed materials from missing personal evidence or a video link. The code ZIP packages committed source only; it is not a bundle of trained weights. The diagrams and measured plots are in assets; the presentation and One Pager are reproducible from their canonical sources. The one-page PDF is checked for exactly one A4 page. Word and PowerPoint are editable native files; PDF companions are rendered from the same content in HTML, not through Microsoft Office.
 
 The student calendar covers the confirmed November 2026-July 2027 period with equal assigned responsibility and personal evidence fields. It is a plan for learning/review/handoff, not a replacement for the actual completed implementation history.
+
+The One Pager and 27-slide presentation now follow the supplied course templates, as mapped in [template compliance](template-compliance.md). Both templates require student IDs; the corresponding local fields remain pending until supplied privately. Filenames are stable and the links handoff references the updated committed sources and local export names.

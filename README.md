@@ -253,7 +253,7 @@ Existing outputs are refused. The evaluator enforces the committed code/protocol
 The [English presentation with speaker notes](docs/presentation.md) and [submission/demo walkthrough](docs/submission.md) explain the complete system and its limits. Generate editable slides and a printable HTML companion in a separate tools environment:
 
 ```sh
-uv run --no-project --with python-pptx==1.0.2 python scripts/build_presentation.py --output outputs
+uv run --no-project --with python-pptx==1.0.2 python scripts/build_presentation.py --template "path/to/Presentation Template.pptx" --output outputs
 ```
 
 This command reads committed aggregate reports, diagrams and public demo screenshots; it needs no research email or learned weights and does not modify the pinned model environment. Print the resulting HTML to PDF or export the PPTX from a presentation editor.
@@ -261,5 +261,7 @@ This command reads committed aggregate reports, diagrams and public demo screens
 Generate the editable One Pager and its printable HTML in the same isolated manner:
 
 ```sh
-uv run --no-project --with python-docx==1.2.0 --with Markdown==3.11.3 python scripts/build_one_pager.py --output outputs
+uv run --no-project --with python-docx==1.2.0 python scripts/build_one_pager.py --template "path/to/One Pager Template.docx" --output outputs
 ```
+
+Supply local working copies of the course templates; do not work in Downloads. The builders preserve the supplied template structure and use Calibri. See [template coverage](docs/template-compliance.md) for required fields, private student-ID completion and export-check scope. Template files are local inputs, not public repository assets.

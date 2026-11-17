@@ -1,42 +1,55 @@
 # PhishGuard
 
-**AI Phishing Detection and Adversarial Robustness**
+**Organization:** HIT | **Course:** AB- Ai Security
 
-**Team:** Lior Mashaich and Sharon Elimelech  
-**Supervisor:** Zimon Roi  
-**Institution:** HIT | **Course:** AB- Ai Security
+**Team:** Lior Mashaich and Sharon Elimelech
+
+**Supervisor:** Zimon Roi
+
+**Project coordination:** Lior Mashaich and Sharon Elimelech
+
+**Student IDs:** Pending private completion; not stored in the public repository.
+
+## Main points
+
+AI phishing detection and controlled adversarial robustness. Four detectors, reproducible comparisons and a local email-analysis demo.
 
 ## Problem
 
-Convincing phishing emails can evade text classifiers, while excessive false alarms disrupt legitimate communication. High accuracy on one dataset may hide weak transfer to other sources or sensitivity to small wording changes.
+Phishing wording changes, while excessive false alarms disrupt legitimate communication. Strong accuracy on one dataset may hide weak generalization or sensitivity to small text changes.
 
 ## Solution
 
-PhishGuard is a local research prototype that compares phishing detectors, tests bounded text changes and evaluates a training-data augmentation defense. Its web demo accepts pasted English email text and displays a score, decision, model identity and evidence with limitations.
+Compare classical and transformer detectors, test bounded text perturbations and evaluate an augmentation defense. Present each model's decision, score, identity and explanation limits through a local web interface.
 
-## Product capabilities
+## The methodology
 
-- Compare a TF-IDF/logistic-regression baseline, fine-tuned BERT-Tiny, a separately defended BERT and a pretrained DistilBERT classifier.
-- Keep related messages together and separate training, validation and evaluation.
-- Test controlled typos, letter swaps and substitutions under a fixed query budget.
-- Explain decisions through baseline feature contributions or clearly labeled text indicators; disclose truncation and unavailable models.
+Grouped data separation: 3,261 training and 745 validation messages. Select thresholds on validation only; freeze before evaluating 703 reserve messages. Compare external cohorts, repeat the final run and independently verify counts. Preserve earlier models.
 
-## Method and measured outcome
+## System domain
 
-Current local models use 3,261 training and 745 validation messages. A final protocol was committed before scoring the 703-message reserve. Existing weights and thresholds were preserved, and two full runs produced identical predictions.
+English email-text classification and academic AI-security research. Local CPU inference; no mailbox connection, link following, attachment execution or automatic blocking.
 
-| Final reserve model | Accuracy | Missed phishing / false alarms |
-| --- | --- | --- |
-| Baseline v2 | 99.29% | 3 / 2 |
-| Original BERT | 98.29% | 8 / 4 |
-| Defended BERT | 98.15% | 8 / 5 |
-| Pretrained DistilBERT | 95.16% | 23 / 11 |
+## Modules
 
-The reserve contains 224 publisher-labeled phishing and 479 legitimate messages. Challenge accuracy was 80.10%-87.25%; model rankings and error costs vary by dataset. Augmentation gains were small and inconsistent. These results do not establish production-inbox accuracy.
+Data preparation; TF-IDF/logistic-regression baseline; pretrained DistilBERT; fine-tuned BERT-Tiny; training-only augmentation defense; controlled perturbations; evaluation and local demo.
 
-## Technology and deliverables
+## Interfaces
 
-Python, scikit-learn, PyTorch, Hugging Face Transformers, Gradio and GitHub. Inference runs locally on CPU. Deliverables include the demo, controlled-evasion script, comparative reports, eight-chapter project book, poster and PowerPoint. Software verification includes 354 passing offline tests; it is separate from model-quality evidence.
+Gradio browser UI: optional subject, email body and four model choices. CLI: data, training and evaluation workflows. Pinned Hugging Face/data downloads during setup; inference stays local.
 
-**Repository:** https://github.com/liorma6/AI-security-agent-  
-**Status:** Implemented academic prototype | Updated November 17, 2026
+## Description of system components
+
+Python orchestrates file-based datasets and reports. Scikit-learn provides the baseline; PyTorch and Transformers provide neural models. A verified model registry connects frozen artifacts to Gradio. GitHub stores public code and aggregate evidence.
+
+## Defining the goals of the project
+
+Measure detection and false alarms; compare a ready-made classifier with locally trained models; measure controlled evasion and defense costs; prevent evaluation leakage; provide a reproducible, explainable demonstration with explicit limitations.
+
+## Summary and Conclusions
+
+Final-reserve accuracy ranges from 95.16% to 99.29%; challenge accuracy is 80.10%-87.25%. Rankings depend on the cohort and error cost. Augmentation gains are small and inconsistent. Two final runs agree; these results do not establish production-inbox accuracy.
+
+Repository: https://github.com/liorma6/AI-security-agent-
+
+Updated November 17, 2026. The supplied course template determines the one-page layout and Calibri typography. Institutional artwork is retained as supplied. Student identifiers are local submission fields, not public source content.

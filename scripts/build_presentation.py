@@ -3,18 +3,25 @@
 import argparse
 import base64
 import html
+import io
 import json
+import re
 from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile
 
+from lxml import etree as ET
 from PIL import Image
 from pptx import Presentation
 from pptx.dml.color import RGBColor
-from pptx.enum.shapes import MSO_SHAPE
+from pptx.enum.shapes import MSO_SHAPE, MSO_SHAPE_TYPE
+from pptx.enum.text import PP_ALIGN
 from pptx.util import Inches, Pt
 
 REPO = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--output", type=Path, default=REPO / "outputs")
+parser.add_argument("--template", type=Path, required=True)
+parser.add_argument("--private-profile", type=Path)
 args = parser.parse_args()
 OUT = args.output.resolve()
 OUT.mkdir(parents=True, exist_ok=True)
@@ -457,296 +464,500 @@ add(
     "and docs/submission-review.md. No recorded/published YouTube link exists in the "
     "verified package. Research datasets and learned weights are excluded from the code ZIP.",
 )
+add(
+    "Table of Contents",
+    "Course-template sequence",
+    bullets=[
+        "Software overview, goals, processes, modules and deliverables",
+        "Specification requirements, algorithms and software",
+        "Screenshots, measured graphs and interface mockup",
+        "Progress against the plan, unexpected problems and responses",
+        "Conclusions and directions for further development",
+    ],
+    note=(
+        "The presentation follows the supplied course template. The final "
+        "template slide contains design instructions and is not a project-"
+        "content slide."
+    ),
+)
+add(
+    "General description of the software",
+    "English email-text classification and controlled robustness research",
+    bullets=[
+        "Goals: compare detection, false alarms, controlled evasion and defense costs.",
+        (
+            "Processes: grouped preparation, training/selection, frozen evalua"
+            "tion and local inference."
+        ),
+        "Modules: datasets, four classifiers, perturbations, verification and Gradio demo.",
+        "Products: runnable code/demo, reports, project book, One Pager, poster and presentation.",
+    ],
+    note=(
+        "PhishGuard is an academic local prototype. No mailbox ingestion, "
+        "automatic blocking, attachment execution or production-email accu"
+        "racy claim is provided."
+    ),
+)
+add(
+    "Project progress schedule",
+    "Original milestone sequence compared with the actual project record",
+    table=[
+        ["Planned package", "Actual project outcome", "Comparison with plan"],
+        [
+            "W01-W03: foundations/data",
+            "Contracts, manifests and grouped splits",
+            "Implemented; individual review open",
+        ],
+        [
+            "W04-W05: baseline/HF",
+            "Baseline, HF comparison and audits 4a/4b",
+            "External audit and refresh added",
+        ],
+        [
+            "W06-W08: detector/robustness",
+            "BERT-Tiny, evasion and defense measured",
+            "Small, inconsistent defense gains",
+        ],
+        [
+            "W09-W10: demo/final",
+            "Demo checked; 703-message run repeated",
+            "Materials ready; student review open",
+        ],
+    ],
+    note=(
+        "The original plan used relative packages, without dated baseline "
+        "deadlines. A numerical early/late or on-time claim is unsupported"
+        ". Actual implementation and experiment history is recorded in Nov"
+        "ember 2026. The November-July student calendar was added afterwar"
+        "ds; it is not the original implementation baseline. See docs/impl"
+        "ementation-plan.md and docs/stage-log.md."
+    ),
+)
+add(
+    "Student learning and contribution schedule",
+    "Confirmed November 2026-July 2027; 50 responsibility units per student",
+    table=[
+        ["Period", "Learning / responsibility", "Individual evidence"],
+        [
+            "November 2026",
+            "W01-W02: foundations, contracts and threats",
+            "Five foundation leads per student; code/test walkthrough",
+        ],
+        [
+            "December-February",
+            "W03-W05: data, baseline and pretrained comparison",
+            "Ingestion/grouping, training/metrics and audit notes",
+        ],
+        [
+            "March-May",
+            "W06-W08: transformer, evasion and defense",
+            "Training, bounded edits, ASR and defense review",
+        ],
+        [
+            "June-July 2027",
+            "W09-W10: demo, final interpretation and handoff",
+            "Demo checks, personal reflection and presentation review",
+        ],
+    ],
+    note=(
+        "The calendar assigns personal study and review of existing AI-ass"
+        "isted outputs. Eighteen log entries remain planned until actual d"
+        "ates and evidence are supplied. It does not move completed experi"
+        "ments into future months or create a new untouched reserve. "
+        "Lior Mashaich and Sharon Elimelech each have 50 planning units, not lo"
+        "gged hours."
+    ),
+)
+add(
+    "Unexpected problems",
+    "Observed research and implementation difficulties",
+    bullets=[
+        "High internal accuracy did not transfer consistently to external cohorts.",
+        "A reviewed example crossed a regrouping boundary in the refresh study.",
+        "Long messages exceeded transformer token limits; some labels lacked context.",
+        "Augmentation produced small, inconsistent robustness gains and clean costs.",
+    ],
+    note=(
+        "These issues are documented in the external audit, refresh, fine-"
+        "tuning, defense and final review. They are not erased by stronger"
+        " source-matched final accuracy."
+    ),
+)
+add(
+    "Coping and Solving",
+    "Responses, retained evidence and remaining limitations",
+    bullets=[
+        "Add external evaluation; report cohorts and error types separately.",
+        "Disclose the boundary deviation; exclude the reviewed family in later comparisons.",
+        "Show token truncation and review ambiguity without changing final labels.",
+        "Preserve the original models; compare clean, fixed and fresh attack outcomes.",
+    ],
+    note=(
+        "These responses improve traceability and interpretation; they do "
+        "not prove domain-general detection or a universally effective def"
+        "ense. Future causal claims need a clean-only continuation control"
+        " and independent evidence."
+    ),
+)
+add(
+    "Conclusions for further development",
+    "A reproducible prototype with clear research limits",
+    bullets=[
+        "Model preference depends on the cohort, missed phishing and false-alarm costs.",
+        "Collect contemporary, independently reviewed data containing both classes.",
+        "Evaluate multiple seeds and a clean-only continuation control for the defense.",
+        "Use new held-out evidence before tuning; never recycle the consumed final reserve.",
+    ],
+    note=(
+        "Final clean accuracy spans 95.16%-99.29%, while challenge accurac"
+        "y spans 80.10%-87.25%. The local demo supports explanation and co"
+        "mparison; it is not a deployed mailbox protection service. Studen"
+        "ts must understand, review and present the AI-assisted implementa"
+        "tion."
+    ),
+)
+by_title = {item["title"]: item for item in slides}
 order = [
     "PhishGuard",
-    "What are we testing?",
-    "Requirements: data and detectors",
-    "Requirements: evaluation and product",
+    "Table of Contents",
+    "General description of the software",
     "One pipeline, two separate workflows",
     "How the components communicate",
-    "Keep development separate from evidence",
+    "Requirements: data and detectors",
+    "Requirements: evaluation and product",
     "Four preserved candidates",
+    "Keep development separate from evidence",
     "The evaluation was frozen first",
-    "Final clean results",
-    "Changing the dataset changes the result",
-    "Different errors have different costs",
     "Controlled evasion, not unrestricted attacks",
-    "What happened under the fixed budget?",
     "Did augmentation help?",
-    "Review errors without changing the test",
-    "The interface contract",
+    "Verification is part of the deliverable",
     "The local demonstration",
     "The same demo on mobile",
-    "Verification is part of the deliverable",
-    "Problems found and responses",
-    "What the project establishes",
+    "Changing the dataset changes the result",
+    "Different errors have different costs",
+    "Final clean results",
+    "What happened under the fixed budget?",
+    "Review errors without changing the test",
+    "The interface contract",
+    "Project progress schedule",
+    "Student learning and contribution schedule",
+    "Unexpected problems",
+    "Coping and Solving",
     "Submission materials and demonstration",
-    "Reproduce, review, present",
+    "Conclusions for further development",
 ]
-by_title = {item["title"]: item for item in slides}
-assert len(by_title) == len(order) == 24
-slides = [by_title[title] for title in order]
+slides = [by_title[name] for name in order]
+assert len(slides) == 27
+for item in slides:
+    if item["image"] and Path(item["image"]).name in [
+        "accuracy-by-cohort.png",
+        "challenge-error-tradeoff.png",
+        "architecture-overview.png",
+        "ui-wireframe.png",
+    ]:
+        image_path = Path(item["image"])
+        item["image"] = str(image_path.with_name("course-" + image_path.name))
+private = {}
+if args.private_profile:
+    private = json.loads(args.private_profile.read_text(encoding="utf-8"))
+student_ids = private.get("student_ids", {})
+cover_lines = [
+    name + " | ID: " + student_ids.get(name, "pending") for name in profile["students"]
+] + ["Supervisor: " + profile["supervisor"], "HIT | AB- Ai Security | November 17, 2026"]
 
-prs = Presentation()
-prs.slide_width = Inches(13.333)
-prs.slide_height = Inches(7.5)
-TEAL = "12535B"
-INK = "183B40"
-MUTED = "4C686B"
-CREAM = "F5F8F7"
-WHITE = "FFFFFF"
-GOLD = "D99B4E"
-
-
-def box(slide, x, y, w, h, fill):
-    shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(x), Inches(y), Inches(w), Inches(h))
-    shape.fill.solid()
-    shape.fill.fore_color.rgb = RGBColor.from_string(fill)
-    shape.line.fill.background()
-    return shape
-
-
-def textbox(slide, x, y, w, h, text, size=22, color=INK, bold=False):
-    shape = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
-    tf = shape.text_frame
-    tf.word_wrap = True
-    tf.margin_left = tf.margin_right = Inches(0.02)
-    tf.margin_top = Inches(0.02)
-    for i, line in enumerate(text.split("\n")):
-        p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
-        p.text = line
-        p.font.name = "Aptos"
-        p.font.size = Pt(size)
-        p.font.bold = bold
-        p.font.color.rgb = RGBColor.from_string(color)
-        p.space_after = Pt(13)
-    return shape
-
-
+prs = Presentation(args.template)
+layout = prs.slides[2].slide_layout
+hit_shape = next(
+    shape for shape in prs.slides[0].shapes if shape.shape_type == MSO_SHAPE_TYPE.PICTURE
+)
+hit_blob = hit_shape.image.blob
+hit_position = [hit_shape.left, hit_shape.top, hit_shape.width, hit_shape.height]
+for sid in list(prs.slides._sldIdLst):
+    prs.part.drop_rel(sid.rId)
+    prs.slides._sldIdLst.remove(sid)
+TEAL, TURQUOISE, INK, GOLD, WHITE = "23727B", "3CB3AA", "333E47", "EDA900", "FFFFFF"
 html_slides = []
 md = [
-    "# PhishGuard final presentation",
+    "# PhishGuard - Final Project Presentation",
     "",
     (
-        "English slide content and speaker notes; generated artifacts are stored "
-        "locally in the project outputs directory."
+        "Course-template content and speaker notes. Student identifiers ar"
+        "e private local export fields and are not written here."
     ),
     "",
 ]
+
+
+def textbox(slide, x, y, width, height, text, size=18, bold=False, align=PP_ALIGN.LEFT):
+    shape = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(width), Inches(height))
+    frame = shape.text_frame
+    frame.word_wrap = True
+    frame.margin_left = frame.margin_right = Inches(0.02)
+    frame.margin_top = frame.margin_bottom = Inches(0.02)
+    for i, line in enumerate(text.split("\n")):
+        p = frame.paragraphs[0] if i == 0 else frame.add_paragraph()
+        p.text = line
+        p.alignment = align
+        p.font.name = "Calibri"
+        p.font.size = Pt(size)
+        p.font.bold = bold
+        p.font.color.rgb = RGBColor.from_string(INK)
+        p.space_after = Pt(14 if size == 18 else 0)
+        p.line_spacing = 1.1
+    return shape
+
+
+def image_html(path, alt):
+    data = base64.b64encode(Path(path).read_bytes()).decode("ascii")
+    return f'<img alt="{html.escape(alt)}" src="data:image/png;base64,{data}">'
+
+
 for i, s in enumerate(slides, 1):
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    slide = prs.slides.add_slide(layout)
+    for shape in list(slide.shapes):
+        shape._element.getparent().remove(shape._element)
+    slide.shapes.add_picture(io.BytesIO(hit_blob), *hit_position)
+    textbox(slide, 11.4, 0.15, 1.65, 0.35, "PhishGuard", 16, True, PP_ALIGN.RIGHT)
     cover = s["kind"] == "cover"
-    bg = TEAL if cover else CREAM
-    slide.background.fill.solid()
-    slide.background.fill.fore_color.rgb = RGBColor.from_string(bg)
-    box(slide, 0.55, 0.45, 0.12, 0.35, GOLD)
-    textbox(
-        slide,
-        0.85,
-        0.43,
-        11.8,
-        0.35,
-        f"PHISHGUARD / {'FINAL PROJECT' if cover else 'RESEARCH & EVIDENCE'}",
-        11,
-        WHITE if cover else TEAL,
-        True,
-    )
-    textbox(
-        slide, 0.75, 1.02, 11.9, 0.9, s["title"], 38 if cover else 30, WHITE if cover else INK, True
-    )
-    textbox(slide, 0.77, 1.95, 11.8, 0.65, s["subtitle"], 20, "D4E7E4" if cover else MUTED)
-    body_html = ""
-    if s["table"]:
-        rows = s["table"]
-        width = 11.8
-        height = min(3.8, 0.72 * len(rows))
-        table = slide.shapes.add_table(
-            len(rows), len(rows[0]), Inches(0.77), Inches(3.0), Inches(width), Inches(height)
-        ).table
-        if s["title"].startswith("Requirements:"):
-            for column, size in zip(table.columns, [0.8, 4.6, 6.4], strict=True):
-                column.width = Inches(size)
-        for ri, row in enumerate(rows):
-            for ci, text in enumerate(row):
-                cell = table.cell(ri, ci)
-                cell.text = text
-                cell.fill.solid()
-                cell.fill.fore_color.rgb = RGBColor.from_string(
-                    TEAL if ri == 0 else ("E5EFED" if ri % 2 else WHITE)
-                )
-                cell.margin_left = Inches(0.12)
-                cell.margin_top = Inches(0.10)
-                for p in cell.text_frame.paragraphs:
-                    p.font.name = "Aptos"
-                    p.font.size = Pt(
-                        15 if len(row) > 4 or s["title"].startswith("Requirements:") else 17
-                    )
-                    p.font.color.rgb = RGBColor.from_string(WHITE if ri == 0 else INK)
-                    p.font.bold = ri == 0
-        body_html = (
-            "<table>"
-            + "".join(
-                "<tr>"
-                + "".join(
-                    f"<{'th' if ri == 0 else 'td'}>{html.escape(t)}</{'th' if ri == 0 else 'td'}>"
-                    for t in row
-                )
-                + "</tr>"
-                for ri, row in enumerate(rows)
-            )
-            + "</table>"
-        )
-    elif s["kind"] == "figure":
-        with Image.open(s["image"]) as picture:
-            ratio = picture.width / picture.height
-        width = min(11.8, 4.0 * ratio)
-        height = width / ratio
-        slide.shapes.add_picture(
-            s["image"],
-            Inches((13.333 - width) / 2),
-            Inches(2.75),
-            width=Inches(width),
-            height=Inches(height),
-        )
-        body_html = (
-            '<div class="figure"><img alt="'
-            + html.escape(s["title"])
-            + '" src="'
-            + "data:image/png;base64,"
-            + base64.b64encode(Path(s["image"]).read_bytes()).decode("ascii")
-            + '"></div>'
-        )
-    elif s["kind"] == "mobile":
-        slide.shapes.add_picture(s["image"], Inches(1.6), Inches(2.65), height=Inches(4.1))
-        textbox(slide, 4.0, 2.9, 8.4, 3.8, "\n".join("• " + x for x in s["bullets"]), 22)
-        body_html = (
-            '<div class="mobile"><img alt="Actual mobile screenshot" src="'
-            + "data:image/png;base64,"
-            + base64.b64encode(Path(s["image"]).read_bytes()).decode("ascii")
-            + '"><ul>'
-            + "".join("<li>" + html.escape(x) + "</li>" for x in s["bullets"])
-            + "</ul></div>"
-        )
-    elif s["kind"] == "demo":
-        slide.shapes.add_picture(s["image"], Inches(0.77), Inches(2.8), height=Inches(3.95))
-        textbox(slide, 6.35, 2.9, 6.1, 3.9, "\n".join("• " + x for x in s["bullets"]), 20)
-        body_html = (
-            '<div class="demo"><img src="'
-            + "data:image/png;base64,"
-            + base64.b64encode(Path(s["image"]).read_bytes()).decode("ascii")
-            + '"><ul>'
-            + "".join("<li>" + html.escape(x) + "</li>" for x in s["bullets"])
-            + "</ul></div>"
-        )
-    elif s["kind"] == "flow":
-        for j, t in enumerate(s["bullets"]):
-            x = 0.77 + j * 3.0
-            box(slide, x, 3.05, 2.8, 2.6, "E5EFED")
-            head, body = t.split(": ", 1)
-            textbox(slide, x + 0.17, 3.3, 2.45, 0.5, head, 20, TEAL, True)
-            textbox(slide, x + 0.17, 3.95, 2.45, 1.55, body, 18)
-        body_html = (
-            '<div class="flow">'
-            + "".join(
-                "<article><b>"
-                + html.escape(t.split(": ", 1)[0])
-                + "</b><p>"
-                + html.escape(t.split(": ", 1)[1])
-                + "</p></article>"
-                for t in s["bullets"]
-            )
+    if cover:
+        textbox(slide, 1.273, 3.717, 10.939, 0.774, s["title"], 36, False, PP_ALIGN.CENTER)
+        textbox(slide, 1.273, 4.49, 10.939, 0.45, s["subtitle"], 18, False, PP_ALIGN.CENTER)
+        textbox(slide, 1.273, 5.0, 10.939, 1.8, "\n".join(cover_lines), 18, False, PP_ALIGN.CENTER)
+        content = (
+            '<div class="cover-details">'
+            + "".join("<p>" + html.escape(t) + "</p>" for t in cover_lines)
             + "</div>"
         )
     else:
-        textbox(
-            slide,
-            0.8,
-            2.95,
-            11.6,
-            3.8,
-            "\n".join("• " + x for x in s["bullets"]),
-            23 if len(s["bullets"]) < 5 else 21,
-            WHITE if cover else INK,
-        )
-        body_html = (
-            "<ul>" + "".join("<li>" + html.escape(x) + "</li>" for x in s["bullets"]) + "</ul>"
-        )
+        textbox(slide, 3.8, 0.576, 8.4, 1.313, s["title"], 36, False, PP_ALIGN.CENTER)
+        textbox(slide, 1.273, 1.85, 10.8, 0.55, s["subtitle"], 18)
+        if s["table"]:
+            rows = s["table"]
+            table = slide.shapes.add_table(
+                len(rows), len(rows[0]), Inches(1.273), Inches(2.55), Inches(10.8), Inches(4.1)
+            ).table
+            widths = (
+                [0.85, 3.15, 6.8]
+                if s["title"].startswith("Requirements:")
+                else {
+                    3: [2.4, 4.2, 4.2],
+                    4: [2.3, 5.0, 1.75, 1.75],
+                    5: [2.25, 1.8, 2.0, 2.75, 2.0],
+                }[len(rows[0])]
+            )
+            for column, width in zip(table.columns, widths, strict=True):
+                column.width = Inches(width)
+            for ri, row in enumerate(rows):
+                for ci, value in enumerate(row):
+                    cell = table.cell(ri, ci)
+                    cell.text = value
+                    cell.fill.solid()
+                    cell.fill.fore_color.rgb = RGBColor.from_string(TEAL if ri == 0 else WHITE)
+                    cell.margin_left = cell.margin_right = Inches(0.08)
+                    cell.margin_top = cell.margin_bottom = Inches(0.06)
+                    drawing_ns = "http://schemas.openxmlformats.org/drawingml/2006/main"
+                    properties = cell._tc.get_or_add_tcPr()
+                    for side in ["lnL", "lnR", "lnT", "lnB"]:
+                        border_tag = "{" + drawing_ns + "}" + side
+                        existing = properties.find(border_tag)
+                        if existing is not None:
+                            properties.remove(existing)
+                        border = ET.SubElement(properties, border_tag, w="9525")
+                        if side == "lnB":
+                            fill = ET.SubElement(border, "{" + drawing_ns + "}solidFill")
+                            ET.SubElement(fill, "{" + drawing_ns + "}srgbClr", val=TEAL)
+                        else:
+                            ET.SubElement(border, "{" + drawing_ns + "}noFill")
+                    for p in cell.text_frame.paragraphs:
+                        p.font.name = "Calibri"
+                        p.font.size = Pt(18)
+                        p.font.bold = ri == 0
+                        p.font.color.rgb = RGBColor.from_string(WHITE if ri == 0 else INK)
+                        p.line_spacing = Pt(20)
+                        p.space_before = p.space_after = Pt(0)
+            content = (
+                "<table><colgroup>"
+                + "".join(f'<col style="width:{w / 10.8 * 100:.3f}%">' for w in widths)
+                + "</colgroup>"
+                + "".join(
+                    "<tr>"
+                    + "".join(
+                        f"<{'th' if ri == 0 else 'td'}>{html.escape(v)}"
+                        f"</{'th' if ri == 0 else 'td'}>"
+                        for v in row
+                    )
+                    + "</tr>"
+                    for ri, row in enumerate(rows)
+                )
+                + "</table>"
+            )
+        elif s["kind"] == "figure":
+            with Image.open(s["image"]) as picture:
+                ratio = picture.width / picture.height
+            width = min(10.8, 4.1 * ratio)
+            slide.shapes.add_picture(
+                s["image"], Inches((13.333333 - width) / 2), Inches(2.45), width=Inches(width)
+            )
+            content = '<div class="figure">' + image_html(s["image"], s["title"]) + "</div>"
+        elif s["kind"] in ["demo", "mobile"]:
+            mobile = s["kind"] == "mobile"
+            slide.shapes.add_picture(
+                s["image"], Inches(1.8 if mobile else 1.273), Inches(2.45), height=Inches(4.1)
+            )
+            textbox(
+                slide,
+                4.0 if mobile else 6.9,
+                2.6,
+                8.0 if mobile else 5.2,
+                3.9,
+                "\n".join("• " + b for b in s["bullets"]),
+                18,
+            )
+            content = (
+                '<div class="'
+                + ("mobile" if mobile else "demo")
+                + '">'
+                + image_html(s["image"], s["title"])
+                + "<ul>"
+                + "".join("<li>" + html.escape(b) + "</li>" for b in s["bullets"])
+                + "</ul></div>"
+            )
+        elif s["kind"] == "flow":
+            for j, bullet in enumerate(s["bullets"]):
+                x = 1.273 + j * 2.75
+                box = slide.shapes.add_shape(
+                    MSO_SHAPE.RECTANGLE, Inches(x), Inches(2.8), Inches(2.5), Inches(3.1)
+                )
+                box.fill.solid()
+                box.fill.fore_color.rgb = RGBColor.from_string(WHITE)
+                box.line.color.rgb = RGBColor.from_string(TURQUOISE)
+                head, body = bullet.split(": ", 1)
+                textbox(slide, x + 0.12, 3.0, 2.26, 0.6, head, 18, True)
+                textbox(slide, x + 0.12, 3.7, 2.26, 2.0, body, 18)
+            content = (
+                '<div class="flow">'
+                + "".join(
+                    "<article><b>"
+                    + html.escape(b.split(": ", 1)[0])
+                    + "</b><p>"
+                    + html.escape(b.split(": ", 1)[1])
+                    + "</p></article>"
+                    for b in s["bullets"]
+                )
+                + "</div>"
+            )
+        else:
+            textbox(slide, 1.273, 2.6, 10.8, 4.0, "\n".join("• " + b for b in s["bullets"]), 18)
+            content = (
+                "<ul>" + "".join("<li>" + html.escape(b) + "</li>" for b in s["bullets"]) + "</ul>"
+            )
     textbox(
         slide,
-        0.8,
-        7.0,
-        11,
-        0.22,
-        "Frozen evaluation · English academic prototype · Lior Mashaich & Sharon Elimelech",
+        1.273,
+        7.05,
+        10.2,
+        0.25,
+        "Lior Mashaich & Sharon Elimelech | HIT | AB- Ai Security",
         10,
-        "D4E7E4" if cover else MUTED,
     )
-    textbox(slide, 12.2, 7.0, 0.5, 0.23, str(i), 11, WHITE if cover else TEAL)
+    textbox(slide, 11.6, 7.05, 0.5, 0.25, str(i), 10, align=PP_ALIGN.RIGHT)
     slide.notes_slide.notes_text_frame.text = s["note"]
+    for shape in slide.shapes:
+        if shape.has_text_frame:
+            for paragraph in shape.text_frame.paragraphs:
+                paragraph.font.name = "Calibri"
+    for paragraph in slide.notes_slide.notes_text_frame.paragraphs:
+        paragraph.font.name = "Calibri"
     html_slides.append(
-        f'<section class="slide {"cover" if cover else ""}">'
-        '<div class="eyebrow">PHISHGUARD / FINAL PROJECT</div>'
-        f"<h1>{html.escape(s['title'])}</h1>"
-        f'<p class="subtitle">{html.escape(s["subtitle"])}</p>'
-        f'<div class="body">{body_html}</div>'
-        "<footer><span>Frozen evaluation · Lior Mashaich & Sharon Elimelech</span>"
-        f"<span>{i} / {len(slides)}</span></footer></section>"
+        '<section class="slide '
+        + ("cover" if cover else "")
+        + '"><img class="hit" alt="Supplied HIT artwork" src="data:image/png;base64,'
+        + base64.b64encode(hit_blob).decode("ascii")
+        + '"><div class="wordmark">PhishGuard</div><h1>'
+        + html.escape(s["title"])
+        + '</h1><p class="subtitle">'
+        + html.escape(s["subtitle"])
+        + '</p><div class="body">'
+        + content
+        + (
+            "</div><footer><span>Lior Mashaich & Sharon Elimelech | HIT | AB- "
+            "Ai Security</span><span>"
+        )
+        + str(i)
+        + " / "
+        + str(len(slides))
+        + "</span></footer></section>"
     )
     md += [f"## {i}. {s['title']}", "", s["subtitle"], ""]
     if s["table"]:
-        md += (
-            [
-                "| " + " | ".join(s["table"][0]) + " |",
-                "| " + " | ".join(["---"] * len(s["table"][0])) + " |",
-            ]
-            + ["| " + " | ".join(row) + " |" for row in s["table"][1:]]
-            + [""]
-        )
+        md += [
+            "| " + " | ".join(s["table"][0]) + " |",
+            "| " + " | ".join(["---"] * len(s["table"][0])) + " |",
+        ]
+        md += ["| " + " | ".join(row) + " |" for row in s["table"][1:]]
     else:
-        md += ["- " + b for b in s["bullets"]] + [""]
+        md += ["- " + bullet for bullet in s["bullets"]]
+    if cover:
+        md += ["- Student IDs: pending private completion; not included in public source."]
     if s["image"]:
-        relative = Path(s["image"]).relative_to(REPO).as_posix()
-        md += [f"![{s['title']}](../{relative})", ""]
-    md += ["Speaker notes: " + s["note"], ""]
+        md += ["", f"![{s['title']}](../{Path(s['image']).relative_to(REPO).as_posix()})"]
+    md += ["", "Speaker notes: " + s["note"], ""]
 prs.core_properties.title = "PhishGuard - Final Project Presentation"
 prs.core_properties.author = "Lior Mashaich and Sharon Elimelech"
-prs.core_properties.subject = "Frozen final evaluation; AI-assisted academic project"
-prs.save(OUT / "PhishGuard-Final-Presentation.pptx")
-style = (
-    "@page{size:1280px 720px;margin:0}*{box-sizing:border-box}body{margin:0;f"
-    "ont-family:Arial,sans-serif;color:#183b40;background:#f5f8f7}.slide{widt"
-    "h:1280px;height:720px;padding:42px 70px;page-break-after:always;position"
-    ":relative;overflow:hidden}.slide:last-child{page-break-after:auto}.eyebr"
-    "ow{font-size:13px;font-weight:700;letter-spacing:2px;color:#12535b;borde"
-    "r-left:8px solid #d99b4e;padding-left:18px}h1{font-size:39px;letter-spac"
-    "ing:-1px;line-height:1.16;margin:36px 0 14px}.subtitle{font-size:23px;co"
-    "lor:#4c686b;margin:0 0 32px}.body{height:420px;display:flex;align-items:"
-    "flex-start;padding-top:12px}ul{margin:0;padding-left:24px;max-width:1100"
-    "px}li{font-size:25px;line-height:1.5;margin-bottom:19px}table{border-col"
-    "lapse:collapse;width:100%;margin-top:12px}td,th{padding:18px 14px;text-a"
-    "lign:left;font-size:21px;line-height:1.25}th{background:#12535b;color:wh"
-    "ite;font-size:19px}tr:nth-child(odd){background:#e5efed}footer{position:"
-    "absolute;bottom:28px;left:70px;right:70px;display:flex;justify-content:s"
-    "pace-between;color:#4c686b;font-size:13px}.cover{background:#12535b;colo"
-    "r:white}.cover h1{font-size:65px;margin-top:58px}.cover .eyebrow,.cover "
-    ".subtitle,.cover footer{color:#d4e7e4}.cover li{font-size:28px}.flow{dis"
-    "play:flex;gap:20px;margin-top:32px}.flow article{width:270px;padding:26p"
-    "x 22px;background:#e5efed;border-top:4px solid #12535b}.flow b{font-size"
-    ":22px;color:#12535b}.flow p{font-size:22px;line-height:1.5}.demo{display"
-    ":flex;gap:42px;width:100%}.demo img{height:405px;width:auto}.demo ul{pad"
-    "ding-top:12px}.demo li{font-size:23px;margin-bottom:18px}"
-)
-style += (
-    ".figure{width:100%;height:410px;display:flex;justify-content:center}"
-    ".figure img{max-width:100%;max-height:410px;object-fit:contain}"
-    ".mobile{display:flex;gap:90px;width:100%;padding-left:90px}"
-    ".mobile img{height:410px;width:auto}.mobile ul{max-width:800px;padding-top:20px}"
-    ".mobile li{font-size:25px;margin-bottom:24px}"
-)
+prs.core_properties.last_modified_by = "Lior Mashaich and Sharon Elimelech"
+prs.core_properties.subject = "HIT; AB- Ai Security; Supervisor: Zimon Roi; course template"
+target = OUT / "PhishGuard-Final-Presentation.pptx"
+prs.save(target)
+with ZipFile(target) as archive:
+    parts = {name: archive.read(name) for name in archive.namelist()}
+for name, data in list(parts.items()):
+    if not name.endswith(".xml"):
+        continue
+    root = ET.fromstring(data)
+    for element in root.iter():
+        if element.text and re.search(r"[\u0590-\u05ff]", element.text):
+            element.text = "Template placeholder"
+        for key, value in list(element.attrib.items()):
+            if re.search(r"[\u0590-\u05ff]", value):
+                element.set(key, "Template element")
+    parts[name] = ET.tostring(root, xml_declaration=True, encoding="UTF-8", standalone=True)
+with ZipFile(target, "w", ZIP_DEFLATED) as archive:
+    for name, data in parts.items():
+        archive.writestr(name, data)
+style = """
+@page{size:13.333333in 7.5in;margin:0}*{box-sizing:border-box}
+body{margin:0;font-family:Calibri;color:#333e47;background:white}
+.slide{position:relative;width:1280px;height:720px;page-break-after:always;overflow:hidden}
+.slide:last-child{page-break-after:auto}.hit{position:absolute;left:0;top:0;width:338.1px;height:106.3px}
+.wordmark{position:absolute;right:27px;top:14px;font-size:21.333px;font-weight:bold}
+h1{position:absolute;left:364.8px;top:55.3px;width:806.4px;height:126px;font-size:48px;
+font-weight:400;line-height:1.1;text-align:center;margin:0;padding:2px}
+.subtitle{position:absolute;left:122.2px;top:177.6px;width:1036.8px;height:53px;font-size:24px;margin:0;line-height:1.1}
+.body{position:absolute;left:122.2px;top:235.2px;width:1036.8px;height:398px}
+ul{margin:0;padding-left:25px}li{font-size:24px;line-height:1.1;margin:0 0 19px}
+table{width:100%;border-collapse:collapse;font-size:24px;table-layout:fixed}
+td,th{padding:7px 8px;text-align:left;vertical-align:top;
+border-bottom:1px solid #23727b;line-height:1.1}
+th{background:#23727b;color:white}td,th{overflow-wrap:anywhere}
+.figure{height:394px;width:100%;display:flex;justify-content:center}
+.figure img{max-width:100%;height:394px;object-fit:contain}
+.demo,.mobile{display:flex;gap:40px}.demo img{height:394px;width:auto}
+.mobile{padding-left:50px;gap:100px}.mobile img{height:394px;width:auto}
+.demo li,.mobile li{font-size:24px;line-height:1.1;margin-bottom:19px}
+.flow{display:flex;gap:24px;padding-top:35px}
+.flow article{width:240px;height:298px;border:1px solid #3cb3aa;
+padding:20px 12px;font-size:24px}
+.flow p{line-height:1.1;margin-top:30px}.flow b{font-size:24px}
+footer{position:absolute;left:122px;right:116px;top:677px;font-size:13.333px;display:flex;justify-content:space-between}
+.cover h1{left:122.2px;top:356.8px;width:1050.1px;height:74.3px}
+.cover .subtitle{left:122.2px;top:431px;width:1050.1px;text-align:center}
+.cover .body{top:480px;width:1050.1px;height:173px}.cover-details{text-align:center;font-size:24px}
+.cover-details p{margin:0 0 19px;line-height:1.1}
+"""
 (OUT / "PhishGuard-Final-Presentation.html").write_text(
     (
-        '<!doctype html><html lang="en"><meta charset="utf-8"><title>PhishGuard f'
-        "inal presentation</title><style>"
+        '<!doctype html><html lang="en"><meta charset="utf-8"><title>Phish'
+        "Guard final presentation</title><style>"
     )
     + style
     + "</style><body>"
@@ -755,4 +966,12 @@ style += (
     encoding="utf-8",
 )
 (REPO / "docs/presentation.md").write_text("\n".join(md), encoding="utf-8")
-print({"slides": len(slides), "pptx": str(OUT / "PhishGuard-Final-Presentation.pptx")})
+print(
+    {
+        "slides": len(slides),
+        "template": "supplied course PPTX",
+        "font": "Calibri",
+        "title_pt": 36,
+        "subtitle_pt": 18,
+    }
+)

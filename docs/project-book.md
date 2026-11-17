@@ -1,6 +1,6 @@
 # PhishGuard - Project Book
 
-Revision 2.1 - November 17, 2026 - Final specification with student learning and contribution calendar
+Revision 2.2 - November 17, 2026 - Final specification with course-template submission alignment
 
 Team: **Lior Mashaich and Sharon Elimelech**.
 
@@ -737,6 +737,8 @@ For every completed contribution record the package ID, student, actual activity
 The November 17 submission review adds a native one-page summary with team/supervisor/institution/course, explicit current use cases and requirements traceability, measured-result graphs, documented wireframe, actual screenshots and an expanded PowerPoint. Source/model/test decisions are unchanged. The supplied MaintControl example informs presentation structure only; its student identifiers, staff names, business requirements and database design are not PhishGuard facts. Its code archive contains an empty directory rather than a usable implementation.
 
 W10 keeps equal assigned responsibility: Lior Mashaich leads the system/use-case specification, screenshots, reproduction links and code packaging; Sharon Elimelech leads the One Pager, graphs, requirement-to-slide mapping and presentation review. These are responsibilities for AI-assisted outputs, not invented records of individual work. The remaining human items are actual learning dates/evidence, personal review and course submission. No recorded/published YouTube video is currently part of the verified package; the example's video link is not reused. See [submission coverage](submission-review.md).
+
+The subsequently supplied One Pager and Presentation templates now govern the final exports. The summary fills thirteen native Word template boxes in one A4 page. The 27-slide deck follows the template topics and institutional design, with Calibri, 36-point titles, 18-point subtitles and the specified palette. It includes a separate comparison of original planned scope and actual outcomes; the later student calendar is not presented as the original dated implementation schedule. Both templates request student IDs, which remain pending private completion. See [template coverage and verification scope](template-compliance.md). Export filenames remain stable and the links handoff is refreshed.
 
 ### 8.6 November-July student learning and contribution calendar
 
