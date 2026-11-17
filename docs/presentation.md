@@ -7,7 +7,8 @@ English slide content and speaker notes; generated artifacts are stored locally 
 Phishing detection and controlled adversarial robustness
 
 - Lior Mashaich & Sharon Elimelech
-- Final project presentation | November 14, 2026
+- Supervisor: Zimon Roi
+- HIT | AB- Ai Security | November 17, 2026
 - An academic research prototype with a local email demo.
 
 Speaker notes: Introduce the research question and the two students. Development and documentation were AI-assisted; students must review and explain the implementation.
@@ -23,7 +24,35 @@ Detection quality is only one part of the question.
 
 Speaker notes: Define a false negative as missed phishing and a false positive as a legitimate message flagged incorrectly. A passing test suite does not prove detection quality.
 
-## 3. One pipeline, two separate workflows
+## 3. Requirements: data and detectors
+
+PG01-PG05 | Specification requirements mapped to evidence.
+
+| ID | Requirement | Evidence |
+| --- | --- | --- |
+| PG01 | Learn the foundations | Learning record; personal evidence remains open |
+| PG02 | Collect and prepare data | Pinned sources, grouped splits and manifests |
+| PG03 | Classical ML baseline | TF-IDF + logistic regression; preserved v1/v2 |
+| PG04 | Pretrained HF comparison | Pinned DistilBERT; identical evaluation IDs |
+| PG05 | Fine-tune a transformer | BERT-Tiny; validation selection and full repeat |
+
+Speaker notes: Map these rows to project-book section 3.18. Distinguish implemented artifacts from each student's remaining learning evidence. The external phishing classifier and the general encoder we fine-tuned are different models.
+
+## 4. Requirements: evaluation and product
+
+PG06-PG10 | Explain both delivered behavior and its limits.
+
+| ID | Requirement | Evidence |
+| --- | --- | --- |
+| PG06 | Controlled text evasion | Three edit families, lineage and query caps |
+| PG07 | Measure degradation | Clean/fixed/directed results and candidate ASR |
+| PG08 | Evaluate a defense | Training-only augmentation; inconsistent gains |
+| PG09 | Pasted-email web demo | Local UI, score, evidence and checked error states |
+| PG10 | Report and presentation | Frozen final report, project book and this deck |
+
+Speaker notes: The defense requirement is implemented and measured. Do not present it as a guaranteed improvement. The One Pager, poster, source and links handoff support the additional submission checklist.
+
+## 5. One pipeline, two separate workflows
 
 Offline experiments produce frozen artifacts; the UI only runs inference.
 
@@ -34,7 +63,16 @@ Offline experiments produce frozen artifacts; the UI only runs inference.
 
 Speaker notes: Explain why no training, email transmission or link following is available from the demo. Discuss the trust boundaries in the STRIDE chapter.
 
-## 4. Keep development separate from evidence
+## 6. How the components communicate
+
+Separate inference, research workflows and frozen artifacts.
+
+
+![How the components communicate](../assets/architecture-overview.png)
+
+Speaker notes: Use the component overview for an oral explanation. The detailed component and sequence UML are in chapter 7. The demo does not expose training or arbitrary model paths. The application uses versioned local files, not a user database.
+
+## 7. Keep development separate from evidence
 
 Groups and derived variants stay together.
 
@@ -47,7 +85,7 @@ Groups and derived variants stay together.
 
 Speaker notes: The final reserve has 479 legitimate and 224 phishing messages. It was held out from local selection, but shares source families and years with development. It is not a new representative real-world inbox.
 
-## 5. Four preserved candidates
+## 8. Four preserved candidates
 
 Architecture and training history are different.
 
@@ -60,7 +98,7 @@ Architecture and training history are different.
 
 Speaker notes: The downloaded phishing classifier is distinct from the general BERT-Tiny encoder we fine-tuned. Thresholds were validation-selected, not tuned on the final reserve. Scores are not calibrated probabilities.
 
-## 6. The evaluation was frozen first
+## 9. The evaluation was frozen first
 
 Protocol and executable code committed before reserve scoring.
 
@@ -71,7 +109,7 @@ Protocol and executable code committed before reserve scoring.
 
 Speaker notes: Show the protocol commit and final report in GitHub. Explain the clean-worktree gate, file hashes, development-overlap rejection and frozen post-score review selection.
 
-## 7. Final clean results
+## 10. Final clean results
 
 703 held-out messages: 224 phishing and 479 legitimate.
 
@@ -84,20 +122,25 @@ Speaker notes: Show the protocol commit and final report in GitHub. Explain the 
 
 Speaker notes: Read counts as well as accuracy. Compare the two error types explicitly. These are source-conditioned held-out results; the same models behaved differently on the challenge dataset. Group-based intervals and per-source results are in the report.
 
-## 8. Changing the dataset changes the result
+## 11. Changing the dataset changes the result
 
 Do not average different cohorts into one claimed product accuracy.
 
-| Model | Historical accuracy | Challenge accuracy | Final reserve accuracy |
-| --- | --- | --- | --- |
-| Baseline v2 | 98.82% | 80.10% | 99.29% |
-| Original BERT | 98.58% | 80.80% | 98.29% |
-| Defended BERT | 98.82% | 80.80% | 98.15% |
-| HF DistilBERT | 90.54% | 87.25% | 95.16% |
+
+![Changing the dataset changes the result](../assets/accuracy-by-cohort.png)
 
 Speaker notes: The historical cohort has 423 messages; the challenge has 2,000 and is mainly generated; the reserve has 703 held-out messages. The pretrained classifier had 87.25% challenge accuracy but missed 136 of 1,000 phishing messages. Source and template effects matter.
 
-## 9. Controlled evasion, not unrestricted attacks
+## 12. Different errors have different costs
+
+Challenge cohort | 1,000 phishing and 1,000 legitimate messages.
+
+
+![Different errors have different costs](../assets/challenge-error-tradeoff.png)
+
+Speaker notes: Read the two error counts separately. The pretrained classifier misses 136 phishing but produces 119 false alarms. The baseline misses 26 but produces 372 false alarms. The challenge is mainly synthetic; this is not an inbox forecast.
+
+## 13. Controlled evasion, not unrestricted attacks
 
 A fixed, inspectable search budget.
 
@@ -109,7 +152,7 @@ A fixed, inspectable search budget.
 
 Speaker notes: The generator never sees gradients or model scores. Each model scores the same finite candidate bank. Original messages are included in minimum-score selection; legitimate originals stay clean in directed-evasion metrics.
 
-## 10. What happened under the fixed budget?
+## 14. What happened under the fixed budget?
 
 Candidate ASR counts newly evaded, initially detected phishing.
 
@@ -121,7 +164,7 @@ Candidate ASR counts newly evaded, initially detected phishing.
 
 Speaker notes: ASR is conditional: its denominator is initially detected phishing, including examples without candidates. It is not the percentage of all mail. Pretrained DistilBERT was not evaluated under attack. The three models each used 6556 total queries.
 
-## 11. Did augmentation help?
+## 15. Did augmentation help?
 
 A separate preserved checkpoint, evaluated without retuning.
 
@@ -133,7 +176,7 @@ A separate preserved checkpoint, evaluated without retuning.
 
 Speaker notes: Use common eligibility to reduce the denominator mismatch. Explain the paired whole-group clean contrast and ASR uncertainty. Do not attribute every difference causally to augmentation.
 
-## 12. Review errors without changing the test
+## 16. Review errors without changing the test
 
 A bounded, deterministic post-score review.
 
@@ -145,7 +188,16 @@ A bounded, deterministic post-score review.
 
 Speaker notes: The three reviewed defended successes are short sharing/account notifications. Their typos preserve meaning, but available text cannot independently confirm a phishing identity. Thus 3/216 is publisher-label-dependent candidate ASR. Keep labels unchanged and do not call these confirmed real-world malicious evasions. Raw text stays local. Explain nonidentifying clean-error themes from the review report. Distinguish a model mistake, missing evidence, and an uncertain publisher label. Students should independently review the bounded sample.
 
-## 13. The local demonstration
+## 17. The interface contract
+
+Documentation wireframe of implemented behavior, not an earlier design artifact.
+
+
+![The interface contract](../assets/ui-wireframe.png)
+
+Speaker notes: Walk through model selection, optional subject, body, Analyze and Clear. Explain the Ready, Analyzing, Result, Validation error and Model unavailable states. This is a schematic, while the following images are actual browser captures.
+
+## 18. The local demonstration
 
 Choose a model, paste English email text, inspect the result.
 
@@ -155,9 +207,24 @@ Choose a model, paste English email text, inspect the result.
 - No link fetching, message delivery or saved submissions
 - Not flagged does not mean safe
 
+![The local demonstration](../assets/demo.png)
+
 Speaker notes: Use invented public examples for the live demo. Show a normal result, a model change, the identity panel, an overlength error and Clear. Scores across models are not directly comparable.
 
-## 14. Verification is part of the deliverable
+## 19. The same demo on mobile
+
+Actual stage-8 Chromium capture of the empty ready state.
+
+- The form and result stack vertically on a narrow screen.
+- The same four model choices and validation rules apply.
+- The result area is ready; no prediction is shown in this capture.
+- Clear resets the displayed form and result.
+
+![The same demo on mobile](../assets/demo-mobile.png)
+
+Speaker notes: This is the recorded browser screenshot, not a generated mockup. Open the full resolution image or live UI to inspect small text. The form is empty and contains no email content. No new browser-verification run is claimed here.
+
+## 20. Verification is part of the deliverable
 
 Separate software correctness from model-quality evidence.
 
@@ -169,7 +236,18 @@ Separate software correctness from model-quality evidence.
 
 Speaker notes: A complete repeated run demonstrates numerical reproducibility in this environment, not new independent statistical evidence. Reproduction instructions and all aggregate reports are versioned.
 
-## 15. What the project establishes
+## 21. Problems found and responses
+
+The research record includes unsuccessful results and boundary corrections.
+
+- Source shift: add external audits and report each cohort separately.
+- Reviewed-family overlap: disclose it and exclude the whole family for later comparisons.
+- Long emails: disclose token truncation instead of hiding discarded content.
+- Small defense gains: retain clean-cost comparisons and state the missing control.
+
+Speaker notes: The two-row historical exclusion is documented, not erased. Better source-matched accuracy does not remove challenge weaknesses. A clean-only continued-training control and new independent labels remain future research.
+
+## 22. What the project establishes
 
 A reproducible detection-and-robustness study with a working demo.
 
@@ -180,7 +258,18 @@ A reproducible detection-and-robustness study with a working demo.
 
 Speaker notes: Conclude using the measured results, not a claim of a production email gateway. Any future improvements need fresh held-out evidence. Discuss what an organization would still need before deployment.
 
-## 16. Reproduce, review, present
+## 23. Submission materials and demonstration
+
+A traceable handoff for review, reproduction and presentation.
+
+- One Pager, eight-chapter specification and English PowerPoint with notes.
+- Measured reports, graphs, screenshots, interface wireframe and poster.
+- GitHub source, source-only ZIP and local installation/demo instructions.
+- Personal learning/review evidence and actual course submission remain open.
+
+Speaker notes: Repository: https://github.com/liorma6/AI-security-agent-. Use docs/submission.md and docs/submission-review.md. No recorded/published YouTube link exists in the verified package. Research datasets and learned weights are excluded from the code ZIP.
+
+## 24. Reproduce, review, present
 
 Shared responsibility; transparent assistance.
 

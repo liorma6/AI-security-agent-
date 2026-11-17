@@ -201,7 +201,7 @@ uv run --frozen python scripts/check_documents.py
 uv build
 ```
 
-The 310 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Fine-tuning checks add actual encoder updates, deterministic selection/reload, reviewed-family exclusion and separate fitting/evaluation read boundaries. Evasion tests add protected edit spans, lineage/replay, query caps, zero/empty cases, ASR denominators and scoring without training files or updates. Defense tests add training-only augmentation/review gates, separate artifacts, validation selection, deterministic repetition and fixed/fresh inference without development files. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
+The 354 offline tests cover contracts, malformed JSON, input limits, mappings, thresholds, data ingestion/grouping, leakage, artifact integrity, downloader failures and CLI privacy. They include tiny training/save/load checks, a random local transformer, MIME/archive handling and frozen external evaluation without reserve access or fitting. Refresh checks add extraction repairs, ham-only ingestion, protected groups, placeholder cleanup and separate training/evaluation file boundaries. Fine-tuning checks add actual encoder updates, deterministic selection/reload, reviewed-family exclusion and separate fitting/evaluation read boundaries. Evasion tests add protected edit spans, lineage/replay, query caps, zero/empty cases, ASR denominators and scoring without training files or updates. Defense tests add training-only augmentation/review gates, separate artifacts, validation selection, deterministic repetition and fixed/fresh inference without development files. Documentation checks cover English content, local links, tables, eight required chapters and UML diagrams. GitHub Actions runs Windows/Linux with Python 3.11/3.13. CI installs the pretrained extra; core-only installations skip its tests. Research-corpus metrics are separate from software tests. Builds are written to ignored `dist/`.
 
 ## Documentation
 
@@ -223,10 +223,10 @@ The 310 offline tests cover contracts, malformed JSON, input limits, mappings, t
 
 The project book is the canonical specification. It distinguishes implemented behavior from future work. The commands above cover data preparation, training/evaluation, pretrained comparison, generalization audits, controlled evasion, augmentation defense and the local demo. See the [demo guide](docs/demo.md) and [current four-model results](docs/current-comparison.md).
 
-## Remaining deliverables
+## Submission materials
 
-- Final evaluation under a separately frozen protocol, updated comparative conclusions and submission materials.
-- Final presentation and student review of the completed implementation.
+- [One Pager](docs/one-pager.md), [project book](docs/project-book.md), [presentation with notes](docs/presentation.md) and [poster](docs/poster.md).
+- [Coverage review](docs/submission-review.md) records the completed files and remaining personal review, learning evidence and video link.
 
 ## Data and models
 
@@ -235,6 +235,8 @@ No raw research emails or model checkpoints are included in Git. The internal sy
 ## Team
 
 Lior Mashaich and Sharon Elimelech share planned responsibility equally. The project book records the allocation, the reported two-week learning period and how actual contributions will be recorded as work proceeds.
+
+Supervisor: Zimon Roi. Institution: HIT. Course: AB- Ai Security.
 
 ## Frozen final evaluation and presentation
 
@@ -254,4 +256,10 @@ The [English presentation with speaker notes](docs/presentation.md) and [submiss
 uv run --no-project --with python-pptx==1.0.2 python scripts/build_presentation.py --output outputs
 ```
 
-This command reads committed aggregate reports and the synthetic demo screenshot; it needs no research email or learned weights and does not modify the pinned model environment. Print the resulting HTML to PDF or export the PPTX from a presentation editor.
+This command reads committed aggregate reports, diagrams and public demo screenshots; it needs no research email or learned weights and does not modify the pinned model environment. Print the resulting HTML to PDF or export the PPTX from a presentation editor.
+
+Generate the editable One Pager and its printable HTML in the same isolated manner:
+
+```sh
+uv run --no-project --with python-docx==1.2.0 --with Markdown==3.11.3 python scripts/build_one_pager.py --output outputs
+```

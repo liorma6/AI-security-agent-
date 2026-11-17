@@ -1,8 +1,12 @@
 # PhishGuard - Project Book
 
-Revision 1.9 - November 14, 2026 - Frozen final evaluation and submission materials
+Revision 2.0 - November 17, 2026 - Final specification and complete submission sources
 
-Team: Lior Mashaich and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
+Team: **Lior Mashaich and Sharon Elimelech**.
+
+Supervisor: **Zimon Roi**. Institution: **HIT**. Course: **AB- Ai Security**.
+
+Document purpose: current system specification and final project book. The eight required chapters incorporate implemented behavior, acceptance evidence and the chronology of the PhishGuard experiments. The product scope follows Project2_PhishGuard.docx; submission coverage follows the student's November 17 checklist.
 
 Status: STAGE 9 COMPLETED AT IMPLEMENTED SCOPE. All twelve milestones (0-9 plus 4a/4b) are implemented and checked. The final protocol was committed before all 703 reserve messages were scored, and the complete evaluation was reproduced without changing existing models or thresholds. English final reports, demo/reproduction instructions and presentation materials are prepared. Student review and course submission remain human responsibilities.
 
@@ -69,7 +73,7 @@ For the defense comparison, report results on fixed saved variants and the same 
 
 ### 3.1 Requirements from the supplied brief
 
-The PG requirements describe the complete assignment. Stages 1-5 supply the environment, contracts, PG02 dataset evidence, the trained/evaluated PG03 baseline, the PG04 pretrained comparison and the PG05 fine-tuned detector. Stage 6 implements bounded PG06 transformations and qualified PG07 degradation measurements. Stage 8 implements PG09 with a local Gradio UI, explanations and checked privacy/error states. Stage 7 implements the PG08 augmentation defense and compares clean cost, fixed variants and fresh equal-budget searches; conclusions remain limited to these declared protocols. PG01's task-specific learning continues alongside implementation. The remaining end-to-end acceptance evidence is planned.
+The PG requirements describe the complete assignment. Stages 1-5 supply the environment, contracts, PG02 dataset evidence, the trained/evaluated PG03 baseline, the PG04 pretrained comparison and the PG05 fine-tuned detector. Stage 6 implements bounded PG06 transformations and qualified PG07 degradation measurements. Stage 8 implements PG09 with a local Gradio UI, explanations and checked privacy/error states. Stage 7 implements the PG08 augmentation defense and compares clean cost, fixed variants and fresh equal-budget searches; conclusions remain limited to these declared protocols. PG01's task-specific learning continues alongside implementation. PG10 final evaluation and submission sources are implemented. The traceability table in section 3.18 maps requirements to current evidence; personal learning/review evidence remains a student responsibility.
 
 | ID | Requirement | Verification |
 | --- | --- | --- |
@@ -82,11 +86,11 @@ The PG requirements describe the complete assignment. Stages 1-5 supply the envi
 | PG07 | Measure degradation under attack | Paired predictions, clean/attacked metrics and ASR with denominators |
 | PG08 | Improve robustness and evaluate again | Documented defense and independent evaluation of benefits and costs |
 | PG09 | Provide a simple pasted-email web demo | Risk score, explanation, model version, empty/error/length-limit states |
-| PG10 | Deliver comparative report and presentation | Prepared: final aggregate report, independent reproduction, demo/submission guide and 16 English slides; personal review and actual submission remain open |
+| PG10 | Deliver comparative report and presentation | Prepared: final aggregate report, independent reproduction, demo/submission guide and an English PowerPoint with requirements, screenshots, measured charts and a labeled wireframe; personal review and actual submission remain open |
 
 The brief lists Python, Hugging Face Transformers/Datasets, scikit-learn, Google Colab, Gradio/Streamlit and GitHub. DistilBERT is an example, and LLM-assisted rewriting is explicitly optional. The required final deliverables are baseline and fine-tuned detectors with a demo, a controlled adversarial script, a comparative report and a presentation.
 
-### 3.2 Proposed implementation choices
+### 3.2 Implemented architecture and technology choices
 
 Use a modular Python pipeline with a Gradio demo. Keep dataset preparation, feature extraction, training, perturbation, evaluation and inference separate. Use local versioned files for manifests and aggregate results. The offline experiment pipeline prepares reviewed artifacts; the demo loads a selected artifact for inference. Container packaging may be added when it makes the completed demo easier to reproduce.
 
@@ -96,12 +100,12 @@ Stage 2 selected synthetic E-PhishLLM with a pinned publisher MIT declaration, e
 
 ### 3.3 Quality, security and reproducibility requirements
 
-| ID | Proposed requirement | Acceptance |
+| ID | Requirement | Implemented acceptance evidence |
 | --- | --- | --- |
 | Q01 | Trace every dataset/model/experiment revision | Manifest with source revision, digest, seed, configuration and split IDs |
 | Q02 | Prevent leakage | No group or derived variant crosses splits; training alone fits transformations |
 | Q03 | Preserve email privacy | No raw pasted email logging or storage by default; licensed/redacted fixtures only |
-| Q04 | Bound resource use | Implemented 20,000-code-point combined email and 262,144-byte JSON limits, with rejection and no truncation; pretrained inference enforces 512 tokens/batches of eight, while fine-tuned inference uses 256 tokens/batches of 16, both with disclosed truncation; stage 6 caps queries at 13 per original/model; web concurrency controls remain planned |
+| Q04 | Bound resource use | Implemented 20,000-code-point combined email and 262,144-byte JSON limits, with rejection and no truncation; pretrained inference enforces 512 tokens/batches of eight, while fine-tuned inference uses 256 tokens/batches of 16, both with disclosed truncation; stage 6 caps queries at 13 per original/model; web inference is serialized with a queue of at most eight waiting events |
 | Q05 | Treat email content as inert data | Render escaped text; do not open links, send mail or execute attachments/instructions |
 | Q06 | Load reviewed model artifacts | Pin revisions, verify manifests and disable unreviewed remote code; avoid untrusted serialized executables |
 | Q07 | Explain uncertainty | Display a model score, threshold and model identity; do not claim a calibrated probability without calibration evidence |
@@ -206,9 +210,56 @@ The separate `compare select` command reads only 745 validation messages to free
 
 `phishguard final evaluate` loads reserve records only and verifies the committed freeze, clean tracked worktree, code/reference hashes, exact membership and unchanged model/data inputs. It rejects exact preprocessed overlap with local development fingerprints for originals and generated candidates. It does not open training/validation email files or call a fitting function. All final choices, budgets, thresholds, metric definitions and post-score sample rules are fixed before scoring. Tests use invented data only. Full original/candidate text stays in ignored local files; public reports contain aggregates and text-free review records. The final evaluator refuses existing output directories. See [protocol, measured outcome and limitations](final-evaluation.md).
 
+### 3.15 Users, scope and operating assumptions
+
+The primary user is a student, examiner or local analyst who pastes an English email into the demo. A research operator uses the separate CLI to prepare data, fit models and reproduce evaluations. These are workflow roles, not account types: the current system has no login, user database or administrator console. It operates on one local computer and binds to loopback. Reviewed artifacts must already exist for the selected model.
+
+In scope: subject/body text classification, four allowlisted model choices, score/threshold/identity display, explicit length handling, grounded evidence, offline training and bounded research perturbations. Out of scope: mailbox ingestion, automated blocking or sending, live sender authentication, URL/attachment inspection, multilingual guarantees, public multiuser hosting and autonomous remediation. The score supports interpretation; it does not establish that an email is safe. No API key or paid inference service is required after setup.
+
+### 3.16 Formal use cases and screen states
+
+| ID / actor | Preconditions and trigger | Main flow and postcondition | Alternate/error flow and evidence |
+| --- | --- | --- | --- |
+| UC01 / local analyst: analyze email | Local demo is running; subject is optional and body is required; select Analyze email | Validate text, load/cache the selected reviewed model, score, apply its frozen threshold and render decision/identity/evidence; no submission is persisted | Empty/unusable or overlength input is rejected before inference. An unavailable artifact returns a fixed error without a fabricated score. See demo service/UI tests. |
+| UC02 / local analyst: compare models | A valid example is available; choose another allowlisted model | Re-analyze the same text with the selected artifact; display its own threshold and token budget | Missing artifacts remain unavailable; no automatic downloads or fitting. Scores across models are not calibrated/comparable probabilities. |
+| UC03 / local analyst: inspect and clear | A result or validation error is visible | Read score, decision, evidence and identity; use Clear to reset fields/result | Clear is a display reset, not a guarantee of memory erasure. HTML-like input remains inert. |
+| UC04 / research operator: fit a candidate | Pinned development files and the declared protocol are available; run the corresponding training command | Fit on training only; select checkpoint/threshold on validation; save a separate artifact and report | Reject overlap, invalid manifests and existing output directories; preserve earlier model versions. See baseline/fine-tuning/defense tests and guides. |
+| UC05 / research operator: evaluate robustness | Frozen models, evaluation cohort and bounded candidate policy exist | Generate/replay traceable variants, score clean/fixed/directed views, report conditional ASR and actual queries | Retain originals without a valid edit; undefined denominators remain explicit. Do not fit on evaluation variants. |
+| UC06 / research operator: final reproduction | Exact committed freeze and prior artifacts are restored in a clean checkout | Run the reserve evaluator into a new directory, repeat and independently verify counts and digests | Any identity, overlap or membership failure aborts; no silent subset or retuning. Reserve reuse is reproduction, not new independent evidence. |
+
+The screen states are Ready, Analyzing, Result, Validation error and Model unavailable. Analyze validates before loading, disables conflicting controls during inference and returns a result or private error. Editing inputs clears stale result presentation; Clear resets visible fields. One inference executes at a time. See the [demo behavior and privacy guide](demo.md), [browser evidence](reports/demo-browser-checks.json) and chapter 7 screenshots/wireframe.
+
+### 3.17 Data relationships, interfaces and lifecycle
+
+| Record/store | Relationships and lifecycle | Boundary |
+| --- | --- | --- |
+| Source manifest / raw cache | Pinned publisher file and digest identify a download; source terms and labels remain recorded | Acquisition may use HTTPS; email links are never followed |
+| Processed EmailExample JSONL | Example ID belongs to a group, source and fixed split; related records and derived variants retain lineage | Only training examples fit learned transformations |
+| Model artifact and selection | Weights/config/vocabulary link to source, protocol, development fingerprints and chosen threshold | Immutable reviewed identities; numerical JSON or safetensors, not arbitrary executable checkpoints |
+| Perturbation record | Variant ID points to its parent, group, split, edit trace and candidate index | Bounded deterministic changes; original text is retained locally |
+| Evaluation run / predictions | Cohort, model revisions, scores and labels determine confusion counts and ASR | Text-free aggregates enter Git; detailed research artifacts stay local |
+| Pasted UI input / result | Transient request and rendered output, with no persistent account or message store | Browser and server memory only within the stated privacy boundary |
+
+The data model is file-based; the sample project's relational database schema does not apply to this application. The structural record contracts and CLI JSON validation are documented in [contracts](contracts.md). Gradio exposes private local event handlers for the fixed demo actions; no external REST-integration contract, arbitrary model path or training endpoint is offered. The [README](../README.md) and [submission guide](submission.md) document setup, artifact preparation, start/stop and reproduction.
+
+### 3.18 Requirements-to-evidence traceability
+
+| Requirement | Implemented component / output | Evidence and current disposition |
+| --- | --- | --- |
+| PG01 / foundations | Two-week security/AI learning record and task-specific concepts | Sections 1.1 and 8.2; exact dates and individual learning evidence remain to be supplied by students |
+| PG02 / dataset | Pinned ingestion, inert extraction, deduplication and grouped splits | Dataset/audit/refresh manifests and [dataset guide](dataset.md); fixture separation checks |
+| PG03 / classical ML | TF-IDF + logistic regression; preserved v1/v2 | [Baseline](baseline.md), [refresh](baseline-refresh.md), frozen model selection and independent counts |
+| PG04 / pretrained comparison | Pinned DistilBERT adapter and validation-selected threshold | [Current comparison](current-comparison.md), identical cohort IDs and preserved weights |
+| PG05 / fine-tuning | BERT-Tiny encoder/head training and checkpoint selection | [Fine-tuned detector](finetuned.md), training report and complete same-environment repeat |
+| PG06-PG07 / evasion and degradation | Bounded variants with edit lineage and query counts | [Controlled evasion](controlled-evasion.md), clean/fixed/directed metrics and validity review |
+| PG08 / defense | Training-only augmentation into a separate BERT artifact | [Defense study](robustness-defense.md); benefits/costs measured without claiming consistent improvement |
+| PG09 / demo | Pasted-email Gradio UI and fixed inference registry | [Demo guide](demo.md), 26 demo tests and actual desktop/mobile browser evidence |
+| PG10 / reporting | Frozen final evaluation, project book and PowerPoint | [Final report](final-evaluation.md), charts, screenshots, explicit requirements slides and speaker notes |
+| Added submission checklist | One-page summary and supporting deliverables | [One Pager](one-pager.md), [submission coverage audit](submission-review.md), poster and source archive |
+
 ## 4. STRIDE threat analysis
 
-This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public errors. Stage 2 adds pinned source/file integrity, frozen splits, lineage checks and controlled source-only downloading. Stage 3 adds train-only fitting, held-out threshold selection, numerical JSON model validation, artifact digest checks and input-private prediction. Stage 4 adds reviewed safetensors-only loading, explicit model labels, checked tokenizer reconstruction, token/batch limits and digest-bound validation decisions. The broader controls below remain planned unless linked to implemented evidence in the stage log. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
+This threat model covers the intended PhishGuard system. Stage 1 implements bounded, strict input validation and input-free public errors. Stage 2 adds pinned source/file integrity, frozen splits, lineage checks and controlled source-only downloading. Stage 3 adds train-only fitting, held-out threshold selection, numerical JSON model validation, artifact digest checks and input-private prediction. Stage 4 adds reviewed safetensors-only loading, explicit model labels, checked tokenizer reconstruction, token/batch limits and digest-bound validation decisions. Implemented controls are linked to the stage log and demo guide. Controls for a future shared/public deployment remain outside the current loopback-only scope. STRIDE provides six categories for analyzing system threats. The specific threats, priorities and controls below are design judgments for this project. [R11]
 
 Stage 4a additionally bounds raw messages and expanded archives, rejects unsafe archive members without extracting files, keeps HTML inert, verifies external membership and refuses a different model/threshold. Its evaluation loader does not open the reserve file. These controls address integrity, disclosure, resource exhaustion and unintended execution; they do not establish that publisher labels are correct.
 
@@ -573,7 +624,17 @@ All three attack cases preserve the short original notification's apparent meani
 
 The project delivers a reproducible detector comparison, bounded robustness experiment, separate augmentation defense and working local demo. The high reserve accuracy does not erase poor challenge transfer or label uncertainty. Future research should acquire contemporary both-class data with independently reviewed labels, stronger campaign separation, multiple seeds and a clean-only continued-training control. The 703-message reserve is now consumed and cannot be reused as fresh evidence after tuning. New model or threshold decisions require a new held-out cohort.
 
-The comparative report, English project book, reproduction/demo guide and 16-slide presentation are prepared. See the [submission package](submission.md) and [slide content with speaker notes](presentation.md). This completes the twelve planned implementation milestones (0-9 plus 4a/4b). Students must still review, understand and present their work and complete the actual course submission; those personal actions are not claimed as completed.
+The comparative report, English project book, one-page summary, reproduction/demo guide and expanded PowerPoint presentation are prepared. See the [submission package](submission.md) and [slide content with speaker notes](presentation.md). This completes the twelve planned implementation milestones (0-9 plus 4a/4b). Students must still review, understand and present their work and complete the actual course submission; those personal actions are not claimed as completed.
+
+### 6.13 Visual comparison of measured outcomes
+
+The following charts are generated directly from committed aggregate reports. Accuracy axes start at zero; cohorts are shown side by side rather than as a temporal improvement curve. The historical and final cohorts share source families with development. The challenge contains 1,900 synthetic and 100 origin-unverified records. Neither a high final score nor numerical reproduction establishes production-inbox accuracy.
+
+![Accuracy across the three evaluation cohorts](../assets/accuracy-by-cohort.png)
+
+The next chart separates the two error types on the balanced challenge cohort. The ready-made classifier has fewer false alarms but more missed phishing at its fixed threshold. This explains why its higher overall accuracy does not make it a universal winner. Each error type has 1,000 relevant examples as its denominator.
+
+![Missed phishing and false alarms on the challenge cohort](../assets/challenge-error-tradeoff.png)
 
 ## 7. Architecture - UML
 
@@ -596,6 +657,26 @@ The Gradio UI calls the validated Python inference service and caches only revie
 The implemented sequence shows one accepted demo request: validate input, obtain a prediction from a reviewed model loaded on first use, derive the declared explanation and return a result. A missing/invalid artifact returns unavailable without scoring; queued requests are serialized. A UML alternative fragment covers invalid input. Dashed arrows are replies; vertical dashed lines are lifelines. This interaction performs no training, email transmission or link following.
 
 The editable SVG files are the diagram sources. Update them when the implemented design changes and verify that component responsibilities match the code and its tests.
+
+### 7.3 Component responsibilities and data flow
+
+The simplified overview complements the detailed UML above. The browser calls the validation/inference controller, which chooses one allowlisted adapter. Offline research produces reviewed artifacts; the demo only reads them. Data, model identity and evaluation evidence remain separate from transient pasted input.
+
+![Simplified component responsibilities](../assets/architecture-overview.svg)
+
+### 7.4 Interface wireframe and interaction contract
+
+This is a documentation wireframe of the implemented interaction, prepared for the final submission. It is not claimed to be a historical pre-development design. Input and result areas are visually separated; the result makes the model, threshold, truncation and explanatory limits explicit. Error and unavailable states replace the result rather than fabricating a score.
+
+![Documented interface wireframe](../assets/ui-wireframe.svg)
+
+### 7.5 Implemented interface screenshots
+
+The following images are actual desktop and mobile Chromium captures from the recorded stage-8 checks. The desktop shows an invented routine-meeting example; the mobile capture shows the empty ready state. They are distinct from the wireframe and contain no research-email examples. The application code and models remain unchanged in this documentation update. Full-resolution screenshots are available through their source links.
+
+![Actual desktop demo with synthetic input](../assets/demo.png)
+
+![Actual mobile demo in the empty ready state](../assets/demo-mobile.png)
 
 ## 8. Work plan
 
@@ -651,7 +732,13 @@ Lior Mashaich owns the input/result contracts, dataset ingestion, baseline train
 
 For every completed contribution record the package ID, student, actual activity, date, artifact or commit, peer review and check results in the [stage log](stage-log.md). Keep assigned ownership, implemented behavior and completed personal review distinct. Update this book and its UML when behavior changes, and add measured conclusions after the experiments.
 
-### 8.5 References and assignment provenance
+### 8.5 Final submission coverage and review
+
+The November 17 submission review adds a native one-page summary with team/supervisor/institution/course, explicit current use cases and requirements traceability, measured-result graphs, documented wireframe, actual screenshots and an expanded PowerPoint. Source/model/test decisions are unchanged. The supplied MaintControl example informs presentation structure only; its student identifiers, staff names, business requirements and database design are not PhishGuard facts. Its code archive contains an empty directory rather than a usable implementation.
+
+W10 keeps equal assigned responsibility: Lior Mashaich leads the system/use-case specification, screenshots, reproduction links and code packaging; Sharon Elimelech leads the One Pager, graphs, requirement-to-slide mapping and presentation review. These are responsibilities for AI-assisted outputs, not invented records of individual work. The remaining human items are actual learning dates/evidence, personal review and course submission. No recorded/published YouTube video is currently part of the verified package; the example's video link is not reused. See [submission coverage](submission-review.md).
+
+### 8.6 References and assignment provenance
 
 The primary course reference is the student-supplied Project2_PhishGuard.docx, titled Project 2 - PhishGuard: AI Phishing Detection & Adversarial Robustness. The eight-chapter structure and reported learning topics follow the course-book checklist supplied by the student. External references support definitions and methods; project-specific threats, limits and allocations are design choices. The assignment document is retained locally as the course reference.
 

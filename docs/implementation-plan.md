@@ -1,6 +1,6 @@
 # PhishGuard implementation plan
 
-Updated November 14, 2026. The [project book](project-book.md) defines the course scope, requirements, research protocol and equal Lior Mashaich/Sharon Elimelech ownership. The [stage log](stage-log.md) records completed work and actual checks.
+Updated November 17, 2026. The [project book](project-book.md) defines the course scope, requirements, research protocol and equal Lior Mashaich/Sharon Elimelech ownership. The [stage log](stage-log.md) records completed work and actual checks.
 
 All twelve milestones (stages 0-9 plus checkpoints 4a/4b) are complete at their stated implementation scope. Stage 9 froze and pushed the protocol before scoring the 703-message reserve, repeated the full run without changing models or thresholds, and prepared final reports and presentation materials. Individual student review, actual contribution records and course submission remain separate human actions. No further implementation stage is currently scheduled.
 
@@ -103,3 +103,7 @@ Final reserve accuracy for baseline/original BERT/defended BERT/pretrained is 99
 Prepared the final comparative report, book revision 1.9, UML, 16 English slides with speaker notes, local Word/PDF/PPTX exports and reproduction/demo guide. W10 remains five planning units each: Lior Mashaich leads reproduction, architecture/test documentation and demonstration packaging; Sharon Elimelech leads comparisons, conclusions and presentation assembly. Both review and explain the complete system. Implementation/documentation were AI-assisted; named allocation does not invent personal work or approval.
 
 Remaining course actions: both students independently review the code, results and selected label cases, add real contribution/learning evidence and course dates, rehearse the presentation and perform submission. Future scientific improvements require a new held-out cohort before tuning. See [final results](final-evaluation.md) and [submission handoff](submission.md).
+
+## Submission review - November 17, 2026
+
+Completed the additional One Pager and strengthened the specification and PowerPoint against the supplied submission checklist and example. Recorded the confirmed supervisor Zimon Roi, institution HIT and course AB- Ai Security. Added formal use cases, requirement/evidence mapping, actual screenshots, two measured charts, a labeled interface wireframe and source/links handoff. This is documentation and packaging of completed work, not an additional model-development stage. W10 remains equally assigned to Lior Mashaich and Sharon Elimelech; actual personal review and learning evidence remain open. See the [coverage review](submission-review.md) for present items and the still-absent video link.

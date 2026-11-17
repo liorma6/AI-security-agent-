@@ -6,15 +6,17 @@ All twelve implementation milestones (0-9 and checkpoints 4a/4b) are complete at
 
 | Item | Canonical source | Prepared local export |
 | --- | --- | --- |
-| Eight-chapter project book | [Project book](project-book.md) | PhishGuard-Initial-Project-Book.docx and .pdf, revision 1.9 |
+| One-page summary | [One Pager](one-pager.md) | PhishGuard-One-Pager.docx and .pdf |
+| Eight-chapter project book | [Project book](project-book.md) | PhishGuard-Project-Book.docx and .pdf, revision 2.0 |
 | Final protocol and comparative report | [Final evaluation](final-evaluation.md) | Included in the book and slides |
 | Machine-readable evidence | [Results](reports/final-evaluation.json), [verification](reports/final-verification.json), [review](reports/final-review.json) | Text-free aggregates; raw messages remain private |
-| Presentation and speaker notes | [16-slide source](presentation.md), [builder](../scripts/build_presentation.py) | PhishGuard-Final-Presentation.pptx, .html and .pdf |
+| Presentation and speaker notes | [Slide content and notes](presentation.md), [builder](../scripts/build_presentation.py) | PhishGuard-Final-Presentation.pptx, .html and .pdf |
 | Illustrated project poster | [Poster and content reference](poster.md) | PhishGuard-Poster.png and one-page A4 .pdf |
+| Source and links handoff | [Coverage review](submission-review.md) and repository | PhishGuard-Code.zip and PhishGuard-Links.txt |
 | Runnable demonstration | [Startup and privacy guide](demo.md) | Local four-model pasted-email interface |
 | Work allocation and evidence | [Implementation plan](implementation-plan.md), [stage log](stage-log.md) | Lior Mashaich/Sharon Elimelech equal planned responsibility; AI assistance disclosed |
 
-The filenames containing Initial are retained for continuity; their content is the final revision. Local exports are stored in the project's outputs directory, outside Downloads. Generated binaries, research emails and learned model weights are intentionally excluded from Git. The English presentation builder uses only public aggregate reports and an invented-message screenshot.
+Local exports are stored in the project's outputs directory, outside Downloads, with a consolidated PhishGuard-Submission folder. Older filenames containing Initial are retained as copies of the current final revision for continuity. Generated documents, research emails and learned model weights are intentionally excluded from Git. The English presentation builder uses only public aggregate reports, diagrams and demo screenshots without research emails.
 
 ## Reproduction levels
 
@@ -52,3 +54,7 @@ Open http://127.0.0.1:7860. Use invented examples such as a routine meeting remi
 ## Ownership and final human actions
 
 W10 assigns five planning units to each student. Lior Mashaich leads reproduction instructions, architecture/test documentation and demo packaging. Sharon Elimelech leads comparative results, conclusions and slide assembly. Both review the complete code and selected error cases, add genuine learning/contribution evidence and dates, rehearse explanations and perform the actual course submission. These are assigned responsibilities for AI-assisted work, not invented individual authorship or approvals. No additional model tuning is part of the completed project; future changes require fresh held-out evidence.
+
+## Additional submission evidence
+
+The confirmed project identity is Lior Mashaich and Sharon Elimelech, supervised by Zimon Roi at HIT, course AB- Ai Security. The [coverage review](submission-review.md) maps each requested item to an artifact and distinguishes completed materials from missing personal evidence or a video link. The code ZIP packages committed source only; it is not a bundle of trained weights. The diagrams and measured plots are in assets; the presentation and One Pager are reproducible from their canonical sources. The one-page PDF is checked for exactly one A4 page. Word and PowerPoint are editable native files; PDF companions are rendered from the same content in HTML, not through Microsoft Office.

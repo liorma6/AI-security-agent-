@@ -1,0 +1,10 @@
+{
+  "title": "PhishGuard",
+  "subtitle": "AI Phishing Detection and Adversarial Robustness",
+  "students": ["Lior Mashaich", "Sharon Elimelech"],
+  "supervisor": "Zimon Roi",
+  "institution": "HIT",
+  "course": "AB- Ai Security",
+  "updated": "November 17, 2026",
+  "repository": "https://github.com/liorma6/AI-security-agent-"
+}

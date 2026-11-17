@@ -6,6 +6,7 @@ import html
 import json
 from pathlib import Path
 
+from PIL import Image
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
@@ -345,6 +346,147 @@ add(
     ),
 )
 
+profile = read("docs/project-profile.json")
+slides[0]["bullets"] = [
+    " & ".join(profile["students"]),
+    "Supervisor: " + profile["supervisor"],
+    profile["institution"] + " | " + profile["course"] + " | " + profile["updated"],
+    "An academic research prototype with a local email demo.",
+]
+
+add(
+    "Requirements: data and detectors",
+    "PG01-PG05 | Specification requirements mapped to evidence.",
+    table=[
+        ["ID", "Requirement", "Evidence"],
+        ["PG01", "Learn the foundations", "Learning record; personal evidence remains open"],
+        ["PG02", "Collect and prepare data", "Pinned sources, grouped splits and manifests"],
+        ["PG03", "Classical ML baseline", "TF-IDF + logistic regression; preserved v1/v2"],
+        ["PG04", "Pretrained HF comparison", "Pinned DistilBERT; identical evaluation IDs"],
+        ["PG05", "Fine-tune a transformer", "BERT-Tiny; validation selection and full repeat"],
+    ],
+    note="Map these rows to project-book section 3.18. Distinguish implemented artifacts "
+    "from each student's remaining learning evidence. The external phishing classifier "
+    "and the general encoder we fine-tuned are different models.",
+)
+add(
+    "Requirements: evaluation and product",
+    "PG06-PG10 | Explain both delivered behavior and its limits.",
+    table=[
+        ["ID", "Requirement", "Evidence"],
+        ["PG06", "Controlled text evasion", "Three edit families, lineage and query caps"],
+        ["PG07", "Measure degradation", "Clean/fixed/directed results and candidate ASR"],
+        ["PG08", "Evaluate a defense", "Training-only augmentation; inconsistent gains"],
+        ["PG09", "Pasted-email web demo", "Local UI, score, evidence and checked error states"],
+        ["PG10", "Report and presentation", "Frozen final report, project book and this deck"],
+    ],
+    note="The defense requirement is implemented and measured. Do not present it as a "
+    "guaranteed improvement. The One Pager, poster, source and links handoff support "
+    "the additional submission checklist.",
+)
+add(
+    "How the components communicate",
+    "Separate inference, research workflows and frozen artifacts.",
+    kind="figure",
+    image=str(REPO / "assets/architecture-overview.png"),
+    note="Use the component overview for an oral explanation. The detailed component and "
+    "sequence UML are in chapter 7. The demo does not expose training or arbitrary "
+    "model paths. The application uses versioned local files, not a user database.",
+)
+for item in slides:
+    if item["title"] == "Changing the dataset changes the result":
+        item["table"] = None
+        item["kind"] = "figure"
+        item["image"] = str(REPO / "assets/accuracy-by-cohort.png")
+add(
+    "Different errors have different costs",
+    "Challenge cohort | 1,000 phishing and 1,000 legitimate messages.",
+    kind="figure",
+    image=str(REPO / "assets/challenge-error-tradeoff.png"),
+    note="Read the two error counts separately. The pretrained classifier misses 136 "
+    "phishing but produces 119 false alarms. The baseline misses 26 but produces "
+    "372 false alarms. The challenge is mainly synthetic; this is not an inbox forecast.",
+)
+add(
+    "The interface contract",
+    "Documentation wireframe of implemented behavior, not an earlier design artifact.",
+    kind="figure",
+    image=str(REPO / "assets/ui-wireframe.png"),
+    note="Walk through model selection, optional subject, body, Analyze and Clear. Explain "
+    "the Ready, Analyzing, Result, Validation error and Model unavailable states. "
+    "This is a schematic, while the following images are actual browser captures.",
+)
+add(
+    "The same demo on mobile",
+    "Actual stage-8 Chromium capture of the empty ready state.",
+    bullets=[
+        "The form and result stack vertically on a narrow screen.",
+        "The same four model choices and validation rules apply.",
+        "The result area is ready; no prediction is shown in this capture.",
+        "Clear resets the displayed form and result.",
+    ],
+    kind="mobile",
+    image=str(REPO / "assets/demo-mobile.png"),
+    note="This is the recorded browser screenshot, not a generated mockup. Open the full "
+    "resolution image or live UI to inspect small text. The form is empty and contains "
+    "no email content. No new browser-verification run is claimed here.",
+)
+add(
+    "Problems found and responses",
+    "The research record includes unsuccessful results and boundary corrections.",
+    bullets=[
+        "Source shift: add external audits and report each cohort separately.",
+        "Reviewed-family overlap: disclose it and exclude the whole family for later comparisons.",
+        "Long emails: disclose token truncation instead of hiding discarded content.",
+        "Small defense gains: retain clean-cost comparisons and state the missing control.",
+    ],
+    note="The two-row historical exclusion is documented, not erased. Better source-matched "
+    "accuracy does not remove challenge weaknesses. A clean-only continued-training "
+    "control and new independent labels remain future research.",
+)
+add(
+    "Submission materials and demonstration",
+    "A traceable handoff for review, reproduction and presentation.",
+    bullets=[
+        "One Pager, eight-chapter specification and English PowerPoint with notes.",
+        "Measured reports, graphs, screenshots, interface wireframe and poster.",
+        "GitHub source, source-only ZIP and local installation/demo instructions.",
+        "Personal learning/review evidence and actual course submission remain open.",
+    ],
+    note="Repository: https://github.com/liorma6/AI-security-agent-. Use docs/submission.md "
+    "and docs/submission-review.md. No recorded/published YouTube link exists in the "
+    "verified package. Research datasets and learned weights are excluded from the code ZIP.",
+)
+order = [
+    "PhishGuard",
+    "What are we testing?",
+    "Requirements: data and detectors",
+    "Requirements: evaluation and product",
+    "One pipeline, two separate workflows",
+    "How the components communicate",
+    "Keep development separate from evidence",
+    "Four preserved candidates",
+    "The evaluation was frozen first",
+    "Final clean results",
+    "Changing the dataset changes the result",
+    "Different errors have different costs",
+    "Controlled evasion, not unrestricted attacks",
+    "What happened under the fixed budget?",
+    "Did augmentation help?",
+    "Review errors without changing the test",
+    "The interface contract",
+    "The local demonstration",
+    "The same demo on mobile",
+    "Verification is part of the deliverable",
+    "Problems found and responses",
+    "What the project establishes",
+    "Submission materials and demonstration",
+    "Reproduce, review, present",
+]
+by_title = {item["title"]: item for item in slides}
+assert len(by_title) == len(order) == 24
+slides = [by_title[title] for title in order]
+
 prs = Presentation()
 prs.slide_width = Inches(13.333)
 prs.slide_height = Inches(7.5)
@@ -421,6 +563,9 @@ for i, s in enumerate(slides, 1):
         table = slide.shapes.add_table(
             len(rows), len(rows[0]), Inches(0.77), Inches(3.0), Inches(width), Inches(height)
         ).table
+        if s["title"].startswith("Requirements:"):
+            for column, size in zip(table.columns, [0.8, 4.6, 6.4], strict=True):
+                column.width = Inches(size)
         for ri, row in enumerate(rows):
             for ci, text in enumerate(row):
                 cell = table.cell(ri, ci)
@@ -433,7 +578,9 @@ for i, s in enumerate(slides, 1):
                 cell.margin_top = Inches(0.10)
                 for p in cell.text_frame.paragraphs:
                     p.font.name = "Aptos"
-                    p.font.size = Pt(15 if len(row) > 4 else 17)
+                    p.font.size = Pt(
+                        15 if len(row) > 4 or s["title"].startswith("Requirements:") else 17
+                    )
                     p.font.color.rgb = RGBColor.from_string(WHITE if ri == 0 else INK)
                     p.font.bold = ri == 0
         body_html = (
@@ -448,6 +595,37 @@ for i, s in enumerate(slides, 1):
                 for ri, row in enumerate(rows)
             )
             + "</table>"
+        )
+    elif s["kind"] == "figure":
+        with Image.open(s["image"]) as picture:
+            ratio = picture.width / picture.height
+        width = min(11.8, 4.0 * ratio)
+        height = width / ratio
+        slide.shapes.add_picture(
+            s["image"],
+            Inches((13.333 - width) / 2),
+            Inches(2.75),
+            width=Inches(width),
+            height=Inches(height),
+        )
+        body_html = (
+            '<div class="figure"><img alt="'
+            + html.escape(s["title"])
+            + '" src="'
+            + "data:image/png;base64,"
+            + base64.b64encode(Path(s["image"]).read_bytes()).decode("ascii")
+            + '"></div>'
+        )
+    elif s["kind"] == "mobile":
+        slide.shapes.add_picture(s["image"], Inches(1.6), Inches(2.65), height=Inches(4.1))
+        textbox(slide, 4.0, 2.9, 8.4, 3.8, "\n".join("• " + x for x in s["bullets"]), 22)
+        body_html = (
+            '<div class="mobile"><img alt="Actual mobile screenshot" src="'
+            + "data:image/png;base64,"
+            + base64.b64encode(Path(s["image"]).read_bytes()).decode("ascii")
+            + '"><ul>'
+            + "".join("<li>" + html.escape(x) + "</li>" for x in s["bullets"])
+            + "</ul></div>"
         )
     elif s["kind"] == "demo":
         slide.shapes.add_picture(s["image"], Inches(0.77), Inches(2.8), height=Inches(3.95))
@@ -526,6 +704,9 @@ for i, s in enumerate(slides, 1):
         )
     else:
         md += ["- " + b for b in s["bullets"]] + [""]
+    if s["image"]:
+        relative = Path(s["image"]).relative_to(REPO).as_posix()
+        md += [f"![{s['title']}](../{relative})", ""]
     md += ["Speaker notes: " + s["note"], ""]
 prs.core_properties.title = "PhishGuard - Final Project Presentation"
 prs.core_properties.author = "Lior Mashaich and Sharon Elimelech"
@@ -554,6 +735,13 @@ style = (
     ":22px;color:#12535b}.flow p{font-size:22px;line-height:1.5}.demo{display"
     ":flex;gap:42px;width:100%}.demo img{height:405px;width:auto}.demo ul{pad"
     "ding-top:12px}.demo li{font-size:23px;margin-bottom:18px}"
+)
+style += (
+    ".figure{width:100%;height:410px;display:flex;justify-content:center}"
+    ".figure img{max-width:100%;max-height:410px;object-fit:contain}"
+    ".mobile{display:flex;gap:90px;width:100%;padding-left:90px}"
+    ".mobile img{height:410px;width:auto}.mobile ul{max-width:800px;padding-top:20px}"
+    ".mobile li{font-size:25px;margin-bottom:24px}"
 )
 (OUT / "PhishGuard-Final-Presentation.html").write_text(
     (
