@@ -81,7 +81,7 @@ add(
     "PhishGuard",
     "Phishing detection and controlled adversarial robustness",
     [
-        "Lior & Sharon Elimelech",
+        "Lior Mashaich & Sharon Elimelech",
         "Final project presentation | November 14, 2026",
         "An academic research prototype with a local email demo.",
     ],
@@ -331,7 +331,7 @@ add(
     "Reproduce, review, present",
     "Shared responsibility; transparent assistance.",
     [
-        "Lior: reproduction guide, local demonstration and packaging (W10: 5 units).",
+        "Lior Mashaich: reproduction guide, local demonstration and packaging (W10: 5 units).",
         "Sharon Elimelech: comparative report, conclusions and presentation (W10: 5 units).",
         "Both students review the implementation and can explain the complete pipeline.",
         ("AI-assisted code and documents; assigned ownership is not invented personal authorship."),
@@ -499,7 +499,7 @@ for i, s in enumerate(slides, 1):
         7.0,
         11,
         0.22,
-        "Frozen evaluation · English academic prototype · Lior & Sharon Elimelech",
+        "Frozen evaluation · English academic prototype · Lior Mashaich & Sharon Elimelech",
         10,
         "D4E7E4" if cover else MUTED,
     )
@@ -511,7 +511,7 @@ for i, s in enumerate(slides, 1):
         f"<h1>{html.escape(s['title'])}</h1>"
         f'<p class="subtitle">{html.escape(s["subtitle"])}</p>'
         f'<div class="body">{body_html}</div>'
-        "<footer><span>Frozen evaluation · Lior & Sharon Elimelech</span>"
+        "<footer><span>Frozen evaluation · Lior Mashaich & Sharon Elimelech</span>"
         f"<span>{i} / {len(slides)}</span></footer></section>"
     )
     md += [f"## {i}. {s['title']}", "", s["subtitle"], ""]
@@ -528,7 +528,7 @@ for i, s in enumerate(slides, 1):
         md += ["- " + b for b in s["bullets"]] + [""]
     md += ["Speaker notes: " + s["note"], ""]
 prs.core_properties.title = "PhishGuard - Final Project Presentation"
-prs.core_properties.author = "Lior and Sharon Elimelech"
+prs.core_properties.author = "Lior Mashaich and Sharon Elimelech"
 prs.core_properties.subject = "Frozen final evaluation; AI-assisted academic project"
 prs.save(OUT / "PhishGuard-Final-Presentation.pptx")
 style = (

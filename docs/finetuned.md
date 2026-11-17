@@ -34,7 +34,7 @@ Compare with the exact baseline-v2 digest `a78643d919de806d170fec8cf303ac8be29e7
 
 After weights/thresholds are frozen and all benchmarks scored, inspect a deterministic bounded sample of transformer false positives, false negatives and correct controls. Record observations without changing the selected model or threshold. Repeat the fixed training and scoring once and independently recount saved predictions. Verify all preserved baseline/data/reserve digests. Software checks use invented tiny neural fixtures and test actual encoder updates, leakage/read boundaries, family exclusion, validation selection, deterministic training, safe artifacts, label mapping, truncation, source verification and private CLI errors.
 
-W06 maintains equal assigned responsibility: Lior leads the training runner, local environment and checkpoint artifacts; Sharon Elimelech leads tokenization/data boundaries, comparison, reproduction and error analysis. Both review conclusions and explain limitations. Implementation and initial experimental review are AI-assisted; completed individual student authorship is not asserted.
+W06 maintains equal assigned responsibility: Lior Mashaich leads the training runner, local environment and checkpoint artifacts; Sharon Elimelech leads tokenization/data boundaries, comparison, reproduction and error analysis. Both review conclusions and explain limitations. Implementation and initial experimental review are AI-assisted; completed individual student authorship is not asserted.
 
 ## Run locally
 

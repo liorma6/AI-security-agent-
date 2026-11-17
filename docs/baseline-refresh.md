@@ -23,7 +23,7 @@ The previously inspected Nazario 2024/2025 and SpamAssassin audit messages becom
 5. Compare baseline v1 and v2 on identical prepared historical test inputs and, separately, challenge inputs. Report class counts, confusion matrices, accuracy, balanced accuracy, precision, recall, F1, false-positive rate, source/origin subgroups, group-bootstrap intervals and paired correctness. Reuse the fixed 1,000 whole-group resamples with seed 42. Do not tune after seeing results or combine challenge and historical scores into a headline number.
 6. Repeat preparation/training/scoring under the fixed protocol for reproducibility, independently recount predictions, and verify unchanged original model/reserve hashes. These scored cohorts are stage-4b benchmarks; neither becomes an untouched final project test. Final reserve use requires a later precommitted policy covering subsequent model/attack/defense decisions.
 
-Executable [protocol](../src/phishguard/refresh/protocol.json). Ownership within W05 remains five planning units each: Lior leads source review, ingestion, extraction and separate model persistence; Sharon Elimelech leads grouping, data checks, evaluation and reproduction. Both review interpretation. AI-assisted implementation is distinct from completed individual student authorship.
+Executable [protocol](../src/phishguard/refresh/protocol.json). Ownership within W05 remains five planning units each: Lior Mashaich leads source review, ingestion, extraction and separate model persistence; Sharon Elimelech leads grouping, data checks, evaluation and reproduction. Both review interpretation. AI-assisted implementation is distinct from completed individual student authorship.
 
 ## Pre-fit quality corrections
 

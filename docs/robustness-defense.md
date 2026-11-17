@@ -59,7 +59,7 @@ uv run --frozen python scripts/review_defense.py verify
 
 The verifier independently checks preserved files, repeated preparation/weights/selection/predictions, earlier fixed-bank scores, confusion/ASR/common/transfer/query counts and repeated group intervals. It expects local artifacts from both complete runs. The review selector writes text-free IDs to a new local folder; contextual review is a separate step before verification. Prediction returns model identity, score/decision and truncation metadata without saving/echoing the email.
 
-W08 retains five planning units each: Lior leads defended inference, integration and clean-cost comparison; Sharon Elimelech leads training-only augmentation, defense training and verification. Both review interpretation. Implementation and initial review are AI-assisted; actual student contributions/review must be recorded when performed. Stage 8 has not started.
+W08 retains five planning units each: Lior Mashaich leads defended inference, integration and clean-cost comparison; Sharon Elimelech leads training-only augmentation, defense training and verification. Both review interpretation. Implementation and initial review are AI-assisted; actual student contributions/review must be recorded when performed. Stage 8 has not started.
 
 ## Measured outcome
 

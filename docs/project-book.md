@@ -2,7 +2,7 @@
 
 Revision 1.9 - November 14, 2026 - Frozen final evaluation and submission materials
 
-Team: Lior and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
+Team: Lior Mashaich and Sharon Elimelech. Course-aligned proposal based on Project2_PhishGuard.docx and the student's eight-chapter checklist.
 
 Status: STAGE 9 COMPLETED AT IMPLEMENTED SCOPE. All twelve milestones (0-9 plus 4a/4b) are implemented and checked. The final protocol was committed before all 703 reserve messages were scored, and the complete evaluation was reproduced without changing existing models or thresholds. English final reports, demo/reproduction instructions and presentation materials are prepared. Student review and course submission remain human responsibilities.
 
@@ -228,12 +228,12 @@ Boundary B1 separates pasted text from the UI/inference code. B2 separates exter
 
 | Category | Scenario and impact | Proposed mitigation | Verification and owner |
 | --- | --- | --- | --- |
-| S - Spoofing | A forged sender display name or a model result is treated as proof of identity; a shared demo could accept an unauthorized user. | Explain that text classification does not authenticate senders. Keep local operation; require authentication before shared deployment. | Verify result wording and local binding; test access controls if shared hosting is added. Lior leads, Sharon reviews. |
-| T - Tampering | A dataset label/split or model artifact is altered, poisoning training or invalidating evaluation. | Review provenance, pin revisions and digests, freeze grouped splits, track label edits, keep test data outside training. | Reject manifest mismatch and group overlap. Sharon leads, Lior reviews. |
-| R - Repudiation | A reported result cannot be traced to the model, data, configuration or perturbation that produced it. | Record run IDs, manifests, seeds, versions and aggregate counts without raw email content. | Reproduce a tiny reference run and trace every reported metric. Logs provide traceability, not guaranteed non-repudiation. Lior leads, Sharon reviews. |
-| I - Information disclosure | Pasted email contains private information and is leaked through logs, saved examples or an external LLM request. | Disable raw-input logging/persistence, redact public fixtures and avoid external inference by default. | Use a unique test marker and verify it is absent from logs/files/outbound requests. Sharon leads, Lior reviews. |
-| D - Denial of service | Oversized text, repeated requests or unrestricted attack loops exhaust CPU, GPU or memory. | Bound characters/tokens, inference concurrency, time and attack queries; return clear limit errors. | Boundary/over-limit tests, exhausted-budget test and measured resource checks. Lior leads, Sharon reviews. |
-| E - Elevation of privilege | An untrusted checkpoint, dataset script or email instruction executes code or invokes privileged tools. | Use reviewed artifacts, disable remote code, avoid arbitrary paths/commands and treat text as data. Use a non-root container if deployed in Docker. | Reject unknown paths/artifacts and ensure email text never triggers execution or networking. Sharon leads, Lior reviews. |
+| S - Spoofing | A forged sender display name or a model result is treated as proof of identity; a shared demo could accept an unauthorized user. | Explain that text classification does not authenticate senders. Keep local operation; require authentication before shared deployment. | Verify result wording and local binding; test access controls if shared hosting is added. Lior Mashaich leads, Sharon Elimelech reviews. |
+| T - Tampering | A dataset label/split or model artifact is altered, poisoning training or invalidating evaluation. | Review provenance, pin revisions and digests, freeze grouped splits, track label edits, keep test data outside training. | Reject manifest mismatch and group overlap. Sharon Elimelech leads, Lior Mashaich reviews. |
+| R - Repudiation | A reported result cannot be traced to the model, data, configuration or perturbation that produced it. | Record run IDs, manifests, seeds, versions and aggregate counts without raw email content. | Reproduce a tiny reference run and trace every reported metric. Logs provide traceability, not guaranteed non-repudiation. Lior Mashaich leads, Sharon Elimelech reviews. |
+| I - Information disclosure | Pasted email contains private information and is leaked through logs, saved examples or an external LLM request. | Disable raw-input logging/persistence, redact public fixtures and avoid external inference by default. | Use a unique test marker and verify it is absent from logs/files/outbound requests. Sharon Elimelech leads, Lior Mashaich reviews. |
+| D - Denial of service | Oversized text, repeated requests or unrestricted attack loops exhaust CPU, GPU or memory. | Bound characters/tokens, inference concurrency, time and attack queries; return clear limit errors. | Boundary/over-limit tests, exhausted-budget test and measured resource checks. Lior Mashaich leads, Sharon Elimelech reviews. |
+| E - Elevation of privilege | An untrusted checkpoint, dataset script or email instruction executes code or invokes privileged tools. | Use reviewed artifacts, disable remote code, avoid arbitrary paths/commands and treat text as data. Use a non-root container if deployed in Docker. | Reject unknown paths/artifacts and ensure email text never triggers execution or networking. Sharon Elimelech leads, Lior Mashaich reviews. |
 
 ### 4.2 Model evasion and residual risk
 
@@ -263,18 +263,18 @@ The matrix below maps the implemented test goals. Stage 1 implements the input-v
 
 | ID | Unit and input | Expected result | Owner |
 | --- | --- | --- | --- |
-| U01 | Empty, whitespace and malformed email input | A structured validation error; no inference call | Lior |
-| U02 | Exact length limit and one character above it | Accepted at the boundary; rejected above it without truncation | Sharon |
-| U03 | Unicode, punctuation and template duplicates | Stable preprocessing/group IDs; no silent label-changing cleanup | Lior |
-| U04 | Duplicate and derived variant across splits | Split validator rejects leakage | Sharon |
-| U05 | Validation-only token in a tiny corpus | Token absent from the training-fitted TF-IDF vocabulary | Lior |
-| U06 | Tokenizer/model with reversed or missing label mapping | Mapping is validated or rejected; never silently interpreted | Sharon |
-| U07 | Fixed model scores around the threshold | Correct decision and bounded score; model/threshold metadata retained | Lior |
-| U08 | Seeded typo/swap operation and zero edit budget | Reproducible variant; no changes at zero budget | Sharon |
-| U09 | Exhausted query budget and no valid variants | Termination with exact counts and an explicit no-result status | Lior |
-| U10 | Hand-calculated confusion matrix and ASR, including zero denominator | Exact metric counts; undefined values remain explicit | Sharon |
-| U11 | Model manifest mismatch or load failure | Structured unavailable/error result; no fabricated score | Lior |
-| U12 | HTML-like email text and a privacy marker | Escaped explanation/output; no raw-content logging | Sharon |
+| U01 | Empty, whitespace and malformed email input | A structured validation error; no inference call | Lior Mashaich |
+| U02 | Exact length limit and one character above it | Accepted at the boundary; rejected above it without truncation | Sharon Elimelech |
+| U03 | Unicode, punctuation and template duplicates | Stable preprocessing/group IDs; no silent label-changing cleanup | Lior Mashaich |
+| U04 | Duplicate and derived variant across splits | Split validator rejects leakage | Sharon Elimelech |
+| U05 | Validation-only token in a tiny corpus | Token absent from the training-fitted TF-IDF vocabulary | Lior Mashaich |
+| U06 | Tokenizer/model with reversed or missing label mapping | Mapping is validated or rejected; never silently interpreted | Sharon Elimelech |
+| U07 | Fixed model scores around the threshold | Correct decision and bounded score; model/threshold metadata retained | Lior Mashaich |
+| U08 | Seeded typo/swap operation and zero edit budget | Reproducible variant; no changes at zero budget | Sharon Elimelech |
+| U09 | Exhausted query budget and no valid variants | Termination with exact counts and an explicit no-result status | Lior Mashaich |
+| U10 | Hand-calculated confusion matrix and ASR, including zero denominator | Exact metric counts; undefined values remain explicit | Sharon Elimelech |
+| U11 | Model manifest mismatch or load failure | Structured unavailable/error result; no fabricated score | Lior Mashaich |
+| U12 | HTML-like email text and a privacy marker | Escaped explanation/output; no raw-content logging | Sharon Elimelech |
 
 For U10, a fixture with TP=3, FP=1, TN=4 and FN=2 must produce accuracy 0.7, precision 0.75, recall 0.6 and F1 approximately 0.6667. If two of four eligible correctly detected phishing originals are evaded, ASR is 0.5. A zero eligible denominator must be reported as undefined with count zero.
 
@@ -601,7 +601,7 @@ The editable SVG files are the diagram sources. Update them when the implemented
 
 ### 8.1 Reporting rules and equal allocation
 
-The PhishGuard plan in section 8.3 assigns Lior and Sharon Elimelech equal estimated responsibility: 50 planning units each, 100 total. Each work package allocates five units to each person. These are planning weights, not measured working hours. Rebalance responsibilities as actual effort becomes clear and keep the total responsibility balanced.
+The PhishGuard plan in section 8.3 assigns Lior Mashaich and Sharon Elimelech equal estimated responsibility: 50 planning units each, 100 total. Each work package allocates five units to each person. These are planning weights, not measured working hours. Rebalance responsibilities as actual effort becomes clear and keep the total responsibility balanced.
 
 Named ownership is an assignment of implementation, testing and explanation responsibility. It does not assert that planned code has already been written. Both students review each other's work, understand the full pipeline and record actual contributions with dates and artifacts. Development and documentation may use AI assistance; students remain responsible for validating and explaining the results.
 
@@ -611,15 +611,15 @@ Status: completed learning period as reported by the student. Calendar dates and
 
 | Relative session | Topics studied | Review lead | Shared record to attach |
 | --- | --- | --- | --- |
-| Week 1, session 1 | Cryptography, confidentiality, integrity and authentication | Lior | Agreed glossary notes |
+| Week 1, session 1 | Cryptography, confidentiality, integrity and authentication | Lior Mashaich | Agreed glossary notes |
 | Week 1, session 2 | Symmetric encryption and shared-key handling | Sharon Elimelech | Symmetric-key explanation |
-| Week 1, session 3 | Asymmetric cryptography, public/private keys and their relation to symmetric keys | Lior | Key-role comparison |
+| Week 1, session 3 | Asymmetric cryptography, public/private keys and their relation to symmetric keys | Lior Mashaich | Key-role comparison |
 | Week 1, session 4 | Algorithms/ciphers and hash functions | Sharon Elimelech | AES/TLS/hash distinction |
-| Week 1, session 5 | HMAC, salt and password-storage principles | Lior | HMAC/signature/salt comparison |
+| Week 1, session 5 | HMAC, salt and password-storage principles | Lior Mashaich | HMAC/signature/salt comparison |
 | Week 2, session 1 | TLS handshake, traffic encryption and authentication | Sharon Elimelech | Annotated TLS explanation |
-| Week 2, session 2 | X.509 certificates, CSR and certificate authorities | Lior | Certificate-chain notes |
+| Week 2, session 2 | X.509 certificates, CSR and certificate authorities | Lior Mashaich | Certificate-chain notes |
 | Week 2, session 3 | CRLs, revocation and limits of certificate-based trust | Sharon Elimelech | Revocation/expiry comparison |
-| Week 2, session 4 | Models, generative AI, Hugging Face and LLM-course introduction | Lior | Model-card review notes |
+| Week 2, session 4 | Models, generative AI, Hugging Face and LLM-course introduction | Lior Mashaich | Model-card review notes |
 | Week 2, session 5 | AI agents, tools and agents-course introduction; recap | Sharon Elimelech | Classifier/agent distinction |
 
 Both students participate in all topics. Each has five review-lead sessions. Python, pandas/data handling, text labels, TF-IDF, logistic regression, leakage and evaluation receive an additional foundation milestone; they are not retrospectively included in the reported crypto/TLS learning period.
@@ -628,7 +628,7 @@ Both students participate in all topics. Each has five review-lead sessions. Pyt
 
 Relative milestones avoid inventing semester dates. Attach submission dates when the course calendar is available. W01's learning is user-reported and its evidence collation remains open. W02's specification, environment, contracts and synthetic fixtures are implemented and checked; the students' individual review remains to be recorded. W03 dataset preparation is implemented and checked, with individual student review still open. W04 baseline training, artifacts, evaluation and reproduction are implemented; student review remains open. W05 pretrained comparison, stage 4a generalization audit and stage 4b data refresh/baseline re-evaluation are implemented and measured; individual student review remains open. W06 fine-tuning, comparison, reproduction and bounded error review are implemented; individual student review remains open. W07 controlled transformations, frozen-bank comparison, bounded label review and reproduction are implemented; individual student review remains open. W08 augmentation defense, fixed/fresh comparison and reproduction are implemented; individual student review remains open. W09 local demo and current pretrained-comparison integration are implemented and checked; individual student review remains open. W10 final evaluation, full numerical repeat, independent verification, report and presentation preparation are complete with AI assistance. All twelve milestones (0-9 plus 4a/4b) are implemented at their stated scope. Personal student review, recorded contribution evidence and actual course submission remain open.
 
-| Package / period | Lior - 5 units | Sharon Elimelech - 5 units | Completion evidence |
+| Package / period | Lior Mashaich - 5 units | Sharon Elimelech - 5 units | Completion evidence |
 | --- | --- | --- | --- |
 | W01 / two learning weeks | Review five sessions and consolidate crypto/key notes | Review five sessions and consolidate TLS/AI notes | Shared learning record and individual evidence |
 | W02 / Semester A foundation | Maintain requirements and component UML; implement email/result contracts | Maintain STRIDE, sequence UML and test matrix; implement validation fixtures | Reviewed book, runnable contracts and tiny fixtures |
@@ -641,13 +641,13 @@ Relative milestones avoid inventing semester dates. Attach submission dates when
 | W09 / Semester B demo | Pasted-email UI, input limits and local packaging | Evidence-based explanation, privacy/error tests and usability review | Demonstrable classifier with model identity and limitations |
 | W10 / final submission | Reproduction guide, architecture/test chapters and demo walkthrough | Comparative experiment report, conclusions and presentation assembly | Prepared final reports, English slides and reproduction/demo guide; both review all materials and present their work |
 
-Totals: Lior 10 x 5 = 50 units; Sharon Elimelech 10 x 5 = 50 units. The asymmetry of roles within each package is balanced by review, experiments and later integration work. Both must understand and be able to demonstrate the full pipeline.
+Totals: Lior Mashaich 10 x 5 = 50 units; Sharon Elimelech 10 x 5 = 50 units. The asymmetry of roles within each package is balanced by review, experiments and later integration work. Both must understand and be able to demonstrate the full pipeline.
 
 ### 8.4 Contribution evidence and stage completion
 
 The specification, STRIDE table, UML, test plan and ownership schedule are present. Stage 1 adds working contracts and an offline validator. Stage 2 adds pinned-source acquisition, a sample label audit, deduplication, frozen grouped splits and dataset tests. The documents, code and initial audit were developed with AI assistance for both students to review. Stage 3 adds the trained baseline, safe model artifacts, measured evaluation and local inference. Stage 4 adds a reviewed pretrained transformer, paired comparison and local inference. Stage 4a adds the frozen external audit, internal diagnostics, unchanged-model verification and an unscored reserve. Stage 4b adds reviewed real-mail development data, targeted corpus repairs, separate baseline v2, fixed held-out comparisons, reproduction and a disclosed review-boundary sensitivity check. Stage 5 adds actual small-transformer fine-tuning, validation-only selection, review-aware paired comparison, same-seed reproduction and error analysis. Stage 6 adds constrained text changes, fixed-bank evaluation, explicit candidate-ASR/coverage/query counts, bounded semantic review and reproduction. Stage 7 adds training-only augmentation, a separate defended artifact, validation-only selection and reproduced fixed/fresh comparison. Stage 8 adds the local four-model demo, grounded explanations, privacy/input safeguards and actual browser checks, plus current same-cohort pretrained evaluation. Stage 9 adds the committed final protocol, two identical full reserve runs, independent verification, bounded review, final report, updated book/UML and English presentation/submission guide. All implementation milestones are complete; individual review and actual submission remain open.
 
-Lior owns the input/result contracts, dataset ingestion, baseline training, model adapters, fine-tuning runner, perturbation operations and demo integration listed in section 8.3. Sharon Elimelech owns validation fixtures, dataset quality and splits, evaluation and leakage checks, tokenization/reproducibility checks, perturbation validity, defense training and explanation/privacy checks. Each implementation package also includes tests and peer review; the weights in section 8.3 include that work.
+Lior Mashaich owns the input/result contracts, dataset ingestion, baseline training, model adapters, fine-tuning runner, perturbation operations and demo integration listed in section 8.3. Sharon Elimelech owns validation fixtures, dataset quality and splits, evaluation and leakage checks, tokenization/reproducibility checks, perturbation validity, defense training and explanation/privacy checks. Each implementation package also includes tests and peer review; the weights in section 8.3 include that work.
 
 For every completed contribution record the package ID, student, actual activity, date, artifact or commit, peer review and check results in the [stage log](stage-log.md). Keep assigned ownership, implemented behavior and completed personal review distinct. Update this book and its UML when behavior changes, and add measured conclusions after the experiments.
 

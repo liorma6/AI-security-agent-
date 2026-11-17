@@ -46,4 +46,4 @@ CLI exit codes: 0 = valid input/schema output; 1 = invalid input; 2 = unreadable
 
 [Contract tests](../tests/test_contracts.py) and [CLI tests](../tests/test_cli.py) cover synthetic round trips, required provenance, reversed/malformed mappings, boundary scores, finite-number rules, malformed/bounded JSON, input limits and private error handling. [Fixture provenance](../tests/fixtures/README.md) distinguishes invented examples and scores from research data and measured predictions.
 
-W02 assigns Lior the environment and contracts, and Sharon Elimelech the fixtures and validation checks, with mutual review. The current implementation was developed with AI assistance in this project session; assigned ownership does not assert that either student's individual review has already occurred.
+W02 assigns Lior Mashaich the environment and contracts, and Sharon Elimelech the fixtures and validation checks, with mutual review. The current implementation was developed with AI assistance in this project session; assigned ownership does not assert that either student's individual review has already occurred.

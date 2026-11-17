@@ -11,7 +11,7 @@ All twelve implementation milestones (0-9 and checkpoints 4a/4b) are complete at
 | Machine-readable evidence | [Results](reports/final-evaluation.json), [verification](reports/final-verification.json), [review](reports/final-review.json) | Text-free aggregates; raw messages remain private |
 | Presentation and speaker notes | [16-slide source](presentation.md), [builder](../scripts/build_presentation.py) | PhishGuard-Final-Presentation.pptx, .html and .pdf |
 | Runnable demonstration | [Startup and privacy guide](demo.md) | Local four-model pasted-email interface |
-| Work allocation and evidence | [Implementation plan](implementation-plan.md), [stage log](stage-log.md) | Lior/Sharon equal planned responsibility; AI assistance disclosed |
+| Work allocation and evidence | [Implementation plan](implementation-plan.md), [stage log](stage-log.md) | Lior Mashaich/Sharon Elimelech equal planned responsibility; AI assistance disclosed |
 
 The filenames containing Initial are retained for continuity; their content is the final revision. Local exports are stored in the project's outputs directory, outside Downloads. Generated binaries, research emails and learned model weights are intentionally excluded from Git. The English presentation builder uses only public aggregate reports and an invented-message screenshot.
 
@@ -50,4 +50,4 @@ Open http://127.0.0.1:7860. Use invented examples such as a routine meeting remi
 
 ## Ownership and final human actions
 
-W10 assigns five planning units to each student. Lior leads reproduction instructions, architecture/test documentation and demo packaging. Sharon Elimelech leads comparative results, conclusions and slide assembly. Both review the complete code and selected error cases, add genuine learning/contribution evidence and dates, rehearse explanations and perform the actual course submission. These are assigned responsibilities for AI-assisted work, not invented individual authorship or approvals. No additional model tuning is part of the completed project; future changes require fresh held-out evidence.
+W10 assigns five planning units to each student. Lior Mashaich leads reproduction instructions, architecture/test documentation and demo packaging. Sharon Elimelech leads comparative results, conclusions and slide assembly. Both review the complete code and selected error cases, add genuine learning/contribution evidence and dates, rehearse explanations and perform the actual course submission. These are assigned responsibilities for AI-assisted work, not invented individual authorship or approvals. No additional model tuning is part of the completed project; future changes require fresh held-out evidence.

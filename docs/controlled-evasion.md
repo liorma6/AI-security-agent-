@@ -62,7 +62,7 @@ uv run --frozen --extra pretrained phishguard evasion evaluate --bank artifacts/
 
 Repeat generation and complete scoring, compare candidate/prediction bytes, independently recount results and verify preserved model/data digests. Reproduction is not another independent evaluation cohort. Any later change to the threat model or budget requires a separately declared study, not overwriting these results.
 
-W07 retains five planning units each: Lior leads transformations, lineage and budgeted runner; Sharon Elimelech leads validity review, paired metrics, fixtures and reproduction. Both review limitations. Initial implementation and experimental review are AI-assisted; actual personal review remains to be recorded.
+W07 retains five planning units each: Lior Mashaich leads transformations, lineage and budgeted runner; Sharon Elimelech leads validity review, paired metrics, fixtures and reproduction. Both review limitations. Initial implementation and experimental review are AI-assisted; actual personal review remains to be recorded.
 
 ## Executed verification and review commands
 

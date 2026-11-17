@@ -234,7 +234,7 @@ No raw research emails or model checkpoints are included in Git. The internal sy
 
 ## Team
 
-Lior and Sharon Elimelech share planned responsibility equally. The project book records the allocation, the reported two-week learning period and how actual contributions will be recorded as work proceeds.
+Lior Mashaich and Sharon Elimelech share planned responsibility equally. The project book records the allocation, the reported two-week learning period and how actual contributions will be recorded as work proceeds.
 
 ## Frozen final evaluation and presentation
 

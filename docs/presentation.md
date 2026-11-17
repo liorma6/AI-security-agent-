@@ -6,7 +6,7 @@ English slide content and speaker notes; generated artifacts are stored locally 
 
 Phishing detection and controlled adversarial robustness
 
-- Lior & Sharon Elimelech
+- Lior Mashaich & Sharon Elimelech
 - Final project presentation | November 14, 2026
 - An academic research prototype with a local email demo.
 
@@ -184,7 +184,7 @@ Speaker notes: Conclude using the measured results, not a claim of a production 
 
 Shared responsibility; transparent assistance.
 
-- Lior: reproduction guide, local demonstration and packaging (W10: 5 units).
+- Lior Mashaich: reproduction guide, local demonstration and packaging (W10: 5 units).
 - Sharon Elimelech: comparative report, conclusions and presentation (W10: 5 units).
 - Both students review the implementation and can explain the complete pipeline.
 - AI-assisted code and documents; assigned ownership is not invented personal authorship.

@@ -74,4 +74,4 @@ Additional limits are synthetic writing style, possible label ambiguity, missing
 
 [Dataset tests](../tests/test_datasets.py) use invented offline examples. They cover invalid source rows, unchanged text, deduplication/conflicts, transitive grouping, a brute-force comparison of the near-duplicate search, seeded splits, lineage leakage, tampered artifacts, output preservation, downloader failures/cache checks and private CLI errors. CI does not download the research corpus.
 
-W03 assigns provenance/ingestion to Lior and label review/deduplication/split validation to Sharon Elimelech, with equal planning weight and mutual review. Implementation and the initial sample audit were AI-assisted in this project session. This allocation does not claim completed individual student review.
+W03 assigns provenance/ingestion to Lior Mashaich and label review/deduplication/split validation to Sharon Elimelech, with equal planning weight and mutual review. Implementation and the initial sample audit were AI-assisted in this project session. This allocation does not claim completed individual student review.
