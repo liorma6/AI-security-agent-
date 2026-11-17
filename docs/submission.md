@@ -10,6 +10,7 @@ All twelve implementation milestones (0-9 and checkpoints 4a/4b) are complete at
 | Final protocol and comparative report | [Final evaluation](final-evaluation.md) | Included in the book and slides |
 | Machine-readable evidence | [Results](reports/final-evaluation.json), [verification](reports/final-verification.json), [review](reports/final-review.json) | Text-free aggregates; raw messages remain private |
 | Presentation and speaker notes | [16-slide source](presentation.md), [builder](../scripts/build_presentation.py) | PhishGuard-Final-Presentation.pptx, .html and .pdf |
+| Illustrated project poster | [Poster and content reference](poster.md) | PhishGuard-Poster.png and one-page A4 .pdf |
 | Runnable demonstration | [Startup and privacy guide](demo.md) | Local four-model pasted-email interface |
 | Work allocation and evidence | [Implementation plan](implementation-plan.md), [stage log](stage-log.md) | Lior Mashaich/Sharon Elimelech equal planned responsibility; AI assistance disclosed |
 
